@@ -1,18 +1,18 @@
 /* Caricamento dei font personalizzati */
 @font-face {
-    font-family: 'Bitcount Single'; /* Nome del font corretto e coerente con Tailwind */
+    font-family: 'Bitcount Single'; /* Nome del font coerente con Tailwind */
     src: url('fonts/BitcountSingle-Medium.woff2') format('woff2'),
          url('fonts/BitcountSingle-Medium.woff') format('woff');
-    font-weight: 500;
+    font-weight: 500; /* Medium è solitamente 500 */
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Martian Mono'; /* Nome del font corretto e coerente con Tailwind */
+    font-family: 'Martian Mono'; /* Nome del font coerente con Tailwind */
     src: url('fonts/MartianMono-Regular.woff2') format('woff2'),
          url('fonts/MartianMono-Regular.woff') format('woff');
-    font-weight: normal;
+    font-weight: normal; /* Regular è solitamente normal o 400 */
     font-style: normal;
     font-display: swap;
 }
@@ -21,7 +21,7 @@
     font-family: 'Martian Mono'; /* Per la versione bold */
     src: url('fonts/MartianMono-Bold.woff2') format('woff2'),
          url('fonts/MartianMono-Bold.woff') format('woff');
-    font-weight: bold;
+    font-weight: bold; /* Bold è solitamente bold o 700 */
     font-style: normal;
     font-display: swap;
 }
@@ -34,7 +34,7 @@ html, body {
   margin: 0;
   padding: 0;
   /* Imposta i font di base. Prima quello personalizzato, poi un fallback generico */
-  font-family: "Martian Mono", sans-serif; /* Rimosso "Inter" dato che non è caricato come font primario */
+  font-family: "Martian Mono", sans-serif;
   background-color: #fff;
   color: #000;
   height: 100%; /* Aggiunto per assicurare che #root possa prendere tutta l'altezza */

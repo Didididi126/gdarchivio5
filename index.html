@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio</title>
 
-    <!-- La base href è FONDAMENTALE per GitHub Pages e deve corrispondere al nome esatto del repository. -->
-    <!-- Repository name: 'gdarchivio5' -->
+    <!-- LA TUA BASE HREF È STATA AGGIORNATA PER gdarchivio5! -->
     <base href="/gdarchivio5/">
 
     <!-- Carica Tailwind CSS dalla CDN. -->
@@ -18,7 +17,6 @@
         theme: {
           extend: {
             fontFamily: {
-              // AGGIORNATO: Corrisponde esattamente al font-family in main.css (nome "Bitcount Single" senza "Medium 500")
               'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
               'martian-mono': ['"Martian Mono"', 'monospace'],
             },
@@ -35,52 +33,36 @@
     <link rel="stylesheet" href="main.css">
 
     <!-- CARICA REACT E REACTDOM DALLA CDN PRIMA del tuo bundle.js -->
-    <!-- Questi script rendono 'React' e 'ReactDOM' disponibili globalmente. -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
     <!-- CARICA LUCIDE REACT DALLA CDN PRIMA del tuo bundle.js per le icone -->
-    <!-- Questo script rende 'lucideReact' disponibile globalmente. -->
     <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
 
     <!-- CARICA FIREBASE SDK DALLA CDN PRIMA del tuo bundle.js -->
-    <!-- Questi script rendono l'oggetto globale 'firebase' disponibile. -->
-    <!-- Nota: usiamo le versioni 'compat' (compatibilità) per usare l'API nello stile v8/v9, più adatta a questo setup globale. -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
-    <!-- Non è necessario importare getAnalytics qui, la tua app non la usa direttamente in bundle.js -->
 
     <!-- *** LA TUA CONFIGURAZIONE FIREBASE REALE E CORRETTA *** -->
-    <!-- HO CORRETTO L'appId che era sbagliato. Ho usato quello dal tuo messaggio precedente. -->
-    <!-- SE AVESSI UNA NUOVA CHIAVE API PIÙ RECENTE, INSERISCILA QUI AL POSTO DI QUELLA ATTUALE. -->
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyBxuX1Q1oQMKJVOeQrbjB6C9ce83SlQTgQ", // <-- LA TUA API KEY ATTUALE
+            apiKey: "AIzaSyDRRzCOY1Aazxo45vHV4rmfat1sVOU1dbc", // <-- LA TUA API KEY ATTUALE E VERIFICATA!
             authDomain: "gdarchivio-32cd0.firebaseapp.com",
             projectId: "gdarchivio-32cd0",
             storageBucket: "gdarchivio-32cd0.firebasestorage.app",
             messagingSenderId: "399282933627",
-            // IMPORTANTE: HO CORRETTO L'appId CON QUELLO VERO DAL TUO MESSAGGIO PRECEDENTE!
             appId: "1:399282933627:web:00c8641399fa503f1c37de", 
-            measurementId: "G-NV3JTKJN0L" // Questo è l'ID di Analytics, che va bene qui.
+            measurementId: "G-NV3JTKJN0L"
         };
-        // Rende la configurazione disponibile globalmente per il tuo bundle.js.
         window.firebaseConfig = firebaseConfig;
     </script>
     <!-- *** FINE CONFIGURAZIONE FIREBASE *** -->
 
 </head>
 <body>
-    <!-- Questo messaggio appare SOLO se JavaScript è disabilitato nel browser. -->
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-    
-    <!-- Questo è il div dove l'applicazione React verrà montata. -->
     <div id="root"></div>
-    
-    <!-- Lo script JavaScript compilato della tua applicazione React. -->
-    <!-- È ESSENZIALE che questo script sia caricato DOPO tutti i CDN di React, ReactDOM, Lucide React e Firebase. -->
-    <!-- NON usiamo type="module" per permettere al bundle.js di usare le librerie globali. -->
     <script src="bundle.js"></script>
 </body>
 </html>
