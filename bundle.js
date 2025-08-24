@@ -239,7 +239,7 @@ const mockProducts = [
     description: 'Elegante completo tailleur Christian Dior in lana grigia del 2005.',
     condition: 'excellent',
     material: '100% Wool',
-    measurements: { chest: '48cm', waist: '40cm' },
+    measurements: { chest: '48cm', waist: '38cm' },
     featured: true,
     type: 'archive'
   },
@@ -1914,7 +1914,7 @@ const Navbar = ({ navigateTo }) => {
       React.createElement(
         "h1",
         {
-          className: "text-2xl font-bitcount-single-medium uppercase cursor-pointer",
+          className: "text-2xl font-bitcount-single uppercase cursor-pointer", // Modificato per coerenza con CSS
           onClick: () => navigateTo('home')
         },
         "gdarchivio"
@@ -1981,7 +1981,7 @@ const InternalFooter = ({ navigateTo }) => {
     React.createElement(
       "h3",
       {
-        className: "font-bitcount-single-medium uppercase text-2xl cursor-pointer mb-4",
+        className: "text-2xl font-bitcount-single uppercase cursor-pointer mb-4", // Modificato per coerenza con CSS
         onClick: () => navigateTo('home')
       },
       "gdarchivio"
@@ -2311,7 +2311,7 @@ const HomePage = ({ navigateTo }) => {
         { className: "relative z-10 text-center flex flex-col items-center" },
         React.createElement(
           "h1",
-          { className: "text-5xl md:text-7xl font-bitcount-single-medium uppercase mb-4 drop-shadow-lg" },
+          { className: "text-5xl md:text-7xl font-bitcount-single uppercase mb-4 drop-shadow-lg" }, // Modificato per coerenza con CSS
           "gdarchivio"
         ),
         React.createElement(
@@ -2422,7 +2422,7 @@ const CollectionPage = ({ navigateTo }) => {
       { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
       React.createElement(
         "h2",
-        { className: "text-4xl font-bitcount-single-medium uppercase mb-4" },
+        { className: "text-4xl font-bitcount-single uppercase mb-4" }, // Modificato per coerenza con CSS
         "Collection"
       ),
       React.createElement(
@@ -2504,7 +2504,7 @@ const ArchivePage = ({ navigateTo }) => {
       { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
       React.createElement(
         "h2",
-        { className: "text-4xl font-bitcount-single-medium uppercase mb-4" },
+        { className: "text-4xl font-bitcount-single uppercase mb-4" }, // Modificato per coerenza con CSS
         "Archive"
       ),
       React.createElement(
@@ -2583,7 +2583,7 @@ const LibraryPage = ({ navigateTo }) => {
       { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
       React.createElement(
         "h2",
-        { className: "text-4xl font-bitcount-single-medium uppercase mb-4" },
+        { className: "text-4xl font-bitcount-single uppercase mb-4" }, // Modificato per coerenza con CSS
         "Library"
       ),
       React.createElement(
@@ -2620,7 +2620,7 @@ const ContactPage = ({ navigateTo }) => {
       { className: "flex-grow container mx-auto px-4 py-16 flex flex-col items-center max-w-3xl" },
       React.createElement(
         "h2",
-        { className: "text-4xl font-bitcount-single-medium uppercase mb-4 text-center" },
+        { className: "text-4xl font-bitcount-single uppercase mb-4 text-center" }, // Modificato per coerenza con CSS
         "Contact Us"
       ),
       React.createElement(
@@ -2686,36 +2686,29 @@ const App = () => {
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // Utilizza window.firebaseConfig (caricata da index.html) se disponibile.
-        // Se non è definita (ad esempio, l'utente non l'ha ancora inserita), usa un oggetto vuoto.
-        const firebaseConfig = window.firebaseConfig || {}; 
+        // Recupera la configurazione Firebase dalla variabile globale (caricata da index.html).
+        const firebaseConfig = window.firebaseConfig;
 
         // IMPORTANTE: Verifica se la configurazione Firebase contiene una chiave API valida
-        if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_API_KEY") {
-          console.warn("Firebase: Configurazione API Key mancante o di placeholder. L'autenticazione Firebase potrebbe fallire. Assicurati di aver inserito la tua apiKey nel file index.html.");
-          // Non inizializzare Firebase se la config è vuota/placeholder per evitare l'errore (auth/invalid-api-key)
-          // Tuttavia, per la demo, possiamo consentire l'esecuzione del resto dell'app senza Firebase attivo.
-          // Se Firebase è strettamente necessario per l'app, qui dovremmo interrompere o mostrare un messaggio d'errore all'utente.
-          // Per ora, proseguiamo ma con un avviso.
+        if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey === "INSERISCI_LA_TUA_CHIAVE_API_VERIFICATA_QUI") {
+          console.error("Firebase: Configurazione API Key mancante o di placeholder. L'autenticazione Firebase e Firestore NON funzioneranno.");
+          setIsAuthReady(true); // Permetti all'app di avviarsi anche senza Firebase fully functional per mostrare l'UI.
+          return; // Interrompi l'inizializzazione Firebase se la chiave non è valida
         }
-
 
         // Verifica che `firebase` sia disponibile globalmente dopo il caricamento dei CDN compat.
         if (!window.firebase || !window.firebase.initializeApp || !window.firebase.auth || !window.firebase.firestore) {
-          console.error("Firebase SDK non completamente disponibile globalmente. Controlla i CDN compat.");
+          console.error("Firebase SDK non completamente disponibile globalmente. Controlla i CDN compat nel file index.html.");
+          setIsAuthReady(true);
           return;
         }
 
         let firebaseApp;
         if (firebase.apps.length === 0) {
-          // Inizializza solo se la configurazione è valida
-          if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-             firebaseApp = firebase.initializeApp(firebaseConfig);
-          } else {
-             console.warn("Firebase App non inizializzata a causa di configurazione mancante/placeholder.");
-             setIsAuthReady(true); // Permetti all'app di avviarsi anche senza Firebase fully functional.
-             return;
-          }
+          // Inizializza Firebase solo se non è già stato fatto e la configurazione è valida
+          firebaseApp = firebase.initializeApp(firebaseConfig);
+          // Rendi l'istanza dell'app Firebase disponibile globalmente per debug/estensioni se necessario
+          window.firebaseApp = firebaseApp; 
         } else {
           firebaseApp = firebase.app();
         }

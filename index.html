@@ -1,64 +1,70 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>gdarchivio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gdarchivio</title>
 
-  <!-- BASE HREF: deve corrispondere al nome del repo -->
-  <base href="/gdarchivio5/">
+    <!-- 1. Base HREF: Indispensabile per GitHub Pages, definisce la radice del tuo sito. -->
+    <base href="/gdarchivio5/">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
-            'martian-mono': ['"Martian Mono"', 'monospace'],
-          },
-          colors: {
-            'dark-gray': '#333333',
-            'cold-gray': '#888888',
+    <!-- 2. Tailwind CSS CDN: Carica il framework Tailwind per lo styling. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 3. Configurazione Tailwind (inline): Deve venire DOPO il caricamento di Tailwind CDN. -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
+              'martian-mono': ['"Martian Mono"', 'monospace'],
+            },
+            colors: {
+              'dark-gray': '#333333',
+              'cold-gray': '#888888',
+            }
           }
         }
       }
-    }
-  </script>
+    </script>
 
-  <!-- CSS personalizzato -->
-  <link rel="stylesheet" href="main.css">
+    <!-- 4. Il tuo CSS personalizzato (main.css): Caricato dopo Tailwind per permettere override. -->
+    <link rel="stylesheet" href="main.css">
 
-  <!-- React e ReactDOM -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- 5. React e ReactDOM CDN: Devono essere caricati PRIMA del tuo codice React (`bundle.js`). -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-  <!-- Lucide React (icone) -->
-  <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
+    <!-- 6. Lucide React (icone) CDN: Deve essere caricato PRIMA del tuo codice che lo usa. -->
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
 
-  <!-- Firebase compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
+    <!-- 7. Firebase compat SDK CDN: Devono essere caricati PRIMA del tuo codice che inizializza Firebase. -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
-  <!-- Configurazione Firebase -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDRRzCOY1Aazxo45vHV4rmfat1sVOU1dbc",
-      authDomain: "gdarchivio-32cd0.firebaseapp.com",
-      projectId: "gdarchivio-32cd0",
-      storageBucket: "gdarchivio-32cd0.appspot.com",  // ✅ corretto (.appspot.com)
-      messagingSenderId: "399282933627",
-      appId: "1:399282933627:web:00c8641399fa503f1c37de",
-      measurementId: "G-NV3JTKJN0L"
-    };
-    window.firebaseConfig = firebaseConfig;
-  </script>
+    <!-- 8. Configurazione Firebase (inline): Deve venire DOPO i Firebase SDK. -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRRzCOY1Aazxo45vHV4rmfat1sVOU1dbc", // <-- LA TUA API KEY CORRETTA!
+            authDomain: "gdarchivio-32cd0.firebaseapp.com",
+            projectId: "gdarchivio-32cd0",
+            storageBucket: "gdarchivio-32cd0.firebasestorage.app",
+            messagingSenderId: "399282933627",
+            appId: "1:399282933627:web:00c8641399fa503f1c37de", 
+            measurementId: "G-NV3JTKJN0L"
+        };
+        // Rendiamo la configurazione disponibile globalmente
+        window.firebaseConfig = firebaseConfig;
+    </script>
+
 </head>
 <body>
-  <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-  <div id="root"></div>
-  <script src="bundle.js"></script>
+    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
+    <div id="root"></div>
+    <!-- 9. Il tuo bundle.js: Carica il tuo codice JavaScript principale alla fine del body. -->
+    <!-- Questo assicura che il DOM e tutte le librerie siano disponibili prima che il tuo script venga eseguito. -->
+    <script src="bundle.js"></script>
 </body>
 </html>
