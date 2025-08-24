@@ -1,68 +1,64 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gdarchivio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gdarchivio</title>
 
-    <!-- LA TUA BASE HREF È STATA AGGIORNATA PER gdarchivio5! -->
-    <base href="/gdarchivio5/">
+  <!-- BASE HREF: deve corrispondere al nome del repo -->
+  <base href="/gdarchivio5/">
 
-    <!-- Carica Tailwind CSS dalla CDN. -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Configurazione di Tailwind per i font personalizzati e i colori. -->
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
-              'martian-mono': ['"Martian Mono"', 'monospace'],
-            },
-            colors: {
-              'dark-gray': '#333333',
-              'cold-gray': '#888888',
-            }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
+            'martian-mono': ['"Martian Mono"', 'monospace'],
+          },
+          colors: {
+            'dark-gray': '#333333',
+            'cold-gray': '#888888',
           }
         }
       }
-    </script>
+    }
+  </script>
 
-    <!-- Il tuo CSS personalizzato (main.css) per i font @font-face. -->
-    <link rel="stylesheet" href="main.css">
+  <!-- CSS personalizzato -->
+  <link rel="stylesheet" href="main.css">
 
-    <!-- CARICA REACT E REACTDOM DALLA CDN PRIMA del tuo bundle.js -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- React e ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-    <!-- CARICA LUCIDE REACT DALLA CDN PRIMA del tuo bundle.js per le icone -->
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
+  <!-- Lucide React (icone) -->
+  <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
 
-    <!-- CARICA FIREBASE SDK DALLA CDN PRIMA del tuo bundle.js -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
-    <!-- *** LA TUA CONFIGURAZIONE FIREBASE REALE E CORRETTA *** -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDRRzCOY1Aazxo45vHV4rmfat1sVOU1dbc", // <-- LA TUA API KEY ATTUALE E VERIFICATA!
-            authDomain: "gdarchivio-32cd0.firebaseapp.com",
-            projectId: "gdarchivio-32cd0",
-            storageBucket: "gdarchivio-32cd0.firebasestorage.app",
-            messagingSenderId: "399282933627",
-            appId: "1:399282933627:web:00c8641399fa503f1c37de", 
-            measurementId: "G-NV3JTKJN0L"
-        };
-        window.firebaseConfig = firebaseConfig;
-    </script>
-    <!-- *** FINE CONFIGURAZIONE FIREBASE *** -->
-
+  <!-- Configurazione Firebase -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRRzCOY1Aazxo45vHV4rmfat1sVOU1dbc",
+      authDomain: "gdarchivio-32cd0.firebaseapp.com",
+      projectId: "gdarchivio-32cd0",
+      storageBucket: "gdarchivio-32cd0.appspot.com",  // ✅ corretto (.appspot.com)
+      messagingSenderId: "399282933627",
+      appId: "1:399282933627:web:00c8641399fa503f1c37de",
+      measurementId: "G-NV3JTKJN0L"
+    };
+    window.firebaseConfig = firebaseConfig;
+  </script>
 </head>
 <body>
-    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-    <div id="root"></div>
-    <script src="bundle.js"></script>
+  <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
+  <div id="root"></div>
+  <script src="bundle.js"></script>
 </body>
 </html>
