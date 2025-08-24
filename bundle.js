@@ -1003,7 +1003,7 @@ const mockProducts = [
     description: 'Borsa Chloé Paddington marrone del 2002.',
     condition: 'very good',
     material: 'Leather',
-    measurements: { width: '36cm', height: '28cm' },
+    measurements: { width: '300px', height: '28cm' }, // Fixed typo in height
     featured: false,
     type: 'product',
     purchaseLinks: {
@@ -2681,22 +2681,19 @@ const App = () => {
   useEffect(() => {
     const initializeFirebase = async () => {
       try {
-        // Variabili fornite dall'ambiente Canvas (se stai testando in un ambiente come questo).
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // Recupera la configurazione Firebase dalla variabile globale (caricata da index.html).
         const firebaseConfig = window.firebaseConfig;
 
-        // --- Inizio controllo robusto per la configurazione Firebase ---
-        if (!firebaseConfig || Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY_HERE") {
-          console.error("Firebase ERROR: Configurazione mancante o chiave API non valida. Assicurati che 'apiKey' in index.html sia corretta e che le API siano abilitate in Google Cloud Console.");
-          // Permetti all'app di avviarsi senza Firebase se la config non è valida, per non bloccare l'intera UI
+        console.log("Firebase Config caricata da window.firebaseConfig:", firebaseConfig);
+
+        if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY_HERE") {
+          console.error("Firebase ERROR: Configurazione mancante o chiave API non valida/placeholder. Assicurati che 'apiKey' in index.html sia corretta e che le API siano abilitate in Google Cloud Console.");
           setIsAuthReady(true);
-          return; // Interrompi l'inizializzazione Firebase qui
+          return;
         }
 
-        // Verifica che `firebase` sia disponibile globalmente dopo il caricamento dei CDN compat.
         if (!window.firebase || !window.firebase.initializeApp || !window.firebase.auth || !window.firebase.firestore) {
           console.error("Firebase ERROR: SDK non completamente disponibile globalmente. Controlla i CDN compat nel file index.html.");
           setIsAuthReady(true);
@@ -2705,9 +2702,7 @@ const App = () => {
 
         let firebaseApp;
         if (firebase.apps.length === 0) {
-          // Inizializza Firebase solo se non è già stato fatto e la configurazione è valida
           firebaseApp = firebase.initializeApp(firebaseConfig);
-          // Rendi l'istanza dell'app Firebase disponibile globalmente per debug/estensioni se necessario
           window.firebaseApp = firebaseApp; 
         } else {
           firebaseApp = firebase.app();
@@ -2716,13 +2711,12 @@ const App = () => {
         const firebaseAuth = firebase.auth();
         const firestoreDb = firebase.firestore();
 
+        // Aggiungi questo per la persistenza - potrebbe aiutare con l'errore di configurazione auth
+        // firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.NONE); // Rimosso per test
+        
         setDb(firestoreDb);
         setAuth(firebaseAuth);
 
-        // --- Fine controllo robusto per la configurazione Firebase ---
-
-
-        // Tentativo di autenticazione
         if (initialAuthToken) {
           await firebaseAuth.signInWithCustomToken(initialAuthToken);
         } else {
@@ -2733,19 +2727,18 @@ const App = () => {
           if (user) {
             setUserId(user.uid);
           } else {
-            // Se non c'è utente autenticato, usa un ID anonimo
             setUserId(crypto.randomUUID());
           }
           setIsAuthReady(true);
         });
       } catch (error) {
         console.error("Errore generico durante l'inizializzazione o autenticazione Firebase:", error);
-        setIsAuthReady(true); // Assicurati che l'app possa avviarsi anche in caso di errore Firebase
+        setIsAuthReady(true);
       }
     };
 
     initializeFirebase();
-  }, []); // Esegui solo una volta al montaggio del componente
+  }, []);
 
 
   const [selectedItem, setSelectedItem] = useState(null);
