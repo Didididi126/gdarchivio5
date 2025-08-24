@@ -1801,7 +1801,7 @@ const ContactFormModal = ({ onClose, title = "INVIA UN MESSAGGIO" }) => {
         "button",
         {
           type: "submit",
-          className: "bg-black text-white px-6 py-3 rounded-full font-martian-mono uppercase font-bold text-sm\n                         transition-colors duration-300 ease-in-out hover:bg-dark-gray focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+          className: "bg-black text-white px-6 py-3 rounded-full font-bold uppercase text-sm\n                         transition-colors duration-300 ease-in-out hover:bg-dark-gray focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
         },
         "INVIA MESSAGGIO"
       )
@@ -2682,23 +2682,23 @@ const App = () => {
     const initializeFirebase = async () => {
       try {
         // Variabili fornite dall'ambiente Canvas (se stai testando in un ambiente come questo).
-        // Per GitHub Pages, __app_id e __initial_auth_token non saranno definiti e useranno i valori di fallback.
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Recupera la configurazione Firebase dalla variabile globale (caricata da index.html).
         const firebaseConfig = window.firebaseConfig;
 
-        // IMPORTANTE: Verifica se la configurazione Firebase contiene una chiave API valida
-        if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey === "INSERISCI_LA_TUA_CHIAVE_API_VERIFICATA_QUI") {
-          console.error("Firebase: Configurazione API Key mancante o di placeholder. L'autenticazione Firebase e Firestore NON funzioneranno.");
-          setIsAuthReady(true); // Permetti all'app di avviarsi anche senza Firebase fully functional per mostrare l'UI.
-          return; // Interrompi l'inizializzazione Firebase se la chiave non è valida
+        // --- Inizio controllo robusto per la configurazione Firebase ---
+        if (!firebaseConfig || Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY_HERE") {
+          console.error("Firebase ERROR: Configurazione mancante o chiave API non valida. Assicurati che 'apiKey' in index.html sia corretta e che le API siano abilitate in Google Cloud Console.");
+          // Permetti all'app di avviarsi senza Firebase se la config non è valida, per non bloccare l'intera UI
+          setIsAuthReady(true);
+          return; // Interrompi l'inizializzazione Firebase qui
         }
 
         // Verifica che `firebase` sia disponibile globalmente dopo il caricamento dei CDN compat.
         if (!window.firebase || !window.firebase.initializeApp || !window.firebase.auth || !window.firebase.firestore) {
-          console.error("Firebase SDK non completamente disponibile globalmente. Controlla i CDN compat nel file index.html.");
+          console.error("Firebase ERROR: SDK non completamente disponibile globalmente. Controlla i CDN compat nel file index.html.");
           setIsAuthReady(true);
           return;
         }
@@ -2719,6 +2719,10 @@ const App = () => {
         setDb(firestoreDb);
         setAuth(firebaseAuth);
 
+        // --- Fine controllo robusto per la configurazione Firebase ---
+
+
+        // Tentativo di autenticazione
         if (initialAuthToken) {
           await firebaseAuth.signInWithCustomToken(initialAuthToken);
         } else {
@@ -2729,18 +2733,20 @@ const App = () => {
           if (user) {
             setUserId(user.uid);
           } else {
+            // Se non c'è utente autenticato, usa un ID anonimo
             setUserId(crypto.randomUUID());
           }
           setIsAuthReady(true);
         });
       } catch (error) {
-        console.error("Errore durante l'inizializzazione di Firebase o l'autenticazione:", error);
+        console.error("Errore generico durante l'inizializzazione o autenticazione Firebase:", error);
         setIsAuthReady(true); // Assicurati che l'app possa avviarsi anche in caso di errore Firebase
       }
     };
 
     initializeFirebase();
-  }, []);
+  }, []); // Esegui solo una volta al montaggio del componente
+
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentPage, setCurrentPage] = useState('home');
