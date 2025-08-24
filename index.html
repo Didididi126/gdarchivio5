@@ -5,66 +5,957 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio</title>
 
-    <!-- 1. Base HREF: Indispensabile per GitHub Pages, definisce la radice del tuo sito. -->
+    <!-- Base HREF per GitHub Pages -->
     <base href="/gdarchivio5/">
 
-    <!-- 2. Tailwind CSS CDN: Carica il framework Tailwind per lo styling. -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 3. Configurazione Tailwind (inline): Deve venire DOPO il caricamento di Tailwind CDN. -->
+    <!-- Configurazione Tailwind personalizzata -->
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
+              'bitcount-single': ['Orbitron', 'sans-serif'], 
               'martian-mono': ['"Martian Mono"', 'monospace'],
             },
             colors: {
-              'dark-gray': '#333333',
-              'cold-gray': '#888888',
+              'dark-gray': '#4b5563',
+              'cold-gray': '#6b7280',
             }
           }
         }
       }
     </script>
 
-    <!-- 4. Il tuo CSS personalizzato (main.css): Caricato dopo Tailwind per permettere override. -->
-    <link rel="stylesheet" href="main.css">
-
-    <!-- 5. React e ReactDOM CDN: Devono essere caricati PRIMA del tuo codice React (`bundle.js`). -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-    <!-- 6. Lucide React (icone) CDN: Deve essere caricato PRIMA del tuo codice che lo usa. -->
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
-
-    <!-- 7. Firebase compat SDK CDN: Devono essere caricati PRIMA del tuo codice che inizializza Firebase. -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
-
-    <!-- 8. Configurazione Firebase (inline): Questa è la tua NUOVA configurazione ESATTA. -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
-            authDomain: "gdarchivio-nuovo.firebaseapp.com",
-            projectId: "gdarchivio-nuovo",
-            storageBucket: "gdarchivio-nuovo.firebasestorage.app",
-            messagingSenderId: "979928746511",
-            appId: "1:979928746511:web:09747140bcd19a57d2317a",
-            measurementId: "G-MED21QE0XH"
-        };
-        // Rendiamo la configurazione disponibile globalmente
-        window.firebaseConfig = firebaseConfig;
-    </script>
-
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100;200;300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- React e ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Lucide React -->
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Martian Mono', monospace;
+        }
+        
+        .font-bitcount-single {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        .font-martian-mono {
+            font-family: 'Martian Mono', monospace;
+        }
+        
+        .text-cold-gray {
+            color: #6B7280;
+        }
+        
+        .text-dark-gray {
+            color: #374151;
+        }
+        
+        .bg-dark-gray {
+            background-color: #374151;
+        }
+    </style>
 </head>
 <body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     <div id="root"></div>
-    <!-- 9. Il tuo bundle.js: Carica il tuo codice JavaScript principale alla fine del body. -->
-    <!-- Questo assicura che il DOM e tutte le librerie siano disponibili prima che il tuo script venga eseguito. -->
-    <script src="bundle.js"></script>
+
+    <script>
+        // Funzione di utilità per generare URL di placeholder
+        const getPlaceholderImageUrl = (width, height, text, bgColor = 'e0e0e0', textColor = '000000') => {
+            return `https://placehold.co/${width}x${height}/${bgColor}/${textColor}?text=${encodeURIComponent(text)}`;
+        };
+
+        // Dati mock per i prodotti
+        const mockProducts = [
+            // Prodotti Archivio (6 elementi per semplicità)
+            {
+                id: '1',
+                name: 'Vintage Dolce & Gabbana Blazer',
+                brand: 'Dolce & Gabbana',
+                category: 'jackets',
+                color: 'black',
+                size: 'M',
+                year: 1995,
+                price: 450,
+                images: [
+                    getPlaceholderImageUrl(300, 400, 'D&G+Blazer'),
+                    getPlaceholderImageUrl(300, 400, 'D&G+Blazer+2'),
+                    getPlaceholderImageUrl(300, 400, 'D&G+Blazer+3')
+                ],
+                description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Artigianato italiano al suo meglio.',
+                condition: 'excellent',
+                material: '100% Wool',
+                measurements: { chest: '50cm', length: '65cm' },
+                featured: true,
+                type: 'archive'
+            },
+            {
+                id: '2',
+                name: 'Prada Nylon Bag',
+                brand: 'Prada',
+                category: 'bags',
+                color: 'brown',
+                size: 'M',
+                year: 1999,
+                price: 1200,
+                images: [
+                    getPlaceholderImageUrl(300, 400, 'Prada+Bag'),
+                    getPlaceholderImageUrl(300, 400, 'Prada+Bag+2')
+                ],
+                description: 'Iconica borsa Prada in nylon del 1999. Un pezzo del lusso minimalista degli anni \'90.',
+                condition: 'very good',
+                material: 'Nylon and leather',
+                measurements: { width: '30cm', height: '25cm' },
+                featured: true,
+                type: 'archive'
+            },
+            // Prodotti Collezione
+            {
+                id: '19',
+                name: 'Miss Sixty Low-Rise Jeans',
+                brand: 'Miss Sixty',
+                category: 'pants',
+                color: 'blue',
+                size: 'S',
+                year: 2003,
+                price: 120,
+                images: [
+                    getPlaceholderImageUrl(300, 400, 'Miss+Sixty+Jeans'),
+                    getPlaceholderImageUrl(300, 400, 'Miss+Sixty+Jeans+2')
+                ],
+                description: 'Jeans a vita bassa Miss Sixty del 2003.',
+                condition: 'very good',
+                material: 'Cotton denim',
+                measurements: { waist: '32cm', length: '98cm' },
+                featured: false,
+                type: 'product',
+                purchaseLinks: {
+                    vinted: 'https://www.vinted.it/example-miss-sixty-jeans',
+                    vestiaire: 'https://www.vestiairecollective.com/example-miss-sixty-jeans'
+                }
+            },
+            {
+                id: '20',
+                name: 'Blumarine Embellished Top',
+                brand: 'Blumarine',
+                category: 'top',
+                color: 'pink',
+                size: 'M',
+                year: 2004,
+                price: 280,
+                images: [
+                    getPlaceholderImageUrl(300, 400, 'Blumarine+Top'),
+                    getPlaceholderImageUrl(300, 400, 'Blumarine+Top+2')
+                ],
+                description: 'Top Blumarine impreziosito in rosa del 2004.',
+                condition: 'excellent',
+                material: 'Silk with crystals',
+                measurements: { chest: '44cm', length: '54cm' },
+                featured: false,
+                type: 'product',
+                purchaseLinks: {
+                    vinted: 'https://www.vinted.it/example-blumarine-top',
+                    vestiaire: 'https://www.vestiairecollective.com/example-blumarine-top'
+                }
+            }
+        ];
+
+        // Dati mock per la libreria
+        const mockLibraryItems = [
+            {
+                id: 'L1',
+                name: 'Fashion History: From Ancient to Modern',
+                author: 'Jane Doe',
+                publisher: 'Fashion Books Inc.',
+                year: 2015,
+                category: 'history',
+                images: [getPlaceholderImageUrl(300, 400, 'Fashion+History+Book')],
+                description: 'A comprehensive guide to the history of fashion.',
+                featured: true,
+                type: 'book'
+            },
+            {
+                id: 'L2',
+                name: 'The Art of Dressmaking',
+                author: 'John Smith',
+                publisher: 'Craft Publications',
+                year: 2008,
+                category: 'craft',
+                images: [getPlaceholderImageUrl(300, 400, 'Dressmaking+Book')],
+                description: 'Techniques and tips for haute couture.',
+                featured: false,
+                type: 'book'
+            }
+        ];
+
+        // Separa i prodotti
+        const mockCollectionProducts = mockProducts.filter(p => p.type === 'product');
+        const mockArchiveProducts = mockProducts.filter(p => p.type === 'archive');
+
+        // Utility functions
+        const capitalizeFirstLetter = (string) => {
+            if (!string) return '';
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        };
+
+        const getUniqueFilterOptions = (items, key) => {
+            const options = [...new Set(items.map(item => item[key]))].filter(Boolean);
+            return options.sort((a, b) => {
+                if (a === 'one size') return 1;
+                if (b === 'one size') return -1;
+                if (typeof a === 'string' && typeof b === 'string') {
+                    return a.localeCompare(b);
+                }
+                return 0;
+            });
+        };
+
+        // Componente Modal
+        const Modal = ({ children, onClose, title }) => {
+            const { X } = window.lucideReact;
+
+            return React.createElement(
+                "div",
+                {
+                    className: "fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 p-4",
+                    onClick: onClose
+                },
+                React.createElement(
+                    "div",
+                    {
+                        className: "bg-white p-6 rounded-lg shadow-lg max-w-lg w-full relative",
+                        onClick: (e) => e.stopPropagation()
+                    },
+                    React.createElement(
+                        "button",
+                        {
+                            className: "absolute top-4 right-4 text-gray-600 hover:text-gray-900",
+                            onClick: onClose,
+                            "aria-label": "Chiudi"
+                        },
+                        React.createElement(X, { size: 24 })
+                    ),
+                    title && React.createElement(
+                        "h3",
+                        { className: "font-martian-mono text-xl font-bold uppercase mb-4 text-center" },
+                        title
+                    ),
+                    children
+                )
+            );
+        };
+
+        // Contact Form Modal
+        const ContactFormModal = ({ onClose, title = "INVIA UN MESSAGGIO" }) => {
+            const [formData, setFormData] = React.useState({
+                name: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({ ...prev, [name]: value }));
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                console.log("Dati del form inviati:", formData);
+                alert("Messaggio inviato con successo!");
+                onClose();
+            };
+
+            const subjects = ['Richiesta prodotto', 'Richiesta di ricerca', 'Altro'];
+
+            return React.createElement(
+                Modal,
+                { onClose: onClose, title: title },
+                React.createElement(
+                    "form",
+                    { onSubmit: handleSubmit, className: "flex flex-col space-y-4" },
+                    React.createElement("input", {
+                        type: "text",
+                        name: "name",
+                        placeholder: "il tuo nome completo*",
+                        value: formData.name,
+                        onChange: handleChange,
+                        className: "p-3 border border-gray-300 rounded-md font-martian-mono text-sm focus:outline-none focus:ring-1 focus:ring-black",
+                        required: true
+                    }),
+                    React.createElement("input", {
+                        type: "email",
+                        name: "email",
+                        placeholder: "la.tua.email@esempio.com*",
+                        value: formData.email,
+                        onChange: handleChange,
+                        className: "p-3 border border-gray-300 rounded-md font-martian-mono text-sm focus:outline-none focus:ring-1 focus:ring-black",
+                        required: true
+                    }),
+                    React.createElement(
+                        "select",
+                        {
+                            name: "subject",
+                            value: formData.subject,
+                            onChange: handleChange,
+                            className: "p-3 border border-gray-300 rounded-md font-martian-mono text-sm focus:outline-none focus:ring-1 focus:ring-black",
+                            required: true
+                        },
+                        React.createElement("option", { value: "" }, "seleziona l'argomento del messaggio*"),
+                        subjects.map(sub =>
+                            React.createElement("option", { key: sub, value: sub }, sub)
+                        )
+                    ),
+                    React.createElement("textarea", {
+                        name: "message",
+                        placeholder: "scrivi qui il tuo messaggio...",
+                        value: formData.message,
+                        onChange: handleChange,
+                        rows: "5",
+                        className: "p-3 border border-gray-300 rounded-md font-martian-mono text-sm focus:outline-none focus:ring-1 focus:ring-black",
+                        required: true
+                    }),
+                    React.createElement(
+                        "button",
+                        {
+                            type: "submit",
+                            className: "bg-black text-white px-6 py-3 rounded-full font-bold uppercase text-sm transition-colors duration-300 ease-in-out hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                        },
+                        "INVIA MESSAGGIO"
+                    )
+                )
+            );
+        };
+
+        // Platforms Modal
+        const PlatformsModal = ({ onClose, purchaseLinks, title = "DISPONIBILE SU PIATTAFORME" }) => {
+            const { ExternalLink } = window.lucideReact;
+
+            return React.createElement(
+                Modal,
+                { onClose: onClose, title: title },
+                React.createElement(
+                    "div",
+                    { className: "flex flex-col space-y-4" },
+                    purchaseLinks && Object.entries(purchaseLinks).map(([platform, link]) =>
+                        React.createElement(
+                            "a",
+                            {
+                                key: platform,
+                                href: link,
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                                className: "flex items-center justify-between p-3 border border-gray-200 rounded-md font-martian-mono uppercase text-black hover:bg-gray-50 transition-colors"
+                            },
+                            capitalizeFirstLetter(platform),
+                            React.createElement(ExternalLink, { size: 18 })
+                        )
+                    ),
+                    !purchaseLinks && React.createElement(
+                        "p",
+                        { className: "text-center text-gray-500 font-martian-mono text-sm" },
+                        "Nessun link di acquisto disponibile per questo articolo."
+                    )
+                )
+            );
+        };
+
+        // Product Card
+        const ProductCard = ({ product, navigateTo }) => {
+            return React.createElement(
+                "div",
+                {
+                    className: "flex flex-col items-center bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out cursor-pointer group",
+                    onClick: () => navigateTo('productDetail', product)
+                },
+                React.createElement(
+                    "div",
+                    { className: "w-full h-80 overflow-hidden flex items-center justify-center bg-gray-50" },
+                    React.createElement("img", {
+                        src: product.images[0],
+                        alt: product.name,
+                        className: "object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-105"
+                    })
+                ),
+                React.createElement(
+                    "div",
+                    { className: "p-4 w-full text-left" },
+                    React.createElement(
+                        "p",
+                        { className: "font-martian-mono uppercase text-sm text-gray-500 mb-1" },
+                        product.brand || product.publisher
+                    ),
+                    React.createElement(
+                        "h3",
+                        { className: "font-martian-mono uppercase font-bold text-base text-black mb-2" },
+                        product.name
+                    ),
+                    React.createElement(
+                        "p",
+                        { className: "font-martian-mono text-xs text-gray-500" },
+                        `${product.year} • ${product.category}${product.color ? ' • ' + product.color : ''}${product.size && product.size !== 'one size' ? ' • ' + product.size : ''}`
+                    )
+                )
+            );
+        };
+
+        // Product Grid
+        const ProductGrid = ({ items, navigateTo }) => {
+            return React.createElement(
+                "div",
+                { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-8" },
+                items.map(item =>
+                    React.createElement(ProductCard, { key: item.id, product: item, navigateTo: navigateTo })
+                )
+            );
+        };
+
+        // Navbar
+        const Navbar = ({ navigateTo }) => {
+            const { Search } = window.lucideReact;
+
+            return React.createElement(
+                "nav",
+                { className: "w-full flex flex-col sm:flex-row items-center justify-between py-6 px-4 border-b border-gray-200" },
+                React.createElement(
+                    "div",
+                    { className: "flex items-center mb-4 sm:mb-0" },
+                    React.createElement(
+                        "h1",
+                        {
+                            className: "text-2xl font-bitcount-single uppercase cursor-pointer",
+                            onClick: () => navigateTo('home')
+                        },
+                        "gdarchivio"
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "flex space-x-4 sm:space-x-8 mb-4 sm:mb-0" },
+                    React.createElement(
+                        "button",
+                        {
+                            className: "font-martian-mono uppercase text-gray-600 hover:text-black transition-colors",
+                            onClick: () => navigateTo('collection')
+                        },
+                        "Collection"
+                    ),
+                    React.createElement(
+                        "button",
+                        {
+                            className: "font-martian-mono uppercase text-gray-600 hover:text-black transition-colors",
+                            onClick: () => navigateTo('archive')
+                        },
+                        "Archive"
+                    ),
+                    React.createElement(
+                        "button",
+                        {
+                            className: "font-martian-mono uppercase text-gray-600 hover:text-black transition-colors",
+                            onClick: () => navigateTo('library')
+                        },
+                        "Library"
+                    ),
+                    React.createElement(
+                        "button",
+                        {
+                            className: "font-martian-mono uppercase text-gray-600 hover:text-black transition-colors",
+                            onClick: () => navigateTo('contact')
+                        },
+                        "Contact"
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "relative w-full sm:w-auto" },
+                    React.createElement("input", {
+                        type: "text",
+                        placeholder: "Cerca...",
+                        className: "pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm font-martian-mono w-full sm:w-48 focus:outline-none focus:ring-1 focus:ring-black"
+                    }),
+                    React.createElement(Search, {
+                        className: "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400",
+                        size: 18
+                    })
+                )
+            );
+        };
+
+        // Footer
+        const InternalFooter = ({ navigateTo }) => {
+            return React.createElement(
+                "footer",
+                { className: "w-full bg-white text-black py-12 flex flex-col items-center justify-center border-t border-gray-200 mt-12" },
+                React.createElement(
+                    "h3",
+                    {
+                        className: "text-2xl font-bitcount-single uppercase cursor-pointer mb-4",
+                        onClick: () => navigateTo('home')
+                    },
+                    "gdarchivio"
+                ),
+                React.createElement(
+                    "p",
+                    { className: "font-martian-mono text-sm uppercase text-gray-500 mb-4 text-center" },
+                    "curated fashion archive. authentic pieces from the world's most iconic maisons."
+                ),
+                React.createElement(
+                    "a",
+                    {
+                        href: "https://www.instagram.com/gdarchivio",
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "font-martian-mono uppercase text-gray-600 hover:text-black transition-colors text-sm mb-6"
+                    },
+                    "Instagram"
+                ),
+                React.createElement(
+                    "p",
+                    { className: "font-martian-mono text-xs uppercase text-gray-500 text-center" },
+                    "© 2025 GDARCHIVIO. ALL RIGHTS RESERVED"
+                )
+            );
+        };
+
+        // Detail Page
+        const DetailPage = ({ item, navigateTo }) => {
+            const { ArrowLeft } = window.lucideReact;
+            const [showPlatformsModal, setShowPlatformsModal] = React.useState(false);
+
+            const isProduct = item.type === 'product' || item.type === 'archive';
+
+            return React.createElement(
+                "div",
+                { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                React.createElement(Navbar, { navigateTo: navigateTo }),
+                React.createElement(
+                    "main",
+                    { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center max-w-6xl" },
+                    React.createElement(
+                        "button",
+                        {
+                            className: "flex items-center self-start text-gray-600 hover:text-black transition-colors mb-8",
+                            onClick: () => navigateTo(item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive'))
+                        },
+                        React.createElement(ArrowLeft, { size: 20, className: "mr-2" }),
+                        "Torna alla lista"
+                    ),
+
+                    React.createElement(
+                        "div",
+                        { className: "grid grid-cols-1 md:grid-cols-2 gap-8 w-full" },
+                        // Colonna Immagini
+                        React.createElement(
+                            "div",
+                            { className: "flex flex-col items-center space-y-4" },
+                            React.createElement("img", {
+                                src: item.images[0],
+                                alt: item.name,
+                                className: "w-full max-w-md rounded-lg shadow-md"
+                            }),
+                            React.createElement(
+                                "div",
+                                { className: "flex gap-2 justify-center w-full" },
+                                item.images.slice(1, 4).map((img, index) =>
+                                    React.createElement("img", {
+                                        key: index,
+                                        src: img,
+                                        alt: `${item.name} - Immagine ${index + 2}`,
+                                        className: "w-24 h-24 object-cover rounded-md cursor-pointer hover:opacity-75 transition-opacity"
+                                    })
+                                )
+                            )
+                        ),
+                        // Colonna Dettagli
+                        React.createElement(
+                            "div",
+                            { className: "flex flex-col text-left" },
+                            React.createElement(
+                                "p",
+                                { className: "text-gray-500 uppercase text-sm mb-1" },
+                                item.brand || item.publisher
+                            ),
+                            React.createElement(
+                                "h2",
+                                { className: "text-3xl font-bold uppercase mb-4" },
+                                item.name
+                            ),
+                            React.createElement(
+                                "p",
+                                { className: "text-lg font-bold mb-4" },
+                                isProduct ? `€${item.price.toFixed(2)}` : `Anno: ${item.year}`
+                            ),
+                            React.createElement(
+                                "p",
+                                { className: "text-gray-500 mb-6 leading-relaxed" },
+                                item.description
+                            ),
+
+                            React.createElement(
+                                "div",
+                                { className: "grid grid-cols-2 gap-4 text-sm mb-6" },
+                                item.year && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Anno: "),
+                                    React.createElement("span", null, item.year)
+                                ),
+                                item.category && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Categoria: "),
+                                    React.createElement("span", null, capitalizeFirstLetter(item.category))
+                                ),
+                                item.color && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Colore: "),
+                                    React.createElement("span", null, capitalizeFirstLetter(item.color))
+                                ),
+                                item.size && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Taglia: "),
+                                    React.createElement("span", null, item.size.toUpperCase())
+                                ),
+                                item.condition && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Condizione: "),
+                                    React.createElement("span", null, capitalizeFirstLetter(item.condition))
+                                ),
+                                item.material && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Materiale: "),
+                                    React.createElement("span", null, capitalizeFirstLetter(item.material))
+                                ),
+                                item.author && React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement("span", { className: "font-bold" }, "Autore: "),
+                                    React.createElement("span", null, item.author)
+                                )
+                            ),
+
+                            isProduct ?
+                            React.createElement(
+                                "div",
+                                { className: "flex flex-col space-y-4" },
+                                React.createElement(
+                                    "button",
+                                    {
+                                        className: "bg-black text-white px-6 py-3 rounded-full font-bold uppercase text-sm transition-colors duration-300 ease-in-out hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2",
+                                        onClick: () => setShowPlatformsModal(true)
+                                    },
+                                    "Acquista su piattaforme"
+                                ),
+                                React.createElement(
+                                    "button",
+                                    {
+                                        className: "bg-transparent border border-black text-black px-6 py-3 rounded-full font-bold uppercase text-sm transition-colors duration-300 ease-in-out hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2",
+                                        onClick: () => navigateTo('contactForm', item)
+                                    },
+                                    "Richiedi questo prodotto"
+                                )
+                            )
+                            :
+                            React.createElement(
+                                "button",
+                                {
+                                    className: "bg-black text-white px-6 py-3 rounded-full font-bold uppercase text-sm transition-colors duration-300 ease-in-out hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2",
+                                    onClick: () => navigateTo('contactForm', item)
+                                },
+                                "Richiedi questo libro"
+                            )
+                        )
+                    ),
+                    showPlatformsModal && React.createElement(PlatformsModal, { onClose: () => setShowPlatformsModal(false), purchaseLinks: item.purchaseLinks })
+                ),
+                React.createElement(InternalFooter, { navigateTo: navigateTo })
+            );
+        };
+
+        // Home Page
+        const HomePage = ({ navigateTo }) => {
+            const { ArrowRight } = window.lucideReact;
+
+            return React.createElement(
+                "div",
+                { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                React.createElement(
+                    "header",
+                    { className: "relative h-screen flex flex-col justify-center items-center text-white p-4" },
+                    React.createElement("img", {
+                        src: getPlaceholderImageUrl(1920, 1080, 'Fashion+Archive', '1f2937', 'ffffff'),
+                        alt: "Hero Background",
+                        className: "absolute inset-0 w-full h-full object-cover z-0 filter brightness-75"
+                    }),
+                    React.createElement(
+                        "div",
+                        { className: "relative z-10 text-center flex flex-col items-center" },
+                        React.createElement(
+                            "h1",
+                            { className: "text-5xl md:text-7xl font-bitcount-single uppercase mb-4 drop-shadow-lg" },
+                            "gdarchivio"
+                        ),
+                        React.createElement(
+                            "p",
+                            { className: "text-lg md:text-xl uppercase max-w-2xl mx-auto mb-8 tracking-wide drop-shadow-md" },
+                            "curated fashion archive. authentic pieces from the world's most iconic maisons."
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4" },
+                            React.createElement(
+                                "button",
+                                {
+                                    className: "bg-white text-black px-8 py-4 rounded-full font-bold uppercase text-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2",
+                                    onClick: () => navigateTo('collection')
+                                },
+                                "Shop Collection",
+                                React.createElement(ArrowRight, { size: 20, className: "ml-2" })
+                            ),
+                            React.createElement(
+                                "button",
+                                {
+                                    className: "bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold uppercase text-lg flex items-center justify-center transition-all duration-300 ease-in-out hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2",
+                                    onClick: () => navigateTo('archive')
+                                },
+                                "Explore Archive",
+                                React.createElement(ArrowRight, { size: 20, className: "ml-2" })
+                            )
+                        )
+                    )
+                ),
+                React.createElement(
+                    "footer",
+                    { className: "bg-black text-white py-8 text-center" },
+                    React.createElement(
+                        "p",
+                        { className: "font-martian-mono text-sm uppercase text-gray-500" },
+                        "© 2025 GDARCHIVIO. ALL RIGHTS RESERVED."
+                    )
+                )
+            );
+        };
+
+        // Collection Page
+        const CollectionPage = ({ navigateTo }) => {
+            return React.createElement(
+                "div",
+                { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                React.createElement(Navbar, { navigateTo: navigateTo }),
+                React.createElement(
+                    "main",
+                    { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
+                    React.createElement(
+                        "h2",
+                        { className: "text-4xl font-bitcount-single uppercase mb-4" },
+                        "Collection"
+                    ),
+                    React.createElement(
+                        "p",
+                        { className: "text-lg text-gray-500 mb-8 text-center max-w-2xl" },
+                        "Esplora la nostra selezione esclusiva di capi e accessori di design, disponibili per l'acquisto e pronti ad arricchire il tuo guardaroba con stile senza tempo."
+                    ),
+                    mockCollectionProducts.length > 0 ?
+                        React.createElement(ProductGrid, { items: mockCollectionProducts, navigateTo: navigateTo }) :
+                        React.createElement(
+                            "p",
+                            { className: "text-center text-xl text-gray-500 mt-12" },
+                            "Nessun articolo trovato."
+                        )
+                ),
+                React.createElement(InternalFooter, { navigateTo: navigateTo })
+            );
+        };
+
+        // Archive Page
+        const ArchivePage = ({ navigateTo }) => {
+            return React.createElement(
+                "div",
+                { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                React.createElement(Navbar, { navigateTo: navigateTo }),
+                React.createElement(
+                    "main",
+                    { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
+                    React.createElement(
+                        "h2",
+                        { className: "text-4xl font-bitcount-single uppercase mb-4" },
+                        "Archive"
+                    ),
+                    React.createElement(
+                        "p",
+                        { className: "text-lg text-gray-500 mb-8 text-center max-w-2xl" },
+                        "Immergiti nella storia della moda con il nostro archivio digitale, una collezione di pezzi iconici che hanno segnato epoche e stili. Questi articoli sono presentati a scopo espositivo e di ricerca."
+                    ),
+                    mockArchiveProducts.length > 0 ?
+                        React.createElement(ProductGrid, { items: mockArchiveProducts, navigateTo: navigateTo }) :
+                        React.createElement(
+                            "p",
+                            { className: "text-center text-xl text-gray-500 mt-12" },
+                            "Nessun articolo trovato."
+                        )
+                ),
+                React.createElement(InternalFooter, { navigateTo: navigateTo })
+            );
+        };
+
+        // Library Page
+        const LibraryPage = ({ navigateTo }) => {
+            return React.createElement(
+                "div",
+                { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                React.createElement(Navbar, { navigateTo: navigateTo }),
+                React.createElement(
+                    "main",
+                    { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
+                    React.createElement(
+                        "h2",
+                        { className: "text-4xl font-bitcount-single uppercase mb-4" },
+                        "Library"
+                    ),
+                    React.createElement(
+                        "p",
+                        { className: "text-lg text-gray-500 mb-8 text-center max-w-2xl" },
+                        "La nostra biblioteca digitale offre una vasta gamma di risorse, tra cui libri, riviste e articoli, per approfondire la tua conoscenza della storia e delle tendenze della moda."
+                    ),
+                    mockLibraryItems.length > 0 ?
+                        React.createElement(ProductGrid, { items: mockLibraryItems, navigateTo: navigateTo }) :
+                        React.createElement(
+                            "p",
+                            { className: "text-center text-xl text-gray-500 mt-12" },
+                            "Nessun articolo trovato."
+                        )
+                ),
+                React.createElement(InternalFooter, { navigateTo: navigateTo })
+            );
+        };
+
+        // Contact Page
+        const ContactPage = ({ navigateTo }) => {
+            const [showContactModal, setShowContactModal] = React.useState(false);
+            const { Mail, MapPin } = window.lucideReact;
+
+            return React.createElement(
+                "div",
+                { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                React.createElement(Navbar, { navigateTo: navigateTo }),
+                React.createElement(
+                    "main",
+                    { className: "flex-grow container mx-auto px-4 py-16 flex flex-col items-center max-w-3xl" },
+                    React.createElement(
+                        "h2",
+                        { className: "text-4xl font-bitcount-single uppercase mb-4 text-center" },
+                        "Contact Us"
+                    ),
+                    React.createElement(
+                        "p",
+                        { className: "text-lg text-gray-500 mb-12 text-center" },
+                        "Siamo a tua disposizione per qualsiasi domanda, richiesta di informazioni sui nostri capi, proposte di collaborazione o per assistenza con le tue ricerche."
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "w-full bg-gray-50 p-8 rounded-lg shadow-sm flex flex-col items-center text-center space-y-8" },
+                        React.createElement(
+                            "div",
+                            { className: "flex items-center space-x-4" },
+                            React.createElement(Mail, { size: 24, className: "text-gray-600" }),
+                            React.createElement(
+                                "a",
+                                { href: "mailto:info@gdarchivio.com", className: "text-black text-lg hover:underline" },
+                                "info@gdarchivio.com"
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "flex items-center space-x-4" },
+                            React.createElement(MapPin, { size: 24, className: "text-gray-600" }),
+                            React.createElement(
+                                "p",
+                                { className: "text-black text-lg" },
+                                "Prato, Toscana, Italia"
+                            )
+                        ),
+                        React.createElement(
+                            "button",
+                            {
+                                className: "bg-black text-white px-8 py-4 rounded-full font-bold uppercase text-lg transition-colors duration-300 ease-in-out hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2",
+                                onClick: () => setShowContactModal(true)
+                            },
+                            "Compila il modulo di contatto"
+                        )
+                    ),
+                    showContactModal && React.createElement(ContactFormModal, { onClose: () => setShowContactModal(false) })
+                ),
+                React.createElement(InternalFooter, { navigateTo: navigateTo })
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            const [selectedItem, setSelectedItem] = React.useState(null);
+            const [currentPage, setCurrentPage] = React.useState('home');
+
+            const navigateTo = (page, item = null) => {
+                setCurrentPage(page);
+                setSelectedItem(item);
+                window.scrollTo(0, 0);
+            };
+
+            // Switch per renderizzare la pagina corretta
+            switch (currentPage) {
+                case 'home':
+                    return React.createElement(HomePage, { navigateTo: navigateTo });
+                case 'collection':
+                    return React.createElement(CollectionPage, { navigateTo: navigateTo });
+                case 'archive':
+                    return React.createElement(ArchivePage, { navigateTo: navigateTo });
+                case 'library':
+                    return React.createElement(LibraryPage, { navigateTo: navigateTo });
+                case 'contact':
+                    return React.createElement(ContactPage, { navigateTo: navigateTo });
+                case 'productDetail':
+                case 'bookDetail':
+                    return React.createElement(DetailPage, { item: selectedItem, navigateTo: navigateTo });
+                case 'contactForm':
+                    return React.createElement(
+                        "div",
+                        { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+                        React.createElement(Navbar, { navigateTo: navigateTo }),
+                        React.createElement(
+                            "main",
+                            { className: "flex-grow container mx-auto px-4 py-16 flex flex-col items-center max-w-3xl" },
+                            React.createElement(ContactFormModal, { 
+                                onClose: () => navigateTo(selectedItem ? (selectedItem.type === 'book' ? 'library' : 'collection') : 'contact'), 
+                                title: selectedItem ? `RICHIESTA PER: ${selectedItem.name}` : "INVIA UN MESSAGGIO" 
+                            })
+                        ),
+                        React.createElement(InternalFooter, { navigateTo: navigateTo })
+                    );
+                default:
+                    return React.createElement(HomePage, { navigateTo: navigateTo });
+            }
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
 </body>
 </html>
