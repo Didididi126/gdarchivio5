@@ -16,7 +16,6 @@ if (rootElement && !rootElement._reactRootContainer) {
 }
 
 // Funzione di utilità per generare URL di placeholder.
-// Questa funzione è già presente, la riutilizziamo per tutte le immagini.
 const getPlaceholderImageUrl = (width, height, text, bgColor = 'e0e0e0', textColor = 'ffffff') => {
   return `https://placehold.co/${width}x${height}/${bgColor}/${textColor}?text=${encodeURIComponent(text)}`;
 };
@@ -2004,7 +2003,7 @@ const InternalFooter = ({ navigateTo }) => {
     React.createElement(
       "p",
       { className: "font-martian-mono text-xs uppercase text-cold-gray text-center" },
-      "© 2025 GDARCHIVIO. ALL RIGHTS RESERVED"
+      "© 2025 GDARCHIVIO. ALL RIGHTS RESERVED."
     )
   );
 };
@@ -2670,6 +2669,7 @@ const ContactPage = ({ navigateTo }) => {
 // Componente principale dell'applicazione React (App)
 const App = () => {
   const { useState, useEffect } = React;
+  console.log("DEBUG: Componente App avviato per il rendering."); // Nuovo log
 
   // Stati per la gestione di Firebase.
   const [db, setDb] = useState(null);
