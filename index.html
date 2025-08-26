@@ -8,10 +8,14 @@
     <!-- 1. Base HREF: Indispensabile per GitHub Pages, definisce la radice del tuo sito. -->
     <base href="/gdarchivio5/">
 
-    <!-- 2. Tailwind CSS CDN: Carica il framework Tailwind per lo styling. -->
+    <!-- 2. Favicon: Utilizziamo un placeholder per assicurarci che l'errore 404 scompaia. -->
+    <!-- Puoi sostituirlo con un tuo favicon.ico o favicon.png nella root del repo in futuro. -->
+    <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
+
+    <!-- 3. Tailwind CSS CDN: Carica il framework Tailwind per lo styling. -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 3. Configurazione Tailwind (inline): Deve venire DOPO il caricamento di Tailwind CDN. -->
+    <!-- 4. Configurazione Tailwind (inline): Deve venire DOPO il caricamento di Tailwind CDN. -->
     <script>
       tailwind.config = {
         theme: {
@@ -29,42 +33,53 @@
       }
     </script>
 
-    <!-- 4. Il tuo CSS personalizzato (main.css): Caricato dopo Tailwind per permettere override. -->
+    <!-- 5. Il tuo CSS personalizzato (main.css): Caricato dopo Tailwind per permettere override. -->
     <link rel="stylesheet" href="main.css">
 
-    <!-- 5. React e ReactDOM CDN: Devono essere caricati PRIMA del tuo codice React (`bundle.js`). -->
+    <!-- 6. React e ReactDOM CDN: Devono essere caricati PRIMA del tuo codice React (`bundle.js`). -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-    <!-- 6. Lucide React (icone) CDN: Deve essere caricato PRIMA del tuo codice che lo usa. -->
+    <!-- 7. Lucide React (icone) CDN: Deve essere caricato PRIMA del tuo codice che lo usa. -->
     <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
 
-    <!-- 7. Firebase compat SDK CDN: Devono essere caricati PRIMA del tuo codice che inizializza Firebase. -->
+    <!-- 8. Firebase compat SDK CDN: Devono essere caricati PRIMA del tuo codice che inizializza Firebase. -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
 
-    <!-- 8. Configurazione Firebase (inline): Questa è la tua NUOVA configurazione ESATTA. -->
+    <!-- 9. Configurazione Firebase (inline): QUESTA È LA TUA CONFIGURAZIONE ESATTA E CORRETTA DEL NUOVO PROGETTO. -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
             authDomain: "gdarchivio-nuovo.firebaseapp.com",
             projectId: "gdarchivio-nuovo",
-            storageBucket: "gdarchivio-nuovo.firebasestorage.app",
-            messagingSenderId: "979928746511",
+            storageBucket: "gdarchivio-nuovo.firebasestorage.app", 
+            messagingSenderId: "979928746511", 
             appId: "1:979928746511:web:09747140bcd19a57d2317a",
             measurementId: "G-MED21QE0XH"
         };
         // Rendiamo la configurazione disponibile globalmente
         window.firebaseConfig = firebaseConfig;
+        console.log("DEBUG: Firebase config caricata ✅", firebaseConfig);
     </script>
-
 </head>
 <body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-    <div id="root"></div>
-    <!-- 9. Il tuo bundle.js: Carica il tuo codice JavaScript principale alla fine del body. -->
-    <!-- Questo assicura che il DOM e tutte le librerie siano disponibili prima che il tuo script venga eseguito. -->
+    
+    <!-- Punto di mount di React (con fallback visibile se React non si avvia) -->
+    <div id="root">
+        <p style="font-family: sans-serif; color: gray; text-align: center; margin-top: 2rem;">
+            Caricamento dell'applicazione in corso... Se vedi questo messaggio a lungo, potrebbe esserci un errore.
+        </p>
+    </div>
+    
+    <!-- Bundle React -->
     <script src="bundle.js"></script>
+
+    <!-- Debug: verifica che l'elemento root sia presente -->
+    <script>
+      console.log("DEBUG: Root element trovato?", document.getElementById("root"));
+    </script>
 </body>
 </html>
