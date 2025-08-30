@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio</title>
 
+    <base href="/gdarchivio5/">
+
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,13 +30,13 @@
 
     <link rel="stylesheet" href="main.css">
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
+    <script src="./js/react.js"></script>
+    <script src="./js/react-dom.js"></script>
     <script src="./js/lucide-react.js"></script>
+    <script src="./js/firebase-app-compat.js"></script>
+    <script src="./js/firebase-auth-compat.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="./bundle.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -59,7 +61,5 @@
             Caricamento dell'applicazione in corso... Se vedi questo messaggio a lungo, potrebbe esserci un errore.
         </p>
     </div>
-    
-    <script src="./bundle.js"></script>
 </body>
 </html>
