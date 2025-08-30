@@ -5,16 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio</title>
 
-    <!-- 1. Base HREF: Indispensabile per GitHub Pages, definisce la radice del tuo sito. -->
-    <base href="/gdarchivio5/">
-
-    <!-- 2. Favicon: Utilizziamo un placeholder per assicurarci che l'errore 404 scompaia. -->
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
 
-    <!-- 3. Tailwind CSS CDN: Carica il framework Tailwind per lo styling. -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 4. Configurazione Tailwind (inline): Deve venire DOPO il caricamento di Tailwind CDN. -->
     <script>
       tailwind.config = {
         theme: {
@@ -32,22 +26,16 @@
       }
     </script>
 
-    <!-- 5. Il tuo CSS personalizzato (main.css): Caricato dopo Tailwind per permettere override. -->
     <link rel="stylesheet" href="main.css">
 
-    <!-- 6. React e ReactDOM CDN: Devono essere caricati PRIMA del tuo codice React (`bundle.js`). -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-    <!-- 7. Lucide React (icone) CDN: Deve essere caricato PRIMA del tuo codice che lo usa. -->
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.production.min.js"></script>
+    <script src="./js/lucide-react.js"></script>
 
-    <!-- 8. Firebase compat SDK CDN: Devono essere caricati PRIMA del tuo codice che inizializza Firebase. -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
 
-    <!-- 9. Configurazione Firebase (inline): QUESTA È LA TUA CONFIGURAZIONE ESATTA E CORRETTA DEL NUOVO PROGETTO. -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
@@ -66,19 +54,12 @@
 <body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     
-    <!-- Punto di mount di React (con fallback visibile se React non si avvia) -->
     <div id="root">
         <p style="font-family: sans-serif; color: gray; text-align: center; margin-top: 2rem;">
             Caricamento dell'applicazione in corso... Se vedi questo messaggio a lungo, potrebbe esserci un errore.
         </p>
     </div>
     
-    <!-- Bundle React -->
-    <script src="bundle.js"></script>
-
-    <!-- Debug: verifica che l'elemento root sia presente -->
-    <script>
-      console.log("DEBUG: Root element trovato?", document.getElementById("root"));
-    </script>
+    <script src="./bundle.js"></script>
 </body>
 </html>
