@@ -10,31 +10,42 @@
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
     <link rel="stylesheet" href="main.css">
     
-    <!-- ===== LIBRERIE CARICATE IN HEAD PER GARANTIRE CHE SIANO PRONTE ===== -->
-    
-    <!-- 1. React deve essere il PRIMO in assoluto -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <!-- 2. ReactDOM dipende da React -->
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <!-- 3. Lucide dipende da React -->
-    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
-    <!-- 4. Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 5. Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-
-    <!-- Script di configurazione inline, eseguiti subito dopo le loro librerie -->
+    <!-- Configurazione di Tailwind (deve venire PRIMA della libreria Tailwind) -->
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: { 'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 'martian-mono': ['"Martian Mono"', 'monospace'] },
-            colors: { 'dark-gray': '#333333', 'cold-gray': '#888888' }
+            fontFamily: { 
+              'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
+              'martian-mono': ['"Martian Mono"', 'monospace'] 
+            },
+            colors: { 
+              'dark-gray': '#333333', 
+              'cold-gray': '#888888' 
+            }
           }
         }
       }
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Librerie caricate con 'defer' per garantire l'ordine di esecuzione corretto -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin defer></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin defer></script>
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js" defer></script>
+
+    <!-- Il tuo codice dell'applicazione (bundle) viene caricato per ultimo, ma sempre prima che la pagina sia visibile -->
+    <script src="js/bundle.js" defer></script>
+
+</head>
+<body>
+    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
+    
+    <div id="root"></div>
+
+    <!-- La configurazione di Firebase viene letta prima che il bundle parta -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
@@ -47,14 +58,5 @@
         };
         window.firebaseConfig = firebaseConfig;
     </script>
-</head>
-
-<body>
-    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-    
-    <div id="root"></div>
-
-    <!-- IL TUO CODICE VIENE ESEGUITO PER ULTIMO, QUANDO TUTTO È PRONTO -->
-    <script src="js/bundle.js"></script>
 </body>
 </html>
