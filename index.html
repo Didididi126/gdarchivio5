@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
     <link rel="stylesheet" href="main.css">
     
+    <!-- Carichiamo solo Tailwind nell'head perché è solo stile -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -18,9 +19,20 @@
     
     <div id="root"></div>
 
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
+    <!-- ===== TUTTI GLI SCRIPT ALLA FINE DEL BODY PER GARANTIRE L'ORDINE ===== -->
 
+    <!-- 1. Librerie Fondamentali: React deve essere il PRIMO in assoluto -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <!-- 2. Altre librerie esterne che dipendono da React -->
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
+    
+    <!-- 3. Librerie Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <!-- 4. Configurazione di Tailwind -->
     <script>
       tailwind.config = {
         theme: {
@@ -38,9 +50,7 @@
       }
     </script>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-
+    <!-- 5. Configurazione di Firebase -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
@@ -54,6 +64,7 @@
         window.firebaseConfig = firebaseConfig;
     </script>
     
+    <!-- 6. IL TUO CODICE DEVE ESSERE L'ULTIMO SCRIPT A ESSERE CARICATO -->
     <script src="js/bundle.js"></script>
 
 </body>
