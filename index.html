@@ -8,7 +8,10 @@
     <base href="/gdarchivio5/">
 
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
-
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
@@ -30,13 +33,8 @@
 
     <link rel="stylesheet" href="main.css">
 
-    <script src="./js/react.js"></script>
-    <script src="./js/react-dom.js"></script>
-    <script src="./js/lucide-react.js"></script>
     <script src="./js/firebase-app-compat.js"></script>
     <script src="./js/firebase-auth-compat.js"></script>
-
-    <script src="./bundle.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -48,18 +46,20 @@
             appId: "1:979928746511:web:09747140bcd19a57d2317a",
             measurementId: "G-MED21QE0XH"
         };
-        // Rendiamo la configurazione disponibile globalmente
         window.firebaseConfig = firebaseConfig;
         console.log("DEBUG: Firebase config caricata ✅", firebaseConfig);
     </script>
+    
 </head>
 <body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     
     <div id="root">
         <p style="font-family: sans-serif; color: gray; text-align: center; margin-top: 2rem;">
-            Caricamento dell'applicazione in corso... Se vedi questo messaggio a lungo, potrebbe esserci un errore.
+            Caricamento dell'applicazione in corso...
         </p>
     </div>
+
+    <script src="./bundle.js"></script>
 </body>
 </html>
