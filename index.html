@@ -9,11 +9,14 @@
 
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
     
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin defer></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin defer></script>
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js" defer></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
     
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js" defer></script>
+
     <script>
       tailwind.config = {
         theme: {
@@ -32,9 +35,6 @@
     </script>
 
     <link rel="stylesheet" href="main.css">
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -59,6 +59,6 @@
         </p>
     </div>
 
-    <script src="js/bundle.js"></script>
+    <script src="js/bundle.js" defer></script>
 </body>
 </html>
