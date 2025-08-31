@@ -9,24 +9,17 @@
 
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
     <link rel="stylesheet" href="main.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     
-    <div id="root">
-        <p style="font-family: sans-serif; color: gray; text-align: center; margin-top: 2rem;">
-            Caricamento dell'applicazione in corso...
-        </p>
-    </div>
+    <div id="root"></div>
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
+      // Configurazione di Tailwind
       tailwind.config = {
         theme: {
           extend: {
@@ -42,10 +35,11 @@
         }
       }
     </script>
-
+    
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-
+    
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
