@@ -21,41 +21,54 @@
         <!-- Il tuo componente React verrà renderizzato qui -->
     </div>
 
-    <!-- ===== SEZIONE SCRIPT ===== -->
+    <!-- ===== SEZIONE SCRIPT: Caricati alla fine e in ordine garantito ===== -->
 
-    <!-- 1. Configurazioni (DEVONO essere prima del bundle.js) -->
+    <!-- 1. ReactDOM: Dipende da React (che è già nel tuo bundle). Deve venire prima delle altre librerie che lo usano. -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <!-- 2. Altre librerie che usano React (es. Lucide) -->
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
+    
+    <!-- 3. Configurazione di Tailwind -->
     <script>
-      // Configurazione di Tailwind
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
-              'martian-mono': ['"Martian Mono"', 'monospace'],
-            },
-            colors: {
-              'dark-gray': '#333333',
-              'cold-gray': '#888888',
+      // Questa configurazione viene eseguita dopo che lo script di Tailwind è stato caricato
+      if (typeof tailwind !== 'undefined') {
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
+                'martian-mono': ['"Martian Mono"', 'monospace'],
+              },
+              colors: {
+                'dark-gray': '#333333',
+                'cold-gray': '#888888',
+              }
             }
           }
-        }
+        };
       }
+    </script>
 
-      // Configurazione di Firebase
-      // Viene messa qui così il tuo bundle.js può trovarla su window.firebaseConfig
-      const firebaseConfig = {
-          apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
-          authDomain: "gdarchivio-nuovo.firebaseapp.com",
-          projectId: "gdarchivio-nuovo",
-          storageBucket: "gdarchivio-nuovo.firebasestorage.app", 
-          messagingSenderId: "979928746511", 
-          appId: "1:979928746511:web:09747140bcd19a57d2317a",
-          measurementId: "G-MED21QE0XH"
-      };
-      window.firebaseConfig = firebaseConfig;
+    <!-- 4. Librerie Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <!-- 5. Configurazione di Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
+            authDomain: "gdarchivio-nuovo.firebaseapp.com",
+            projectId: "gdarchivio-nuovo",
+            storageBucket: "gdarchivio-nuovo.firebasestorage.app", 
+            messagingSenderId: "979928746511", 
+            appId: "1:979928746511:web:09747140bcd19a57d2317a",
+            measurementId: "G-MED21QE0XH"
+        };
+        window.firebaseConfig = firebaseConfig;
     </script>
     
-    <!-- 2. IL TUO BUNDLE.JS: Questo file ora contiene tutto (React, ReactDOM, Firebase, Lucide) -->
+    <!-- 6. IL TUO CODICE (bundle.js) deve essere l'ULTIMO script a essere caricato -->
     <script src="js/bundle.js"></script>
 
 </body>
