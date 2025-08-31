@@ -10,24 +10,23 @@
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
     <link rel="stylesheet" href="main.css">
     
-    <!-- Carichiamo solo Tailwind, che è puramente stilistico -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <!-- SCRIPT SPOSTATI NELL'HEAD PER GARANTIRE IL CARICAMENTO IN ORDINE -->
 
-<body>
-    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-    
-    <div id="root"></div>
-
-    <!-- ===== SCRIPT SPOSTATI ALLA FINE DEL BODY ===== -->
-
-    <!-- 1. Librerie ESTERNE che il tuo bundle si aspetta di trovare -->
+    <!-- 1. Librerie Fondamentali (React deve essere il primo) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
+
+    <!-- 2. Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 3. Librerie Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    
-    <!-- 2. Le tue configurazioni -->
+
+    <!-- 4. Le tue configurazioni (eseguite dopo che le librerie sono state caricate) -->
     <script>
+      // Configurazione di Tailwind
       tailwind.config = {
         theme: {
           extend: {
@@ -42,22 +41,27 @@
           }
         }
       }
-    </script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
-            authDomain: "gdarchivio-nuovo.firebaseapp.com",
-            projectId: "gdarchivio-nuovo",
-            storageBucket: "gdarchivio-nuovo.firebasestorage.app", 
-            messagingSenderId: "979928746511", 
-            appId: "1:979928746511:web:09747140bcd19a57d2317a",
-            measurementId: "G-MED21QE0XH"
-        };
-        window.firebaseConfig = firebaseConfig;
-    </script>
-    
-    <!-- 3. IL TUO CODICE PER ULTIMO, che contiene già React e ReactDOM -->
-    <script src="js/bundle.js"></script>
 
+      // Configurazione di Firebase
+      const firebaseConfig = {
+          apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U",
+          authDomain: "gdarchivio-nuovo.firebaseapp.com",
+          projectId: "gdarchivio-nuovo",
+          storageBucket: "gdarchivio-nuovo.firebasestorage.app", 
+          messagingSenderId: "979928746511", 
+          appId: "1:979928746511:web:09747140bcd19a57d2317a",
+          measurementId: "G-MED21QE0XH"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
+</head>
+
+<body>
+    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
+    
+    <div id="root"></div>
+
+    <!-- Il tuo codice viene eseguito per ultimo, quando la pagina è pronta -->
+    <script src="js/bundle.js"></script>
 </body>
 </html>
