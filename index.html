@@ -23,16 +23,16 @@
 
     <!-- ===== SEZIONE SCRIPT CORRETTA ===== -->
 
-    <!-- 1. React e ReactDOM caricati dai tuoi file locali. -->
-    <script src="react.development.js"></script>
-    <script src="react-dom.development.js"></script>
+    <!-- 1. React e ReactDOM caricati dai tuoi file locali, con il percorso corretto. -->
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
     
     <!-- 2. Il caricamento di 'lucide-react.js' è stato rimosso per evitare l'errore. -->
     
-    <!-- 3. Firebase SDKs (compat) come nel tuo file originale, con l'aggiunta di firestore. -->
-    <script src="firebase-app-compat.js"></script>
-    <script src="firebase-auth-compat.js"></script>
-    <script src="firebase-firestore-compat.js"></script>
+    <!-- 3. Firebase SDKs (compat) come nel tuo file originale, con l'aggiunta di firestore e con i percorsi corretti. -->
+    <script src="js/firebase-app-compat.js"></script>
+    <script src="js/firebase-auth-compat.js"></script>
+    <script src="js/firebase-firestore-compat.js"></script>
     
     <!-- 4. Le tue configurazioni. -->
     <script>
@@ -67,8 +67,8 @@
       window.firebaseConfig = firebaseConfig;
     </script>
     
-    <!-- 5. Il tuo bundle.js corretto viene caricato per ultimo. -->
-    <script src="bundle.js"></script>
+    <!-- 5. Il tuo bundle.js corretto viene caricato per ultimo, con il percorso corretto. -->
+    <script src="js/bundle.js"></script>
 
 </body>
 </html>
