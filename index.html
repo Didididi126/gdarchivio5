@@ -3,100 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React CDN Esempio Funzionante</title>
+    <title>gdarchivio</title>
+
+    <base href="/gdarchivio5/">
+
+    <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
+    <link rel="stylesheet" href="main.css">
     
     <!-- Tailwind CSS per lo stile -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!--
-      ORDINE DEGLI SCRIPT:
-      1. React: La libreria principale.
-      2. ReactDOM: Per interagire con il DOM (ha bisogno di React).
-      3. Babel: Per tradurre il codice JSX direttamente nel browser. Essenziale per scrivere React senza un processo di build.
-    -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
 </head>
-<body class="bg-gray-100">
+
+<body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     
     <div id="root">
         <!-- L'applicazione React verrà renderizzata qui -->
     </div>
 
-    <!-- 
-      TUTTO IL CODICE REACT VIENE INSERITO QUI
-      - `type="text/babel"` dice al browser di usare Babel (caricato prima) per interpretare questo blocco.
-      - Non c'è più un `bundle.js` separato; tutto è in questo file per semplicità.
-    -->
-    <script type="text/babel">
-      
-      // Il componente per l'icona di spunta (SVG in linea)
-      // Questa è l'alternativa a lucide-react: è più stabile in un ambiente CDN
-      // e non richiede dipendenze esterne.
-      const CheckCircleIcon = ({ size = 24, className = '' }) => {
-        return (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={size}
-            height={size}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={className}
-          >
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-            <polyline points="22 4 12 14.01 9 11.01" />
-          </svg>
-        );
+    <!-- ===== SEZIONE SCRIPT CORRETTA ===== -->
+
+    <!-- 1. React e ReactDOM caricati dai tuoi file locali. -->
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    
+    <!-- 2. Il caricamento di 'lucide-react.js' è stato rimosso per evitare l'errore. -->
+    
+    <!-- 3. Firebase SDKs (compat) come nel tuo file originale, con l'aggiunta di firestore. -->
+    <script src="firebase-app-compat.js"></script>
+    <script src="firebase-auth-compat.js"></script>
+    <script src="firebase-firestore-compat.js"></script>
+    
+    <!-- 4. Le tue configurazioni. -->
+    <script>
+      // Configurazione di Tailwind
+      if (typeof tailwind !== 'undefined') {
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
+                'martian-mono': ['"Martian Mono"', 'monospace'],
+              },
+              colors: {
+                'dark-gray': '#333333',
+                'cold-gray': '#888888',
+              }
+            }
+          }
+        };
+      }
+      // Configurazione di Firebase
+      const firebaseConfig = {
+          apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U", // Ricordati di usare la tua chiave API reale
+          authDomain: "gdarchivio-nuovo.firebaseapp.com",
+          projectId: "gdarchivio-nuovo",
+          storageBucket: "gdarchivio-nuovo.appspot.com",
+          messagingSenderId: "979928746511", 
+          appId: "1:979928746511:web:09747140bcd19a57d2317a",
+          measurementId: "G-MED21QE0XH"
       };
-
-      // Il componente principale della nostra App minimale
-      const App = () => {
-        const [count, setCount] = React.useState(0);
-
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center p-4">
-            <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
-              
-              <div className="flex items-center justify-center mb-4 text-green-500">
-                <CheckCircleIcon size={48} />
-              </div>
-
-              <h1 className="text-2xl font-bold text-gray-800 mb-2">React & CDN</h1>
-              <p className="text-gray-600 mb-6">
-                Questo è un componente React funzionante, caricato interamente tramite CDN, senza errori!
-              </p>
-
-              <div className="bg-gray-100 p-4 rounded-md">
-                 <p className="text-lg font-semibold text-gray-800">Contatore: {count}</p>
-                 <button 
-                    onClick={() => setCount(count + 1)}
-                    className="mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-colors duration-300"
-                 >
-                    Incrementa
-                 </button>
-              </div>
-
-               <p className="text-xs text-gray-400 mt-6">
-                L'errore `forwardRef` è stato risolto rimuovendo la libreria `lucide-react` non compatibile con UMD e usando un'icona SVG in linea.
-              </p>
-            </div>
-          </div>
-        );
-      };
-
-      // Logica di rendering: trova l'elemento #root e monta il componente App
-      const container = document.getElementById('root');
-      const root = ReactDOM.createRoot(container);
-      root.render(<App />);
-
+      // Rende la configurazione disponibile globalmente per il bundle.js
+      window.firebaseConfig = firebaseConfig;
     </script>
+    
+    <!-- 5. Il tuo bundle.js corretto viene caricato per ultimo. -->
+    <script src="bundle.js"></script>
 
 </body>
 </html>
