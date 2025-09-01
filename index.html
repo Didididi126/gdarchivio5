@@ -21,20 +21,18 @@
         <!-- L'applicazione React verrà renderizzata qui -->
     </div>
 
-    <!-- ===== SEZIONE SCRIPT CORRETTA ===== -->
+    <!-- ===== SEZIONE SCRIPT CORRETTA E DEFINITIVA ===== -->
 
-    <!-- 1. React e ReactDOM caricati dai tuoi file locali, con il percorso corretto. -->
+    <!-- 1. React e ReactDOM -->
     <script src="js/react.development.js"></script>
     <script src="js/react-dom.development.js"></script>
     
-    <!-- 2. Il caricamento di 'lucide-react.js' è stato rimosso per evitare l'errore. -->
-    
-    <!-- 3. Firebase SDKs (compat) come nel tuo file originale, con l'aggiunta di firestore e con i percorsi corretti. -->
+    <!-- 2. Firebase SDKs nell'ORDINE CORRETTO: 'app' deve essere il primo. -->
     <script src="js/firebase-app-compat.js"></script>
     <script src="js/firebase-auth-compat.js"></script>
     <script src="js/firebase-firestore-compat.js"></script>
     
-    <!-- 4. Le tue configurazioni. -->
+    <!-- 3. Le tue configurazioni -->
     <script>
       // Configurazione di Tailwind
       if (typeof tailwind !== 'undefined') {
@@ -63,11 +61,10 @@
           appId: "1:979928746511:web:09747140bcd19a57d2317a",
           measurementId: "G-MED21QE0XH"
       };
-      // Rende la configurazione disponibile globalmente per il bundle.js
       window.firebaseConfig = firebaseConfig;
     </script>
     
-    <!-- 5. Il tuo bundle.js corretto viene caricato per ultimo, con il percorso corretto. -->
+    <!-- 4. Il tuo bundle.js corretto, caricato per ultimo. -->
     <script src="js/bundle.js"></script>
 
 </body>
