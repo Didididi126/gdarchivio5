@@ -1,20 +1,19 @@
 // React e ReactDOM sono assunti essere disponibili come variabili globali,
 // tipicamente caricati tramite script tag nel file index.html prima di bundle.js.
 // Firebase è assunto essere disponibile globalmente.
-// Lucide React NON è più caricato globalmente per evitare l'errore.
+// Lucide React è ora caricato globalmente tramite CDN.
 
 // ===================== CORREZIONE ANTI-CRASH PER LE ICONE =====================
 // Questa funzione intercetta le chiamate alle icone. Se la libreria lucide-react
-// NON è disponibile (come nel nostro caso, perché causava errori),
-// viene mostrata un'icona di fallback senza far crashare l'intera applicazione.
+// NON è disponibile, viene mostrata un'icona di fallback senza far crashare l'intera applicazione.
 // Il resto del tuo codice rimane INVARIATO.
 
 const IconWrapper = (iconName) => {
     return (props) => {
-        // Controlla se la libreria Lucide è stata caricata correttamente sulla finestra.
-        if (window.lucideReact && window.lucideReact[iconName]) {
+        // CORREZIONE: Controlla window.LucideReact (con "L" maiuscola).
+        if (window.LucideReact && window.LucideReact[iconName]) {
             // Se esiste, usa l'icona originale.
-            return React.createElement(window.lucideReact[iconName], props);
+            return React.createElement(window.LucideReact[iconName], props);
         }
         
         // Se non esiste, mostra un fallback e avvisa in console.
@@ -1692,6 +1691,32 @@ const mockLibraryItems = [
   }
 ];
 
+// ========== CORREZIONE: Aggiunto componente HomePage mancante ==========
+const HomePage = ({ navigateTo }) => {
+  const featuredArchive = mockArchiveProducts.filter(p => p.featured).slice(0, 4);
+  const featuredCollection = mockCollectionProducts.filter(p => p.featured).slice(0, 4);
+  
+  return React.createElement(
+    "div",
+    { className: "flex flex-col min-h-screen bg-white text-black font-martian-mono" },
+    React.createElement(Navbar, { navigateTo: navigateTo }),
+    React.createElement(
+      "main",
+      { className: "flex-grow container mx-auto px-4 py-8 flex flex-col items-center" },
+      React.createElement("h2", { className: "text-4xl font-bitcount-single uppercase mb-4" }, "In Evidenza"),
+      React.createElement("p", { className: "text-lg text-cold-gray mb-8 text-center max-w-2xl" }, "Una selezione dei nostri migliori articoli dall'archivio e dalla collezione attuale."),
+      
+      React.createElement("h3", { className: "text-2xl font-bitcount-single uppercase mt-12 mb-4" }, "Dall'Archivio"),
+      React.createElement(ProductGrid, { items: featuredArchive, navigateTo: navigateTo, type: 'archive' }),
+      
+      React.createElement("h3", { className: "text-2xl font-bitcount-single uppercase mt-12 mb-4" }, "Dalla Collezione"),
+      React.createElement(ProductGrid, { items: featuredCollection, navigateTo: navigateTo, type: 'product' })
+    ),
+    React.createElement(InternalFooter, { navigateTo: navigateTo })
+  );
+};
+// =======================================================================
+
 // Segregazione dei prodotti in Collezione e Archivio
 const mockCollectionProducts = mockProducts.filter(p => p.type === 'product');
 const mockArchiveProducts = mockProducts.filter(p => p.type === 'archive');
@@ -2755,4 +2780,3 @@ if (document.readyState === 'loading') {
 } else {
   renderApp(); // Se il DOM è già pronto, renderizza immediatamente.
 }
-

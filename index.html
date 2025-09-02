@@ -4,37 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio</title>
-
     <base href="/gdarchivio5/">
-
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000/fff/png?text=GD" />
     <link rel="stylesheet" href="main.css">
-    
-    <!-- Tailwind CSS per lo stile -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
-<!-- MODIFICA: Rimosse le classi di layout che causavano il conflitto. Mantenuto solo lo sfondo. -->
-<body class="bg-gray-100">
+<body>
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
-    
-    <!-- MODIFICA: Rimosse le classi dal div root. L'app React gestirà il proprio stile. -->
-    <div id="root">
-        <!-- L'applicazione React verrà renderizzata qui -->
-    </div>
+    <div id="root"></div>
 
-    <!-- ===== SEZIONE SCRIPT CON CDN UFFICIALI E AFFIDABILI ===== -->
-
-    <!-- 1. React e ReactDOM da CDN ufficiali -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     
-    <!-- 2. Firebase SDKs da CDN ufficiale, in ordine corretto -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <script src="https://unpkg.com/lucide-react@0.395.0/dist/umd/lucide-react.js"></script>
     
-    <!-- 3. Le tue configurazioni -->
     <script>
       // Configurazione di Tailwind
       if (typeof tailwind !== 'undefined') {
@@ -45,17 +32,14 @@
                 'bitcount-single': ['"Bitcount Single"', 'sans-serif'], 
                 'martian-mono': ['"Martian Mono"', 'monospace'],
               },
-              colors: {
-                'dark-gray': '#333333',
-                'cold-gray': '#888888',
-              }
+              colors: { 'dark-gray': '#333333', 'cold-gray': '#888888' }
             }
           }
         };
       }
       // Configurazione di Firebase
-      const firebaseConfig = {
-          apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U", // USA LA TUA VERA CHIAVE API
+      window.firebaseConfig = {
+          apiKey: "AIzaSyDG6vUwFRB6n8UyK36OWYEeT9sBdQHiz2U", // CHIAVE API CORRETTA
           authDomain: "gdarchivio-nuovo.firebaseapp.com",
           projectId: "gdarchivio-nuovo",
           storageBucket: "gdarchivio-nuovo.appspot.com",
@@ -63,11 +47,8 @@
           appId: "1:979928746511:web:09747140bcd19a57d2317a",
           measurementId: "G-MED21QE0XH"
       };
-      window.firebaseConfig = firebaseConfig;
     </script>
     
-    <!-- 4. Il tuo bundle.js, caricato per ultimo dalla tua cartella 'js'. -->
     <script src="js/bundle.js"></script>
-
 </body>
 </html>
