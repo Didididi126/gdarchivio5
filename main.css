@@ -32,9 +32,12 @@ html, body {
   font-family: "Martian Mono", sans-serif;
   background-color: #fff;
   color: #000;
-  height: 100%;
 }
 
+/* --- FIX --- */
+/* Imposta l'altezza minima di #root all'intera altezza dello schermo (viewport height) */
 #root {
-  height: 100%;
+  min-height: 100vh;
+  display: flex; /* Utile per layout che occupano tutto lo spazio verticale */
+  flex-direction: column; /* Utile per layout che occupano tutto lo spazio verticale */
 }
