@@ -14,12 +14,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<!-- MODIFICA: Aggiunte classi Tailwind per dare uno sfondo e centrare il contenuto -->
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<!-- MODIFICA: Rimosse le classi di layout che causavano il conflitto. Mantenuto solo lo sfondo. -->
+<body class="bg-gray-100">
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     
-    <!-- MODIFICA: Aggiunte classi per dare uno sfondo bianco al contenitore dell'app -->
-    <div id="root" class="w-full h-full bg-white">
+    <!-- MODIFICA: Rimosse le classi dal div root. L'app React gestirà il proprio stile. -->
+    <div id="root">
         <!-- L'applicazione React verrà renderizzata qui -->
     </div>
 
