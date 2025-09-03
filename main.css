@@ -35,8 +35,7 @@ html, body {
 }
 
 /* --- FIX --- */
-/* Imposta l'altezza minima di #root all'intera altezza dello schermo (viewport height) 
-   e assicurati che si comporti come un contenitore flex per layout a tutta pagina. */
+/* Imposta l'altezza minima di #root all'intera altezza dello schermo (viewport height) */
 #root {
   min-height: 100vh;
   display: flex;
