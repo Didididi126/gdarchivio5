@@ -1685,6 +1685,8 @@ const mockLibraryItems = [
   }
 ];
 
+// --- INIZIO DELLA SEZIONE CON TUTTO IL RESTO DEL TUO CODICE, NON ACCORCIATO ---
+
 // Segregazione dei prodotti in Collezione e Archivio
 const mockCollectionProducts = mockProducts.filter(p => p.type === 'product');
 const mockArchiveProducts = mockProducts.filter(p => p.type === 'archive');
@@ -2645,60 +2647,72 @@ const HomePage = ({ navigateTo }) => {
   );
 };
 
-// Componente principale dell'applicazione React (App) - CON LOGICA DI CARICAMENTO
+
+// --- INIZIO DELLE MODIFICHE IMPORTANTI ---
+
+// Componente principale dell'applicazione React (App)
 const App = () => {
   const { useState, useEffect } = React;
 
   // Stati per la gestione di Firebase.
+  const [db, setDb] = useState(null);
   const [auth, setAuth] = useState(null);
-  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [isAuthReady, setIsAuthReady] = useState(false); // Stato per tracciare se Firebase è pronto
 
   // Inizializza Firebase e gestisce l'autenticazione.
   useEffect(() => {
-    // Funzione di cleanup per l'observer di Firebase
-    let unsubscribe = () => {};
+    const initializeFirebase = async () => {
+      try {
+        const firebaseConfig = window.firebaseConfig;
+        console.log("DEBUG: Firebase Config caricata da window.firebaseConfig:", firebaseConfig);
 
-    try {
-      const firebaseConfig = window.firebaseConfig;
+        if (!firebaseConfig || !firebaseConfig.apiKey) {
+          console.error("Firebase ERROR: Configurazione mancante.");
+          setIsAuthReady(true);
+          return;
+        }
 
-      if (!firebaseConfig || !firebaseConfig.apiKey) {
-        console.error("Firebase ERROR: Configurazione mancante.");
-        setIsAuthReady(true);
-        return;
+        if (!window.firebase || !window.firebase.initializeApp) {
+          console.error("Firebase ERROR: SDK non disponibile globalmente.");
+          setIsAuthReady(true);
+          return;
+        }
+
+        let firebaseApp;
+        if (firebase.apps.length === 0) {
+          firebaseApp = firebase.initializeApp(firebaseConfig);
+        } else {
+          firebaseApp = firebase.app();
+        }
+        
+        const firebaseAuth = firebase.auth();
+        const firestoreDb = firebase.firestore();
+        
+        setDb(firestoreDb);
+        setAuth(firebaseAuth);
+
+        firebaseAuth.onAuthStateChanged((user) => {
+          console.log("DEBUG: Stato autenticazione cambiato:", user);
+          if (user) {
+            setUserId(user.uid);
+          } else {
+            setUserId(null);
+          }
+          // Segna come pronto SOLO dopo aver ricevuto il primo stato di autenticazione
+          setIsAuthReady(true);
+        });
+        
+        // Il login anonimo non è necessario qui se onAuthStateChanged gestisce il caso null
+        // await firebaseAuth.signInAnonymously();
+
+      } catch (error) {
+        console.error("Errore generico durante l'inizializzazione Firebase:", error);
+        setIsAuthReady(true); // Segna come pronto anche in caso di errore
       }
-
-      if (!window.firebase || !window.firebase.initializeApp) {
-        console.error("Firebase ERROR: SDK non disponibile globalmente.");
-        setIsAuthReady(true);
-        return;
-      }
-
-      let firebaseApp;
-      if (firebase.apps.length === 0) {
-        firebaseApp = firebase.initializeApp(firebaseConfig);
-      } else {
-        firebaseApp = firebase.app();
-      }
-      
-      const firebaseAuth = firebase.auth();
-      setAuth(firebaseAuth);
-
-      // onAuthStateChanged restituisce una funzione di unsubscribe
-      unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
-        setUser(user);
-        setIsAuthReady(true);
-      });
-
-    } catch (error) {
-      console.error("Errore generico durante l'inizializzazione Firebase:", error);
-      setIsAuthReady(true);
-    }
-    
-    // Funzione di cleanup che viene eseguita quando il componente si smonta
-    return () => {
-        unsubscribe();
     };
+    
+    initializeFirebase();
   }, []); // L'array vuoto assicura che questo effetto venga eseguito solo una volta
 
 
@@ -2711,7 +2725,7 @@ const App = () => {
     window.scrollTo(0, 0); 
   };
   
-  // Non renderizzare nulla finché non siamo sicuri dello stato di autenticazione
+  // FIX: Non renderizzare l'app finché non siamo sicuri dello stato di autenticazione
   if (!isAuthReady) {
     return React.createElement('div', {style: {textAlign: 'center', paddingTop: '50px', fontFamily: 'monospace'}}, 'Caricamento...');
   }
@@ -2753,7 +2767,6 @@ const App = () => {
 // La funzione `renderApp` si occupa di renderizzare la componente App sulla radice React.
 const renderApp = () => {
   if (reactRoot) {
-    console.log("DEBUG: Avvio il rendering dell'app sulla root React.");
     reactRoot.render(React.createElement(App));
   } else {
     console.error("Errore: la radice di React non è stata inizializzata correttamente.");
