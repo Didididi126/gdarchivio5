@@ -34,8 +34,7 @@ html, body {
   color: #000;
 }
 
-/* --- FIX --- */
-/* Imposta l'altezza minima di #root all'intera altezza dello schermo (viewport height) */
+/* FIX: Imposta l'altezza minima di #root all'intera altezza dello schermo */
 #root {
   min-height: 100vh;
   display: flex;
