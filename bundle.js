@@ -1,12 +1,338 @@
-// React e ReactDOM sono assunti essere disponibili come variabili globali,
-// tipicamente caricati tramite script tag nel file index.html prima di bundle.js.
-// Firebase è assunto essere disponibile globalmente.
-// Lucide React è ora caricato globalmente tramite CDN.
+// =================================================================
+// BUNDLE.JS CORRETTO E COMPLETATO
+// Questo file contiene le definizioni mancanti dei componenti React.
+// Sostituisci il vecchio contenuto del tuo bundle.js con questo.
+// =================================================================
 
-// ===================== CORREZIONE PER LE ICONE =====================
+// React e ReactDOM sono assunti essere disponibili globalmente.
+// Firebase è assunto essere disponibile globalmente.
+// Lucide React è assunto essere disponibile globalmente.
+
+// ==========================================================
+// 1. DEFINIZIONE DEI COMPONENTI REACT MANCANTI
+// ==========================================================
+
+// --- Componente: Modal ---
+const Modal = ({ children, onClose }) => {
+    const { useEffect } = React;
+  
+    useEffect(() => {
+      const handleEsc = (event) => {
+        if (event.keyCode === 27) onClose();
+      };
+      window.addEventListener('keydown', handleEsc);
+      return () => window.removeEventListener('keydown', handleEsc);
+    }, [onClose]);
+  
+    return React.createElement(
+      'div',
+      {
+        className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center',
+        onClick: onClose,
+      },
+      React.createElement(
+        'div',
+        {
+          className: 'bg-white text-black p-8 rounded-lg shadow-xl max-w-lg w-full relative',
+          onClick: (e) => e.stopPropagation(),
+        },
+        children
+      )
+    );
+};
+  
+// --- Componente: ContactFormModal ---
+const ContactFormModal = ({ onClose, title }) => {
+    const { useState } = React;
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
+    const [isSent, setIsSent] = useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Messaggio inviato (simulazione):', { name, email, message });
+        setIsSent(true);
+        setTimeout(() => {
+            onClose();
+        }, 2000);
+    };
+
+    return React.createElement(
+        Modal,
+        { onClose: onClose },
+        React.createElement('button', {
+            onClick: onClose,
+            className: 'absolute top-4 right-4 text-gray-500 hover:text-black',
+        }, React.createElement(IconWrapper('X'), { size: 24 })),
+        React.createElement('h2', { className: 'text-2xl font-bold mb-6 text-center font-bitcount-single' }, title || "INVIA UN MESSAGGIO"),
+        isSent 
+            ? React.createElement('div', {className: 'text-center py-8'},
+                React.createElement('p', {className: 'text-lg'}, 'Grazie! Il tuo messaggio è stato inviato.'),
+                React.createElement('p', {className: 'text-cold-gray'}, 'Ti risponderemo il prima possibile.')
+              )
+            : React.createElement(
+                'form', { onSubmit: handleSubmit, className: 'space-y-4' },
+                React.createElement('input', {
+                    type: 'text',
+                    placeholder: 'Nome',
+                    value: name,
+                    onChange: (e) => setName(e.target.value),
+                    required: true,
+                    className: 'w-full p-2 border border-gray-300 rounded'
+                }),
+                React.createElement('input', {
+                    type: 'email',
+                    placeholder: 'Email',
+                    value: email,
+                    onChange: (e) => setEmail(e.target.value),
+                    required: true,
+                    className: 'w-full p-2 border border-gray-300 rounded'
+                }),
+                React.createElement('textarea', {
+                    placeholder: 'Il tuo messaggio...',
+                    value: message,
+                    onChange: (e) => setMessage(e.target.value),
+                    required: true,
+                    rows: 5,
+                    className: 'w-full p-2 border border-gray-300 rounded'
+                }),
+                React.createElement('button', {
+                    type: 'submit',
+                    className: 'w-full bg-black text-white py-3 rounded hover:bg-dark-gray transition-colors'
+                }, 'Invia')
+            )
+    );
+};
+  
+// --- Componente: Navbar ---
+const Navbar = ({ navigateTo }) => {
+    const navLink = (text, page) => React.createElement(
+        'a',
+        {
+            href: '#',
+            className: 'text-sm sm:text-base hover:underline',
+            onClick: (e) => {
+                e.preventDefault();
+                navigateTo(page);
+            },
+        },
+        text
+    );
+
+    return React.createElement(
+        'nav',
+        { className: 'fixed top-0 left-0 right-0 bg-white bg-opacity-90 backdrop-blur-sm p-4 z-40 border-b border-gray-200' },
+        React.createElement(
+            'div',
+            { className: 'container mx-auto flex justify-between items-center' },
+            React.createElement(
+                'div',
+                { className: 'font-bitcount-single text-2xl cursor-pointer', onClick: () => navigateTo('home') },
+                'gdarchivio'
+            ),
+            React.createElement(
+                'div',
+                { className: 'flex space-x-4 sm:space-x-8' },
+                navLink('Archivio', 'archive'),
+                navLink('Collection', 'collection'),
+                navLink('Library', 'library'),
+                navLink('Contatti', 'contact')
+            )
+        )
+    );
+};
+  
+// --- Componente: Footer ---
+const InternalFooter = () => {
+    return React.createElement('footer', { className: 'bg-white border-t border-gray-200 mt-auto' },
+      React.createElement('div', { className: 'container mx-auto py-6 px-4 text-center text-cold-gray text-sm' },
+        React.createElement('p', null, '© ' + new Date().getFullYear() + ' gdarchivio. Tutti i diritti riservati.')
+      )
+    );
+};
+  
+// --- Componente: ProductCard (usato per prodotti e libri) ---
+const ProductCard = ({ item, onClick }) => {
+    const isBook = item.type === 'book';
+    const title = item.name;
+    const subtitle = isBook ? item.author : item.brand;
+    const year = item.year;
+
+    return React.createElement(
+        'div',
+        { className: 'cursor-pointer group', onClick: () => onClick(item) },
+        React.createElement(
+            'div',
+            { className: 'aspect-[3/4] bg-gray-100 overflow-hidden' },
+            React.createElement('img', {
+                src: item.images[0],
+                alt: title,
+                className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+            })
+        ),
+        React.createElement(
+            'div', { className: 'pt-2' },
+            React.createElement('h3', { className: 'font-bold' }, title),
+            React.createElement('p', { className: 'text-sm text-cold-gray' }, subtitle),
+            year && React.createElement('p', { className: 'text-sm text-cold-gray' }, year)
+        )
+    );
+};
+  
+// --- Componente: DetailPage ---
+const DetailPage = ({ item, navigateTo }) => {
+    const { useState } = React;
+    const [mainImage, setMainImage] = useState(item.images[0]);
+    const isBook = item.type === 'book';
+    const isArchive = item.type === 'archive';
+    const isProduct = item.type === 'product';
+
+    return React.createElement(
+        'div', { className: 'flex flex-col min-h-screen bg-white text-black' },
+        React.createElement(Navbar, { navigateTo: navigateTo }),
+        React.createElement(
+            'main', { className: 'flex-grow container mx-auto px-4 pt-24 pb-12' },
+            React.createElement('button', {
+                onClick: () => window.history.back(), // Semplice modo per tornare indietro
+                className: 'flex items-center gap-2 mb-8 hover:underline'
+            }, React.createElement(IconWrapper('ArrowLeft'), { size: 16 }), 'Indietro'),
+
+            React.createElement(
+                'div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16' },
+                React.createElement(
+                    'div', { className: 'space-y-4' },
+                    React.createElement('div', { className: 'aspect-[3/4] bg-gray-100' },
+                        React.createElement('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-cover' })
+                    ),
+                    item.images.length > 1 && React.createElement(
+                        'div', { className: 'grid grid-cols-4 gap-2' },
+                        item.images.map(img => React.createElement('div', {
+                            key: img,
+                            className: 'aspect-square bg-gray-100 cursor-pointer',
+                            onClick: () => setMainImage(img)
+                        }, React.createElement('img', { src: img, className: 'w-full h-full object-cover' })))
+                    )
+                ),
+                React.createElement(
+                    'div', { className: 'flex flex-col' },
+                    React.createElement('h1', { className: 'text-3xl lg:text-4xl font-bitcount-single mb-2' }, item.name),
+                    React.createElement('h2', { className: 'text-xl lg:text-2xl text-cold-gray mb-6' }, isBook ? item.author : item.brand),
+                    React.createElement('p', { className: 'mb-6 whitespace-pre-wrap' }, item.description),
+                    React.createElement('div', { className: 'border-t border-gray-200 pt-6 mt-6 space-y-2 text-sm' },
+                        item.year && React.createElement('p', null, React.createElement('strong', null, 'Anno: '), item.year),
+                        item.category && React.createElement('p', null, React.createElement('strong', null, 'Categoria: '), item.category),
+                        item.material && React.createElement('p', null, React.createElement('strong', null, 'Materiale: '), item.material),
+                        item.condition && React.createElement('p', null, React.createElement('strong', null, 'Condizione: '), item.condition),
+                        isBook && item.publisher && React.createElement('p', null, React.createElement('strong', null, 'Editore: '), item.publisher)
+                    ),
+                    (isArchive || isProduct) && React.createElement('div', { className: 'mt-auto pt-8' },
+                        isArchive && React.createElement('button', {
+                            onClick: () => navigateTo('contactForm', item),
+                            className: 'w-full bg-black text-white py-3 rounded hover:bg-dark-gray transition-colors flex items-center justify-center gap-2'
+                        }, 'Richiedi informazioni', React.createElement(IconWrapper('Mail'), { size: 16 })),
+
+                        isProduct && item.purchaseLinks && React.createElement('div', { className: 'space-y-3' },
+                            item.purchaseLinks.vinted && React.createElement('a', {
+                                href: item.purchaseLinks.vinted, target: '_blank', rel: 'noopener noreferrer',
+                                className: 'w-full bg-black text-white py-3 rounded hover:bg-dark-gray transition-colors flex items-center justify-center gap-2'
+                            }, 'Acquista su Vinted', React.createElement(IconWrapper('ExternalLink'), { size: 16 })),
+                            item.purchaseLinks.vestiaire && React.createElement('a', {
+                                href: item.purchaseLinks.vestiaire, target: '_blank', rel: 'noopener noreferrer',
+                                className: 'w-full bg-black text-white py-3 rounded hover:bg-dark-gray transition-colors flex items-center justify-center gap-2'
+                            }, 'Acquista su Vestiaire Collective', React.createElement(IconWrapper('ExternalLink'), { size: 16 }))
+                        )
+                    )
+                )
+            )
+        ),
+        React.createElement(InternalFooter, null)
+    );
+};
+  
+// --- Componenti Pagina ---
+const createPage = (title, items, navigateTo) => {
+    return React.createElement(
+        'div', { className: 'flex flex-col min-h-screen bg-white text-black' },
+        React.createElement(Navbar, { navigateTo: navigateTo }),
+        React.createElement(
+            'main', { className: 'flex-grow container mx-auto px-4 pt-24 pb-12' },
+            React.createElement('h1', { className: 'text-4xl font-bitcount-single mb-8' }, title),
+            React.createElement(
+                'div',
+                { className: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6' },
+                items.map(item => React.createElement(ProductCard, {
+                    key: item.id,
+                    item: item,
+                    onClick: (selectedItem) => navigateTo(selectedItem.type === 'book' ? 'bookDetail' : 'productDetail', selectedItem)
+                }))
+            )
+        ),
+        React.createElement(InternalFooter, null)
+    );
+};
+  
+const HomePage = ({ navigateTo }) => {
+    const featuredItems = mockProducts.filter(p => p.featured);
+    return React.createElement(
+        'div', { className: 'flex flex-col min-h-screen bg-white text-black' },
+        React.createElement(Navbar, { navigateTo: navigateTo }),
+        React.createElement(
+            'main', { className: 'flex-grow container mx-auto px-4 pt-24 pb-12' },
+            React.createElement('div', {className: 'text-center py-16'},
+                React.createElement('h1', { className: 'text-5xl font-bitcount-single mb-4' }, 'Archivio & Collection'),
+                React.createElement('p', {className: 'text-lg text-cold-gray max-w-2xl mx-auto'}, 'Una selezione curata di capi d\'archivio e pezzi unici. Esplora, scopri e lasciati ispirare.')
+            ),
+            React.createElement('h2', { className: 'text-3xl font-bitcount-single mb-8' }, 'In Evidenza'),
+            React.createElement(
+                'div',
+                { className: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6' },
+                featuredItems.map(item => React.createElement(ProductCard, {
+                    key: item.id,
+                    item: item,
+                    onClick: (selectedItem) => navigateTo('productDetail', selectedItem)
+                }))
+            )
+        ),
+        React.createElement(InternalFooter, null)
+    );
+};
+  
+const ArchivePage = ({ navigateTo }) => createPage('Archivio', mockProducts.filter(p => p.type === 'archive'), navigateTo);
+const CollectionPage = ({ navigateTo }) => createPage('Collection', mockProducts.filter(p => p.type === 'product'), navigateTo);
+const LibraryPage = ({ navigateTo }) => createPage('Library', mockLibraryItems, navigateTo);
+const ContactPage = ({ navigateTo }) => {
+    return React.createElement(
+        'div', { className: 'flex flex-col min-h-screen bg-white text-black' },
+        React.createElement(Navbar, { navigateTo: navigateTo }),
+        React.createElement(
+            'main', { className: 'flex-grow container mx-auto px-4 pt-24 pb-12 flex items-center justify-center' },
+            React.createElement('div', { className: 'text-center max-w-md' },
+                React.createElement('h1', { className: 'text-4xl font-bitcount-single mb-6' }, 'Contatti'),
+                React.createElement('p', { className: 'mb-4 text-lg' }, 'Per qualsiasi domanda o richiesta, non esitare a contattarci.'),
+                React.createElement('div', {className: 'space-y-3 mb-8 text-left inline-block'},
+                    React.createElement('p', { className: 'flex items-center gap-3' }, React.createElement(IconWrapper('Mail'), { size: 20 }), 'email@example.com'),
+                    React.createElement('p', { className: 'flex items-center gap-3' }, React.createElement(IconWrapper('MapPin'), { size: 20 }), 'Milano, Italia')
+                ),
+                React.createElement('div', null,
+                  React.createElement('button', {
+                      onClick: () => navigateTo('contactForm'),
+                      className: 'w-full bg-black text-white py-3 rounded hover:bg-dark-gray transition-colors flex items-center justify-center gap-2'
+                  }, 'Scrivici un messaggio', React.createElement(IconWrapper('ArrowRight'), { size: 16 }))
+                )
+            )
+        ),
+        React.createElement(InternalFooter, null)
+    );
+};
+
+// ==========================================================
+// 2. CODICE ORIGINALE DI bundle.js
+// ==========================================================
+
+// --- INIZIO LOGICA CORRETTA PER LE ICONE ---
 const IconWrapper = (iconName) => {
     return (props) => {
-        // FIX: Controlla window.LucideReact (con "L" maiuscola).
         if (window.LucideReact && window.LucideReact[iconName]) {
             return React.createElement(window.LucideReact[iconName], props);
         }
@@ -25,7 +351,6 @@ const IconWrapper = (iconName) => {
     };
 };
 
-// Mappatura sicura delle icone che usi nel tuo codice.
 const { X, ExternalLink, Search, ArrowLeft, ChevronDown, Mail, MapPin, ArrowRight } = {
     X: IconWrapper('X'),
     ExternalLink: IconWrapper('ExternalLink'),
@@ -36,7 +361,7 @@ const { X, ExternalLink, Search, ArrowLeft, ChevronDown, Mail, MapPin, ArrowRigh
     MapPin: IconWrapper('MapPin'),
     ArrowRight: IconWrapper('ArrowRight')
 };
-// ===================== FINE DELLA CORREZIONE =====================
+// --- FINE LOGICA CORRETTA PER LE ICONE ---
 
 const rootElement = document.getElementById('root');
 let reactRoot = null;
@@ -55,7 +380,7 @@ const getPlaceholderImageUrl = (width, height, text, bgColor = 'e0e0e0', textCol
 };
 
 const mockProducts = [
-  // Prodotti Archivio (18 elementi)
+  // ... (tutti i tuoi dati mock sono qui, li lascio invariati)
   { id: '1', name: 'Vintage Dolce & Gabbana Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, price: 450, images: [getPlaceholderImageUrl(300, 400, 'D&G Blazer 1'), getPlaceholderImageUrl(300, 400, 'D&G Blazer 2'), getPlaceholderImageUrl(300, 400, 'D&G Blazer 3'), getPlaceholderImageUrl(300, 400, 'D&G Blazer 4')], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Artigianato italiano al suo meglio.', condition: 'excellent', material: '100% Wool', measurements: { chest: '50cm', length: '65cm' }, featured: true, type: 'archive'},
   { id: '2', name: 'Prada Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'M', year: 1999, price: 1200, images: [getPlaceholderImageUrl(300, 400, 'Prada Bag 1'), getPlaceholderImageUrl(300, 400, 'Prada Bag 2'), getPlaceholderImageUrl(300, 400, 'Prada Bag 3'), getPlaceholderImageUrl(300, 400, 'Prada Bag 4')], description: 'Iconica borsa Prada in nylon del 1999. Un pezzo del lusso minimalista degli anni \'90.', condition: 'very good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, featured: true, type: 'archive'},
   { id: '3', name: 'Gucci Flora Silk Scarf', brand: 'Gucci', category: 'accessories', color: 'multicolor', size: 'one size', year: 1998, price: 180, images: [getPlaceholderImageUrl(300, 400, 'Gucci Scarf 1'), getPlaceholderImageUrl(300, 400, 'Gucci Scarf 2'), getPlaceholderImageUrl(300, 400, 'Gucci Scarf 3'), getPlaceholderImageUrl(300, 400, 'Gucci Scarf 4')], description: 'Bellissima sciarpa in seta con il famoso motivo Gucci Flora.', condition: 'excellent', material: '100% Silk', featured: false, type: 'archive'},
@@ -132,10 +457,7 @@ const mockLibraryItems = [
   { id: 'L10', name: 'Haute Couture: The Masters', author: 'Pierre Dubois', publisher: 'Art & Fashion', year: 2012, category: 'history', images: [getPlaceholderImageUrl(300, 400, 'Book 10')], description: 'A look at the most exclusive fashion houses.', featured: true, type: 'book' }
 ];
 
-// ... (tutti gli altri componenti e funzioni di utilità che mi hai fornito)
-// Questo include Modal, ProductCard, Navbar, DetailPage, CollectionPage, etc.
-
-// --- INIZIO LOGICA CORRETTA PER L'APP ---
+// --- INIZIO LOGICA PRINCIPALE DELL'APP ---
 const App = () => {
   const { useState, useEffect } = React;
   const [isAuthReady, setIsAuthReady] = useState(false);
@@ -172,7 +494,6 @@ const App = () => {
     return React.createElement('div', {style: {textAlign: 'center', paddingTop: '50px', fontFamily: 'monospace'}}, 'Caricamento...');
   }
   
-  // A questo punto, isAuthReady è true e possiamo renderizzare l'app
   switch (currentPage) {
     case 'home':
       return React.createElement(HomePage, { navigateTo: navigateTo });
