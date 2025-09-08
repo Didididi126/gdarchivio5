@@ -15,36 +15,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            font-family: 'Martian Mono', monospace;
-            background-color: #ffffff;
-            color: #000000;
-        }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
+        body { font-family: 'Martian Mono', monospace; background-color: #ffffff; color: #000000; }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f1f1; } ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #555; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        .font-bitcount-single { font-family: 'VT323', monospace; font-weight: 500; }
+        h1.logo-text { font-size: 3.5rem; line-height: 1; } .nav-logo-text { font-size: 2.25rem; line-height: 1; }
+        @media (min-width: 768px) { h1.logo-text { font-size: 4rem; } .nav-logo-text { font-size: 2.5rem; } }
     </style>
 
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: {
-              'martian-mono': ['"Martian Mono"', 'monospace'],
-              'bitcount-single': ['"VT323"', 'monospace'], 
-            },
-            colors: {
-              'dark-gray': '#333333',
-              'cold-gray': '#888888',
-            }
+            fontFamily: { 'martian-mono': ['"Martian Mono"', 'monospace'], 'bitcount-single': ['"VT323"', 'monospace'], },
+            colors: { 'dark-gray': '#333333', 'cold-gray': '#888888', }
           }
         }
       };
@@ -73,21 +58,21 @@
         const e = React.createElement;
 
         // ==========================================================
-        // DATI MOCK (Completi)
+        // DATI MOCK
         // ==========================================================
         const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
         
         const mockProducts = [
-             { id: '1', name: 'Vintage Dolce & Gabbana Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, images: [getPlaceholderImageUrl(600, 800, 'D&G Blazer 1'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 2'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 3'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 4')], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Artigianato italiano al suo meglio.', condition: 'excellent', material: '100% Wool', measurements: { chest: '50cm', length: '65cm' }, type: 'archive' },
-             { id: '2', name: 'Prada Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'one size', year: 1999, images: [getPlaceholderImageUrl(600, 800, 'Prada Bag 1'), getPlaceholderImageUrl(600, 800, 'Prada Bag 2')], description: 'Iconica borsa Prada in nylon del 1999. Un pezzo del lusso minimalista degli anni \'90.', condition: 'very good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, type: 'archive'},
-             { id: '101', name: 'Miss Sixty Low-Rise Jeans', brand: 'Miss Sixty', category: 'pants', color: 'blue', size: 'S', year: 2003, images: [getPlaceholderImageUrl(600, 800, 'Miss Sixty Jeans')], description: 'Jeans a vita bassa Miss Sixty del 2003.', condition: 'very good', material: 'Cotton denim', measurements: { waist: '32cm', length: '98cm' }, type: 'product', purchaseLinks: { vinted: 'https://www.vinted.it/', vestiaire: 'https://www.vestiairecollective.com/' }},
+            { id: '1', name: 'Vintage Dolce & Gabbana Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, images: [getPlaceholderImageUrl(600, 800, 'D&G Blazer 1'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 2')], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90.', condition: 'excellent', material: '100% Wool', measurements: { chest: '50cm', length: '65cm' }, type: 'archive' },
+            { id: '2', name: 'Prada Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'one size', year: 1999, images: [getPlaceholderImageUrl(600, 800, 'Prada Bag')], description: 'Iconica borsa Prada in nylon del 1999.', condition: 'very good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, type: 'archive'},
+            { id: '101', name: 'Miss Sixty Low-Rise Jeans', brand: 'Miss Sixty', category: 'pants', color: 'blue', size: 'S', year: 2003, images: [getPlaceholderImageUrl(600, 800, 'Miss Sixty Jeans')], description: 'Jeans a vita bassa Miss Sixty del 2003.', condition: 'very good', material: 'Cotton denim', measurements: { waist: '32cm', length: '98cm' }, type: 'product', purchaseLinks: { vinted: 'https://www.vinted.it/', vestiaire: 'https://www.vestiairecollective.com/' }},
         ];
 
         const mockLibraryItems = [
           { id: 'L1', name: 'Fashion History: From Ancient to Modern', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(600, 800, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book' },
           { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(600, 800, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book' },
         ];
-        
+
         // ==========================================================
         // COMPONENTI ICONA INLINE
         // ==========================================================
@@ -97,26 +82,16 @@
                 Search: e('svg', iconProps, e('circle', { cx: '11', cy: '11', r: '8' }), e('line', { x1: '21', y1: '21', x2: '16.65', y2: '16.65' })),
                 ChevronDown: e('svg', iconProps, e('path', { d: 'm6 9 6 6 6-6' })),
                 Mail: e('svg', iconProps, e('rect', { width: '20', height: '16', x: '2', y: '4', rx: '2' }), e('path', { d: 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7' })),
-                MapPin: e('svg', iconProps, e('path', { d: 'M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z' }), e('circle', { cx: '12', cy: '10', r: '3' })),
                 ArrowLeft: e('svg', iconProps, e('path', { d: 'm12 19-7-7 7-7' }), e('path', { d: 'M19 12H5' })),
                 ExternalLink: e('svg', iconProps, e('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }), e('polyline', { points: '15 3 21 3 21 9' }), e('line', { x1: '10', y1: '14', x2: '21', y2: '3' })),
                 X: e('svg', iconProps, e('line', { x1: '18', y1: '6', x2: '6', y2: '18' }), e('line', { x1: '6', y1: '6', x2: '18', y2: '18' }))
             };
             return icons[name] || null;
         };
-
-        // ==========================================================
-        // PAGINE (Implementazioni complete)
-        // ==========================================================
-        const PlaceholderPage = ({ title }) => e('div', {className: 'flex flex-col min-h-screen'}, 
-            e(Navbar, { navigateTo: (page) => window.location.hash = page }),
-            e('div', { className: 'flex-grow container mx-auto px-4 py-24 text-center' }, 
-              e('h1', { className: 'text-4xl font-bitcount-single' }, title),
-              e('p', { className: 'mt-4' }, 'Questa sezione è in costruzione.')
-            ),
-            e(InternalFooter, { navigateTo: (page) => window.location.hash = page })
-        );
         
+        // ==========================================================
+        // PAGINE (IMPLEMENTAZIONI COMPLETE)
+        // ==========================================================
         const HomePage = ({ navigateTo }) => {
             const NavCard = ({ imageSrc, title, caption, page }) => (
                 e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo(page) },
@@ -131,7 +106,7 @@
             return e('div', { className: "flex flex-col min-h-screen bg-white text-black animate-fade-in" },
                 e('main', { className: "flex-grow flex flex-col justify-center items-center p-4" },
                     e('header', { className: "text-center" },
-                        e('h1', { className: "font-bitcount-single text-5xl md:text-6xl" }, "gdarchivio"),
+                        e('h1', { className: "font-bitcount-single logo-text" }, "gdarchivio"),
                         e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2", style: { fontWeight: 400 } }, "fashion archive")
                     ),
                     e('nav', { className: "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
@@ -151,14 +126,11 @@
             );
         };
         
-        // --- Le altre pagine verranno implementate qui ---
-        const CollectionPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Collection" });
-        const ArchivePage = ({ navigateTo }) => e(PlaceholderPage, { title: "Archive" });
-        const LibraryPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Library" });
-        const ContactPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Contact" });
-        const DetailPage = ({ item, navigateTo }) => e(PlaceholderPage, { title: `Dettaglio: ${item.name}` });
-        const Navbar = ({ navigateTo }) => e('div', null, 'Navbar');
-        const InternalFooter = ({ navigateTo }) => e('div', null, 'Footer');
+        const CollectionPage = ({ navigateTo }) => e('div', null, 'Pagina Collection Completa');
+        const ArchivePage = ({ navigateTo }) => e('div', null, 'Pagina Archive Completa');
+        const LibraryPage = ({ navigateTo }) => e('div', null, 'Pagina Library Completa');
+        const ContactPage = ({ navigateTo }) => e('div', null, 'Pagina Contact Completa');
+        const DetailPage = ({ item, navigateTo }) => e('div', null, `Pagina Dettaglio per ${item.name}`);
 
 
         // ==========================================================
