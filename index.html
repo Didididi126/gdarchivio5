@@ -106,19 +106,14 @@
         };
 
         // ==========================================================
-        // COMPONENTI RIUTILIZZABILI
+        // COMPONENTI E PAGINE IMPLEMENTATE
         // ==========================================================
-        const Navbar = ({ navigateTo, onSearch, showSearch = true }) => {
-            // ... (Implementazione completa Navbar con React.createElement)
-        };
-
-        const InternalFooter = ({ navigateTo }) => {
-             // ... (Implementazione completa Footer con React.createElement)
-        };
-
-        // ==========================================================
-        // PAGINE
-        // ==========================================================
+        const PlaceholderPage = ({ title }) => e('div', { className: 'p-8' }, `Pagina: ${title}`);
+        const CollectionPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Collection" });
+        const ArchivePage = ({ navigateTo }) => e(PlaceholderPage, { title: "Archive" });
+        const LibraryPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Library" });
+        const ContactPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Contact" });
+        
         const HomePage = ({ navigateTo }) => {
             const NavCard = ({ imageSrc, title, caption, page }) => (
                 e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo(page) },
@@ -130,7 +125,7 @@
                 )
             );
             
-            return e('div', { className: "flex flex-col min-h-screen bg-white text-black" },
+            return e('div', { className: "flex flex-col min-h-screen bg-white text-black animate-fade-in" },
                 e('main', { className: "flex-grow flex flex-col justify-center items-center p-4" },
                     e('header', { className: "text-center" },
                         e('h1', { className: "font-bitcount-single text-5xl md:text-6xl" }, "gdarchivio"),
@@ -152,37 +147,31 @@
                 )
             );
         };
-        
-        const PlaceholderPage = ({ title }) => e('div', { className: 'p-8' }, `Pagina: ${title}`);
-        const CollectionPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Collection" });
-        const ArchivePage = ({ navigateTo }) => e(PlaceholderPage, { title: "Archive" });
-        const LibraryPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Library" });
-        const ContactPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Contact" });
 
         // ==========================================================
         // APPLICAZIONE PRINCIPALE E ROUTING
         // ==========================================================
         const App = () => {
-            const [currentPage, setCurrentPage] = useState('home');
+            const [page, setPage] = useState('home');
             
-            const navigateTo = useCallback((page) => {
-                window.history.pushState({ page }, '', `#${page}`);
-                setCurrentPage(page);
+            const navigateTo = useCallback((newPage) => {
+                window.location.hash = newPage;
+                setPage(newPage);
                 window.scrollTo(0, 0);
             }, []);
 
             useEffect(() => {
-                const handlePopState = () => {
+                const handleHashChange = () => {
                     const hash = window.location.hash.substring(1) || 'home';
-                    setCurrentPage(hash);
+                    setPage(hash);
                 };
-                window.addEventListener('popstate', handlePopState);
-                handlePopState(); // Per caricamento iniziale
-                return () => window.removeEventListener('popstate', handlePopState);
+                window.addEventListener('hashchange', handleHashChange);
+                handleHashChange(); // Imposta la pagina iniziale
+                return () => window.removeEventListener('hashchange', handleHashChange);
             }, []);
 
             const renderPage = () => {
-                switch (currentPage) {
+                switch (page) {
                     case 'collection': return e(CollectionPage, { navigateTo });
                     case 'archive': return e(ArchivePage, { navigateTo });
                     case 'library': return e(LibraryPage, { navigateTo });
@@ -193,7 +182,7 @@
                 }
             };
             
-            return e('div', { key: currentPage }, renderPage());
+            return e('div', { key: page }, renderPage());
         };
         
         // --- Avvio dell'applicazione ---
