@@ -6,8 +6,10 @@
     <title>gdarchivio online</title>
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000000/FFFFFF/png?text=GD" />
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
@@ -17,17 +19,21 @@
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f1f1; } ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #555; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        .font-bitcount-single { font-family: 'VT323', monospace; font-weight: 500; }
-        h1.logo-text { font-size: 3.5rem; line-height: 1; } .nav-logo-text { font-size: 2.25rem; line-height: 1; }
-        @media (min-width: 768px) { h1.logo-text { font-size: 4rem; } .nav-logo-text { font-size: 2.5rem; } }
+        .font-vt323 { font-family: 'VT323', monospace; }
     </style>
 
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: { 'martian-mono': ['"Martian Mono"', 'monospace'], 'bitcount-single': ['"VT323"', 'monospace'], },
-            colors: { 'dark-gray': '#333333', 'cold-gray': '#888888', }
+            fontFamily: { 
+              'martian-mono': ['"Martian Mono"', 'monospace'], 
+              'vt323': ['"VT323"', 'monospace'], 
+            },
+            colors: { 
+              'dark-gray': '#333333', 
+              'cold-gray': '#888888', 
+            }
           }
         }
       };
@@ -37,9 +43,11 @@
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     <div id="root"></div>
 
+    <!-- Librerie React -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     
+    <!-- Script principale dell'applicazione React -->
     <script>
     window.addEventListener('load', runApp);
 
@@ -54,21 +62,45 @@
         const e = React.createElement;
 
         // ==========================================================
-        // DATI MOCK
+        // DATI MOCK E COSTANTI
         // ==========================================================
         const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
         
         const mockProducts = [
-            { id: '1', name: 'Vintage Dolce & Gabbana Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, images: [getPlaceholderImageUrl(600, 800, 'D&G Blazer 1'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 2'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 3')], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Un pezzo iconico con una silhouette definita, perfetto per un look formale o audace.', condition: 'Excellent', material: '100% Wool', measurements: { chest: '50cm', length: '65cm', shoulders: '45cm' }, type: 'archive' },
-            { id: '2', name: 'Prada Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'one size', year: 1999, images: [getPlaceholderImageUrl(600, 800, 'Prada Bag 1'), getPlaceholderImageUrl(600, 800, 'Prada Bag 2')], description: 'Iconica borsa Prada in nylon del 1999, un simbolo di minimalismo e funzionalità. Leggera e resistente, adatta a ogni occasione.', condition: 'Very Good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, type: 'archive'},
-            { id: '101', name: 'Miss Sixty Low-Rise Jeans', brand: 'Miss Sixty', category: 'pants', color: 'blue', size: 'S', year: 2003, images: [getPlaceholderImageUrl(600, 800, 'Miss Sixty Jeans')], description: 'Jeans a vita bassa Miss Sixty del 2003, in pieno stile Y2K. Vestibilità aderente e denim di alta qualità.', condition: 'Very Good', material: 'Cotton denim', measurements: { waist: '32cm', length: '98cm' }, type: 'product', purchaseLinks: { vinted: 'https://www.vinted.it/', vestiaire: 'https://www.vestiairecollective.com/' }},
-            { id: '102', name: 'Graphic T-Shirt', brand: 'Stussy', category: 'tops', color: 'white', size: 'L', year: 2010, images: [getPlaceholderImageUrl(600, 800, 'Stussy Tee')], description: 'T-shirt grafica Stussy dal look streetwear.', condition: 'Good', material: '100% Cotton', measurements: { chest: '55cm', length: '70cm' }, type: 'product', purchaseLinks: { grailed: 'https://www.grailed.com' }},
+            { id: '1', name: 'Vintage Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, images: [getPlaceholderImageUrl(800, 1000, 'D&G Blazer 1'), getPlaceholderImageUrl(800, 1000, 'D&G Blazer 2'), getPlaceholderImageUrl(800, 1000, 'D&G Blazer 3')], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Un pezzo iconico con una silhouette definita, perfetto per un look formale o audace.', condition: 'Excellent', material: '100% Wool', measurements: { chest: '50cm', waist: '45cm', length: '65cm' }, type: 'archive' },
+            { id: '2', name: 'Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'one size', year: 1999, images: [getPlaceholderImageUrl(800, 1000, 'Prada Bag 1'), getPlaceholderImageUrl(800, 1000, 'Prada Bag 2')], description: 'Iconica borsa Prada in nylon del 1999, un simbolo di minimalismo e funzionalità. Leggera e resistente, adatta a ogni occasione.', condition: 'Very Good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, type: 'archive'},
+            { id: '101', name: 'Low-Rise Jeans', brand: 'Miss Sixty', category: 'pants', color: 'blue', size: 'S', year: 2003, images: [getPlaceholderImageUrl(800, 1000, 'Miss Sixty Jeans')], description: 'Jeans a vita bassa Miss Sixty del 2003, in pieno stile Y2K. Vestibilità aderente e denim di alta qualità.', condition: 'Very Good', material: 'Cotton denim', measurements: { waist: '32cm', length: '98cm' }, type: 'product', purchaseLinks: { VINTED: 'https://www.vinted.it/', 'VESTIAIRE COLLECTIVE': 'https://www.vestiairecollective.com/' }},
+            { id: '102', name: 'Graphic T-Shirt', brand: 'Jean Paul Gaultier', category: 'top', color: 'multicolour', size: 'L', year: 2001, images: [getPlaceholderImageUrl(800, 1000, 'JPG Tee')], description: 'T-shirt grafica di Gaultier dal look iconico.', condition: 'Good', material: '100% Cotton', measurements: { chest: '55cm', length: '70cm' }, type: 'product', purchaseLinks: { VINTED: 'https://www.vinted.it/' }},
         ];
 
         const mockLibraryItems = [
-          { id: 'L1', name: 'Fashion History: From Ancient to Modern', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(600, 800, 'Book 1')], description: 'A comprehensive guide to the history of fashion, from ancient civilizations to modern trends.', type: 'book' },
-          { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(600, 800, 'Book 2')], description: 'Techniques and tips for haute couture, with detailed illustrations and step-by-step guides.', type: 'book' },
+          { id: 'L1', name: 'Fashion History: From Ancient to Modern', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(800, 1000, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book', measurements:{} },
+          { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(800, 1000, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book', measurements:{} },
         ];
+
+        const filterOptions = {
+            collection: {
+                brand: ['Alexander McQueen', 'Ann Demeulemeester', 'Blumarine', 'Christian Dior', 'Comme des Garçons', 'D&G', 'Diesel', 'Dolce & Gabbana', 'Emilio Pucci', 'Faycal Amor', 'Gianni Versace', 'Gucci', 'Helmut Lang', 'Jean Paul Gaultier', 'John Galliano', 'MM6', 'Maison Martin Margiela', 'Marité Francois Girbaud', 'Miss Sixty', 'Miu Miu', 'Plein Sud', 'Prada', 'Roberto Cavalli', 'Thierry Mugler', 'Versace', 'Vivienne Westwood'],
+                category: ['accessories', 'bags', 'dresses', 'jackets', 'pants', 'set', 'shoes', 'skirts', 'top'],
+                color: ['black', 'blue', 'brown', 'burgundy', 'gold', 'grey', 'khaki', 'multicolour', 'white', 'red', 'yellow', 'orange', 'silver', 'pink'],
+                size: ['XL', 'L', 'M', 'S', 'XS', '35', '36', '37', '38', '39', '40', '41', '42', '43', 'one size'],
+                year: Array.from({length: 2010 - 1987 + 1}, (_, i) => 2010 - i),
+            },
+            archive: {
+                brand: ['Azzedine Alaïa', 'Alexander McQueen', 'Ann Demeulemeester', 'Christian Dior', 'Comme des Garçons', 'D&G', 'Dolce & Gabbana', 'Faycal Amor', 'Gianni Versace', 'Gucci', 'Helmut Lang', 'Jean Paul Gaultier', 'John Galliano', 'MM6', 'Maison Martin Margiela', 'Marité Francois Girbaud', 'Miss Sixty', 'Miu Miu', 'Plein Sud', 'Prada', 'Roberto Cavalli', 'Thierry Mugler', 'Versace', 'Vivienne Westwood'],
+                category: ['accessories', 'bags', 'dresses', 'jackets', 'pants', 'set', 'shoes', 'skirts', 'top'],
+                color: ['black', 'blue', 'brown', 'burgundy', 'gold', 'grey', 'khaki', 'multicolour', 'white', 'red', 'yellow', 'orange', 'silver', 'pink'],
+                size: ['XL', 'L', 'M', 'S', 'XS', '35', '36', '37', '38', '39', '40', '41', '42', '43', 'one size'],
+                year: Array.from({length: 2010 - 1987 + 1}, (_, i) => 2010 - i),
+            },
+            library: { // Filtri adattati per la libreria
+                author: ['Jane Doe', 'John Smith', 'Fashion Historian'],
+                category: ['history', 'craft', 'biography', 'photography'],
+                year: Array.from({length: 2024 - 1980 + 1}, (_, i) => 2024 - i),
+            }
+        };
+
+        const sortOptions = ['name a–z', 'name z–a', 'brand a-z', 'brand z-a', 'year old to new', 'year new to old'];
         
         // ==========================================================
         // COMPONENTI ICONA INLINE
@@ -78,7 +110,6 @@
             const icons = {
                 Search: e('svg', iconProps, e('circle', { cx: '11', cy: '11', r: '8' }), e('line', { x1: '21', y1: '21', x2: '16.65', y2: '16.65' })),
                 ChevronDown: e('svg', iconProps, e('path', { d: 'm6 9 6 6 6-6' })),
-                Mail: e('svg', iconProps, e('rect', { width: '20', height: '16', x: '2', y: '4', rx: '2' }), e('path', { d: 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7' })),
                 ArrowLeft: e('svg', iconProps, e('path', { d: 'm12 19-7-7 7-7' }), e('path', { d: 'M19 12H5' })),
                 ExternalLink: e('svg', iconProps, e('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }), e('polyline', { points: '15 3 21 3 21 9' }), e('line', { x1: '10', y1: '14', x2: '21', y2: '3' })),
                 X: e('svg', iconProps, e('line', { x1: '18', y1: '6', x2: '6', y2: '18' }), e('line', { x1: '6', y1: '6', x2: '18', y2: '18' })),
@@ -92,16 +123,16 @@
         // ==========================================================
         const Header = ({ navigateTo, currentRoute }) => {
             const navItems = [
-                { label: 'COLLECTION', page: '#collection' },
-                { label: 'ARCHIVE', page: '#archive' },
-                { label: 'LIBRARY', page: '#library' },
-                { label: 'CONTACT', page: '#contact' }
+                { label: 'Collection', page: '#collection' },
+                { label: 'Archive', page: '#archive' },
+                { label: 'Library', page: '#library' },
+                { label: 'Contact', page: '#contact' }
             ];
-            return e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-10' },
+            return e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-20' },
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    e('div', { className: 'flex items-center justify-between h-16' },
+                    e('div', { className: 'flex items-center justify-between h-20' },
                         e('div', { className: 'flex-shrink-0' },
-                            e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateTo('#home'); }, className: 'font-bitcount-single nav-logo-text' }, 'gdarchivio')
+                            e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateTo('#home'); }, className: 'font-vt323 text-4xl' }, 'gdarchivio')
                         ),
                         e('nav', { className: 'hidden md:flex md:items-center md:space-x-8' },
                             navItems.map(item => e('a', {
@@ -113,8 +144,8 @@
                         ),
                         e('div', { className: 'flex items-center' },
                             e('div', { className: 'relative' },
-                                e('input', { type: 'text', placeholder: 'Search...', className: 'border border-gray-300 rounded-full py-1.5 px-4 w-40 text-sm focus:outline-none focus:ring-1 focus:ring-black' }),
-                                e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-3' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
+                                e('input', { type: 'text', placeholder: 'Search...', className: 'border border-gray-300 rounded-full py-1.5 pl-4 pr-8 w-40 text-sm focus:outline-none focus:ring-1 focus:ring-black' }),
+                                e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
                             )
                         )
                     )
@@ -124,15 +155,13 @@
 
         const Footer = () => {
             return e('footer', { className: 'bg-white border-t border-gray-200' },
-                e('div', { className: 'container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center' },
-                    e('p', { className: 'font-bitcount-single text-2xl' }, 'gdarchivio'),
-                    e('p', { className: 'font-martian-mono text-xs text-cold-gray uppercase tracking-widest mt-2' }, 'curated fashion archive & library'),
-                    e('div', { className: 'flex justify-center my-4' },
-                        e('a', { href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'text-gray-500 hover:text-black' },
-                            e(Icon, { name: 'Instagram', size: 20 })
-                        )
+                e('div', { className: 'container mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center' },
+                    e('a', { href: '#home', className: 'font-vt323 text-4xl' }, 'gdarchivio'),
+                    e('p', { className: 'font-martian-mono text-sm mt-4 max-w-md mx-auto' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
+                    e('a', { href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'font-martian-mono text-sm uppercase tracking-wider mt-4 inline-block' },
+                        'Instagram'
                     ),
-                    e('p', { className: 'font-martian-mono text-xs text-gray-400 uppercase' }, `© ${new Date().getFullYear()} GDARCHIVIO. ALL RIGHTS RESERVED.`)
+                    e('p', { className: 'font-martian-mono text-xs text-cold-gray uppercase tracking-wider mt-8' }, `© ${new Date().getFullYear()} GDARCHIVIO. ALL RIGHTS RESERVED.`)
                 )
             );
         };
@@ -142,42 +171,36 @@
             return e('div', { className: 'relative' },
                 e('button', {
                     onClick: () => setIsOpen(!isOpen),
-                    className: 'flex items-center justify-between w-full md:w-48 border border-gray-300 px-3 py-2 text-sm'
+                    onBlur: () => setTimeout(() => setIsOpen(false), 100),
+                    className: 'flex items-center justify-between w-full border border-gray-300 px-3 py-2 text-sm'
                 },
-                    e('span', { className: 'font-martian-mono uppercase' }, label),
+                    e('span', { className: 'font-martian-mono uppercase text-cold-gray' }, label),
                     e(Icon, { name: 'ChevronDown', size: 16, className: `transition-transform ${isOpen ? 'rotate-180' : ''}` })
                 ),
-                isOpen && e('div', { className: 'absolute z-10 w-full bg-white border border-gray-300 mt-1' },
-                    options.map(opt => e('a', { href: '#', key: opt, className: 'block px-3 py-2 text-sm hover:bg-gray-100' }, opt))
+                isOpen && e('div', { className: 'absolute z-10 w-full bg-white border border-gray-300 mt-1 max-h-60 overflow-y-auto' },
+                    options.map(opt => e('a', { href: '#', key: opt, className: 'block px-3 py-2 text-sm hover:bg-gray-100 font-martian-mono' }, opt))
                 )
             );
         };
 
-        const FilterBar = ({ items }) => {
-            const filters = useMemo(() => {
-                const brands = [...new Set(items.map(i => i.brand))];
-                const categories = [...new Set(items.map(i => i.category))];
-                const colors = [...new Set(items.map(i => i.color))];
-                const sizes = [...new Set(items.map(i => i.size))];
-                const years = [...new Set(items.map(i => i.year))].sort((a,b) => b-a);
-                return { brands, categories, colors, sizes, years };
-            }, [items]);
-
-            return e('div', { className: 'sticky top-16 bg-white z-10 py-4 border-b border-gray-200 mb-8' },
+        const FilterBar = ({ options, itemCount }) => {
+            const filterLabels = Object.keys(options);
+            return e('div', { className: 'sticky top-20 bg-white z-10 py-4 border-b border-gray-200 mb-8' },
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    e('div', { className: 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2' },
-                        e(Dropdown, { label: 'Brand', options: filters.brands }),
-                        e(Dropdown, { label: 'Category', options: filters.categories }),
-                        e(Dropdown, { label: 'Color', options: filters.colors }),
-                        e(Dropdown, { label: 'Size', options: filters.sizes }),
-                        e(Dropdown, { label: 'Year', options: filters.years.map(String) }),
-                        e(Dropdown, { label: 'Sort By', options: ['Newest', 'Oldest', 'Brand A-Z'] })
+                     e('div', { className: 'flex items-center justify-between mb-4' },
+                        e('span', { className: 'font-martian-mono text-xs text-cold-gray uppercase' }, 'Filter:'),
+                        e('span', { className: 'font-martian-mono text-xs text-cold-gray' }, `${itemCount} items found`)
+                    ),
+                    e('div', { className: 'grid grid-cols-2 md:grid-cols-4 lg:flex lg:items-center gap-2' },
+                        filterLabels.map(label => e('div', {key: label, className: 'lg:flex-1'}, e(Dropdown, { label, options: options[label].map(String) }))),
+                        e('div', {className: 'lg:flex-1 col-span-2 md:col-span-1'}, e(Dropdown, { label: 'Sort By', options: sortOptions }))
                     )
                 )
             );
         };
 
         const ItemCard = ({ item, navigateTo, page }) => {
+            const meta = [item.year, item.category, item.color, item.size].filter(Boolean).join(' • ');
             return e('div', {
                 className: "group cursor-pointer",
                 onClick: () => navigateTo(page, item)
@@ -185,22 +208,40 @@
                 e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden" },
                     e('img', { src: item.images[0], alt: item.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })
                 ),
-                e('div', { className: 'mt-2 text-left' },
-                    e('h3', { className: "font-martian-mono font-bold text-sm uppercase" }, item.brand || item.author),
-                    e('p', { className: "font-martian-mono text-xs text-cold-gray" }, item.name)
+                e('div', { className: 'mt-3 text-left' },
+                    e('h3', { className: "font-martian-mono uppercase text-sm text-cold-gray" }, item.brand || item.author),
+                    e('p', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.name),
+                    e('p', { className: "font-martian-mono text-xs text-cold-gray mt-1" }, meta)
                 )
             );
         };
-
-        const Modal = ({ isOpen, onClose, children }) => {
+        
+        const Modal = ({ isOpen, onClose, children, title }) => {
             if (!isOpen) return null;
-            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center', onClick: onClose },
-                e('div', { className: 'bg-white p-8 relative w-full max-w-md', onClick: e => e.stopPropagation() },
-                    e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-500 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
+            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
+                e('div', { className: 'bg-white p-8 relative w-full max-w-md animate-fade-in', onClick: e => e.stopPropagation() },
+                    e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
+                    title && e('h3', { className: 'font-martian-mono uppercase font-bold text-center text-lg mb-6' }, title),
                     children
                 )
             );
         };
+        
+        const InquiryForm = () => e('form', null,
+            e('div', { className: 'mb-4' },
+                e('label', { htmlFor: 'modal-name', className: 'block font-martian-mono text-xs uppercase mb-1' }, 'Name'),
+                e('input', { type: 'text', id: 'modal-name', className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
+            ),
+            e('div', { className: 'mb-4' },
+                e('label', { htmlFor: 'modal-email', className: 'block font-martian-mono text-xs uppercase mb-1' }, 'Email'),
+                e('input', { type: 'email', id: 'modal-email', className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
+            ),
+            e('div', { className: 'mb-4' },
+                e('label', { htmlFor: 'modal-message', className: 'block font-martian-mono text-xs uppercase mb-1' }, 'Message'),
+                e('textarea', { id: 'modal-message', rows: 4, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
+            ),
+            e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message')
+        );
 
         // ==========================================================
         // PAGINE
@@ -208,19 +249,19 @@
         const HomePage = ({ navigateTo }) => {
             const NavCard = ({ imageSrc, title, caption, page }) => (
                 e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo(page) },
-                    e('div', { className: "aspect-[4/5] sm:aspect-square bg-gray-100 overflow-hidden mb-4" },
+                    e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden mb-4" },
                         e('img', { src: imageSrc, alt: title, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })
                     ),
-                    e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base", style: { fontWeight: 700 } }, title),
-                    e('p', { className: "font-martian-mono text-xs text-cold-gray uppercase tracking-widest", style: { fontWeight: 400 } }, caption)
+                    e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, title),
+                    e('p', { className: "font-martian-mono text-xs text-cold-gray uppercase tracking-widest" }, caption)
                 )
             );
             
             return e('div', { className: "flex flex-col min-h-screen bg-white text-black" },
                 e('main', { className: "flex-grow flex flex-col justify-center items-center p-4" },
                     e('header', { className: "text-center" },
-                        e('h1', { className: "font-bitcount-single logo-text" }, "gdarchivio"),
-                        e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2", style: { fontWeight: 400 } }, "fashion archive")
+                        e('h1', { className: "font-vt323 text-6xl md:text-7xl" }, "gdarchivio"),
+                        e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2" }, "fashion archive")
                     ),
                     e('nav', { className: "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
                         e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Collection"), title: "COLLECTION", caption: "(CURATED PIECES)", page: "#collection" }),
@@ -228,22 +269,21 @@
                         e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Library"), title: "LIBRARY", caption: "(FASHION BOOKS)", page: "#library" }),
                         e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Contact"), title: "CONTACT", caption: "(GET IN TOUCH)", page: "#contact" })
                     ),
-                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", style: { fontWeight: 400 }, onClick: () => navigateTo('#collection') }, "ENTER COLLECTION")
+                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", onClick: () => navigateTo('#collection') }, "ENTER COLLECTION")
                 ),
                 e('footer', { className: "w-full py-6 px-4" },
                     e('div', { className: "container mx-auto text-center" },
                         e('div', { className: "border-b border-gray-300 w-20 mx-auto mb-4" }),
-                        e('p', { className: "font-martian-mono text-xs text-cold-gray uppercase tracking-widest", style: { fontWeight: 400 } }, "ITALY • EST. 2025")
+                        e('p', { className: "font-martian-mono text-xs text-cold-gray uppercase tracking-widest" }, "ITALY • EST. 2025")
                     )
                 )
             );
         };
 
-        const ListPage = ({ items, navigateTo, page, title }) => {
+        const ListPage = ({ items, navigateTo, page, options, title }) => {
             return e(Fragment, null,
-                e(FilterBar, { items }),
+                e(FilterBar, { options, itemCount: items.length }),
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-                    e('h2', { className: 'font-bitcount-single text-3xl mb-8' }, title),
                     e('div', { className: 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6' },
                         items.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
                     )
@@ -251,39 +291,35 @@
             );
         };
         
-        const CollectionPage = ({ navigateTo }) => e(ListPage, { items: mockProducts.filter(p => p.type === 'product'), navigateTo, page: '#collection', title: 'Collection' });
-        const ArchivePage = ({ navigateTo }) => e(ListPage, { items: mockProducts.filter(p => p.type === 'archive'), navigateTo, page: '#archive', title: 'Archive' });
-        const LibraryPage = ({ navigateTo }) => e(ListPage, { items: mockLibraryItems, navigateTo, page: '#library', title: 'Library' });
-        
         const DetailPage = ({ item, navigateTo }) => {
-            const [isModalOpen, setIsModalOpen] = useState(false);
+            const [modal, setModal] = useState(null); // null, 'inquiry', 'platforms'
+            const [mainImage, setMainImage] = useState(item.images[0]);
+            
             const goBackUrl = `#${item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive')}`;
 
             const renderDetails = () => {
                 const details = [
-                    { label: 'Brand', value: item.brand },
-                    { label: 'Author', value: item.author },
-                    { label: 'Publisher', value: item.publisher },
-                    { label: 'Category', value: item.category },
-                    { label: 'Year', value: item.year },
-                    { label: 'Condition', value: item.condition },
-                    { label: 'Material', value: item.material },
-                    { label: 'Color', value: item.color },
-                    { label: 'Size', value: item.size },
+                    { label: 'category', value: item.category },
+                    { label: 'year', value: item.year },
+                    { label: 'color', value: item.color },
+                    { label: 'size', value: item.size },
+                    { label: 'condition', value: item.condition },
+                    { label: 'material', value: item.material },
+                    { label: 'author', value: item.author },
+                    { label: 'publisher', value: item.publisher },
                 ];
-
                 return details.filter(d => d.value).map(d => 
                     e('div', { key: d.label, className: 'flex justify-between text-sm py-2 border-b' },
                         e('span', { className: 'font-martian-mono text-cold-gray uppercase' }, d.label),
-                        e('span', { className: 'font-martian-mono' }, d.value)
+                        e('span', { className: 'font-martian-mono capitalize' }, d.value)
                     )
                 );
             };
 
             const renderMeasurements = () => {
-                if (!item.measurements) return null;
+                if (!item.measurements || Object.keys(item.measurements).length === 0) return null;
                 return e('div', { className: 'mt-4' },
-                    e('h4', { className: 'font-martian-mono text-sm uppercase text-cold-gray' }, 'Measurements'),
+                    e('h4', { className: 'font-martian-mono text-sm uppercase font-bold my-2' }, 'Measurements'),
                     Object.entries(item.measurements).map(([key, value]) => 
                         e('div', { key: key, className: 'flex justify-between text-sm py-2 border-b' },
                             e('span', { className: 'font-martian-mono text-cold-gray capitalize' }, key),
@@ -294,60 +330,33 @@
             };
 
             const renderActionButtons = () => {
-                if (item.type === 'archive') {
-                    return e('button', { 
-                        onClick: () => setIsModalOpen(true),
-                        className: 'w-full mt-6 bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' 
-                    }, 'Contact for Inquiry');
+                const buttons = [];
+                if(item.type === 'archive' || item.type === 'book'){
+                    buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
                 }
-                if (item.type === 'product' && item.purchaseLinks) {
-                    return e('button', { 
-                        onClick: () => setIsModalOpen(true),
-                        className: 'w-full mt-6 bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' 
-                    }, 'Available On');
+                if(item.type === 'product'){
+                     buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full border border-black text-black py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-gray-100 transition-colors' }, 'Contact for Inquiry'));
+                     buttons.push(e('button', { key: 'platforms', onClick: () => setModal('platforms'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Available On Platforms'));
                 }
-                return null;
-            };
-
-            const renderModalContent = () => {
-                if (item.type === 'archive') {
-                    return e('div', { className: 'text-center' },
-                        e('h3', { className: 'font-bitcount-single text-2xl mb-4' }, 'Inquiry'),
-                        e('p', { className: 'font-martian-mono mb-4' }, `For inquiries about the "${item.name}", please contact us.`),
-                        e('a', { href: '#contact', onClick: (ev) => { ev.preventDefault(); setIsModalOpen(false); navigateTo('#contact'); }, className: 'underline font-martian-mono' }, 'Go to Contact Page')
-                    );
-                }
-                if (item.type === 'product' && item.purchaseLinks) {
-                    return e('div', null,
-                        e('h3', { className: 'font-bitcount-single text-2xl mb-4 text-center' }, 'Available On'),
-                        Object.entries(item.purchaseLinks).map(([platform, url]) => 
-                            e('a', {
-                                key: platform,
-                                href: url,
-                                target: '_blank',
-                                rel: 'noopener noreferrer',
-                                className: 'flex items-center justify-between w-full mt-2 bg-gray-100 hover:bg-gray-200 p-4 font-martian-mono uppercase text-sm transition-colors'
-                            },
-                                e('span', null, platform),
-                                e(Icon, { name: 'ExternalLink', size: 16 })
-                            )
-                        )
-                    );
-                }
-                return null;
+                return e('div', { className: 'mt-6 space-y-2' }, ...buttons);
             };
 
             return e(Fragment, null,
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-                    e('a', { 
-                        href: goBackUrl, 
-                        onClick: (ev) => { ev.preventDefault(); navigateTo(goBackUrl); },
-                        className: 'flex items-center gap-2 font-martian-mono text-sm text-cold-gray hover:text-black mb-6' 
-                    }, e(Icon, { name: 'ArrowLeft', size: 16 }), 'Back'),
-
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
-                        e('div', { className: 'space-y-4' },
-                            item.images.map((img, index) => e('img', { key: index, src: img, alt: `${item.name} ${index+1}`, className: 'w-full h-auto object-cover bg-gray-100' }))
+                        e('div', { className: 'flex flex-col-reverse lg:flex-row gap-4' },
+                            e('div', { className: 'flex lg:flex-col gap-2 flex-wrap' },
+                                item.images.map((img, index) => e('img', { 
+                                  key: index, 
+                                  src: img, 
+                                  alt: `Thumbnail ${index+1}`, 
+                                  onClick: () => setMainImage(img),
+                                  className: `w-16 h-20 object-cover cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
+                                }))
+                            ),
+                             e('div', { className: 'flex-1 aspect-[4/5] bg-gray-100' },
+                                e('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-cover' })
+                            )
                         ),
                         e('div', { className: 'sticky top-24 self-start' },
                             e('h2', { className: 'font-martian-mono text-2xl font-bold uppercase' }, item.brand || item.author),
@@ -359,52 +368,78 @@
                         )
                     )
                 ),
-                e(Modal, { isOpen: isModalOpen, onClose: () => setIsModalOpen(false) },
-                    renderModalContent()
+                e(Modal, { isOpen: modal === 'inquiry', onClose: () => setModal(null), title: 'Product Inquiry' }, e(InquiryForm)),
+                e(Modal, { isOpen: modal === 'platforms', onClose: () => setModal(null), title: 'Available On' },
+                    e('div', { className: 'space-y-2' },
+                        Object.entries(item.purchaseLinks || {}).map(([platform, url]) => 
+                            e('a', {
+                                key: platform, href: url, target: '_blank', rel: 'noopener noreferrer',
+                                className: 'flex items-center justify-between w-full bg-gray-100 hover:bg-gray-200 p-4 font-martian-mono uppercase text-sm transition-colors'
+                            },
+                                e('span', null, platform),
+                                e(Icon, { name: 'ExternalLink', size: 16 })
+                            )
+                        )
+                    )
                 )
             );
         };
         
         const ContactPage = () => {
-            const faqs = [
-                { q: 'What kind of items do you archive?', a: 'We focus on designer and high-quality vintage pieces with historical or cultural significance.' },
-                { q: 'Are all items for sale?', a: 'Items in the "Collection" are available for purchase through external platforms. Items in the "Archive" are part of our private collection and are not for sale, but available for loan or research purposes upon inquiry.' },
-                { q: 'How can I get in touch for collaborations?', a: 'Please use the contact form on this page, specifying "Collaboration" as the subject. We are always open to interesting projects.' }
-            ];
+            const FormInput = ({ id, label, type = 'text', placeholder }) => e('div', { className: 'mb-4' },
+                e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
+                e('input', { type, id, name: id, required: true, placeholder, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-martian-mono' })
+            );
 
-            const FormInput = ({ id, label, type = 'text', required = true }) => e('div', { className: 'mb-4' },
-                e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, label),
-                type === 'textarea' ?
-                    e('textarea', { id, name: id, required, rows: 4, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' }) :
-                    e('input', { type, id, name: id, required, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
+            const FormTextarea = ({ id, label, placeholder }) => e('div', { className: 'mb-4' },
+                e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
+                e('textarea', { id, name: id, required: true, rows: 4, placeholder, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-martian-mono' })
+            );
+
+            const FormSelect = ({ id, label, children }) => e('div', { className: 'mb-4' },
+                 e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
+                 e('select', {id, name: id, required: true, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white font-martian-mono'}, children)
             );
 
             return e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-12' },
+                 e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'Contact'),
+                 e('p', { className: 'font-martian-mono text-sm text-cold-gray mb-10' }, 'questions about a specific piece?...'),
                 e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-12' },
                     e('div', null,
-                        e('h2', { className: 'font-bitcount-single text-3xl mb-4' }, 'Get In Touch'),
-                        e('p', { className: 'font-martian-mono text-sm mb-6' }, 'For questions, collaborations, or inquiries about our archive, please fill out the form below.'),
+                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'Send a message'),
                         e('form', null,
-                            e(FormInput, { id: 'name', label: 'Name' }),
-                            e(FormInput, { id: 'email', label: 'Email', type: 'email' }),
-                            e(FormInput, { id: 'subject', label: 'Subject' }),
-                            e(FormInput, { id: 'message', label: 'Message', type: 'textarea' }),
-                            e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message')
+                            e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
+                            e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
+                            e(FormSelect, { id: 'subject', label: 'Subject' },
+                                e('option', { value: '' }, 'select message subject'),
+                                e('option', { value: 'inquiry' }, 'product inquiry'),
+                                e('option', { value: 'research' }, 'research request'),
+                                e('option', { value: 'other' }, 'other')
+                            ),
+                            e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
+                            e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'Send Message')
                         )
                     ),
                     e('div', null,
+                         e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'Get in touch'),
                         e('div', { className: 'mb-8' },
-                            e('h3', { className: 'font-martian-mono font-bold uppercase mb-2' }, 'Contact Info'),
-                            e('p', { className: 'font-martian-mono text-sm' }, 'Email: ', e('a', { href: 'mailto:info@gdarchivio.com', className: 'underline' }, 'info@gdarchivio.com')),
-                            e('p', { className: 'font-martian-mono text-sm' }, 'Instagram: ', e('a', { href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'underline' }, '@gdarchivio'))
+                            e('p', { className: 'font-martian-mono text-sm' }, e('a', { href: 'mailto:gdarchivio0@gmail.com', className: 'underline' }, 'gdarchivio0@gmail.com')),
+                        ),
+                        e('div', { className: 'mb-8' },
+                           e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-2' }, 'Follow Us'),
+                           e('a', {href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'flex items-center gap-2 text-sm font-martian-mono'}, e(Icon, {name: 'Instagram'}), 'Instagram')
                         ),
                         e('div', null,
-                            e('h3', { className: 'font-martian-mono font-bold uppercase mb-4' }, 'F.A.Q.'),
+                            e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-4' }, 'Frequently Asked'),
                             e('div', { className: 'space-y-4' },
-                                faqs.map((faq, index) => e('details', { key: index },
-                                    e('summary', { className: 'font-martian-mono text-sm font-bold cursor-pointer' }, faq.q),
-                                    e('p', { className: 'font-martian-mono text-sm mt-2 pl-4 text-dark-gray' }, faq.a)
-                                ))
+                                e('div', null,
+                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'IS THIS AN ONLINE ARCHIVE ONLY?'),
+                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'yes, gdarchivio operates as a digital fashion archive. Consultations and viewing can be arranged by appointment.')
+                                ),
+                                e('div', null,
+                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'CAN I CONTRIBUTE TO THE ARCHIVE?'),
+                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'we welcome contributions from collectors and fashion enthusiasts. Contact us to discuss adding pieces to our archive.')
+                                )
                             )
                         )
                     )
@@ -424,27 +459,31 @@
                     window.scrollTo(0, 0);
                 };
                 window.addEventListener('hashchange', handleHashChange);
-                handleHashChange(); // Esegui al primo caricamento
+                handleHashChange();
                 return () => window.removeEventListener('hashchange', handleHashChange);
             }, []);
             
             const navigateTo = useCallback((path, item = null) => {
                 const newRoute = item ? `${path}/${item.id}` : path;
-                window.location.hash = newRoute;
+                if (window.location.hash !== newRoute) {
+                  window.history.pushState(null, '', newRoute);
+                }
+                setRoute(newRoute);
+                window.scrollTo(0, 0);
             }, []);
 
             const renderPage = () => {
                 const [page, id] = route.substring(1).split('/');
-                
-                const findItem = (items) => items.find(p => p.id === id);
+                const allItems = [...mockProducts, ...mockLibraryItems];
+                const item = allItems.find(p => p.id === id);
 
                 switch (page) {
                     case 'collection':
-                        return id ? e(DetailPage, { item: findItem(mockProducts), navigateTo }) : e(CollectionPage, { navigateTo });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: mockProducts.filter(p => p.type === 'product'), navigateTo, page: '#collection', options: filterOptions.collection });
                     case 'archive':
-                        return id ? e(DetailPage, { item: findItem(mockProducts), navigateTo }) : e(ArchivePage, { navigateTo });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: mockProducts.filter(p => p.type === 'archive'), navigateTo, page: '#archive', options: filterOptions.archive });
                     case 'library':
-                        return id ? e(DetailPage, { item: findItem(mockLibraryItems), navigateTo }) : e(LibraryPage, { navigateTo });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: mockLibraryItems, navigateTo, page: '#library', options: filterOptions.library });
                     case 'contact':
                         return e(ContactPage, { navigateTo });
                     case 'home':
@@ -465,8 +504,7 @@
         // --- Avvio dell'applicazione ---
         const rootElement = document.getElementById('root');
         if (rootElement) {
-            const root = createRoot(rootElement);
-            root.render(e(App));
+            createRoot(rootElement).render(e(App));
         } else {
             console.error("L'elemento 'root' non è stato trovato nel DOM.");
         }
