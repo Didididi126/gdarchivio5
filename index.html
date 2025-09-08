@@ -20,6 +20,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
         .font-bitcount-single { font-family: 'Bitcount Single', monospace; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 
     <script>
@@ -57,7 +59,7 @@
             return;
         }
 
-        const { useState, useEffect, useMemo, useCallback, Fragment } = React;
+        const { useState, useEffect, useMemo, useCallback, Fragment, useRef } = React;
         const { createRoot } = ReactDOM;
         const e = React.createElement;
 
@@ -103,9 +105,9 @@
         const mockProducts = [...generateProducts(20, 'product'), ...generateProducts(20, 'archive')];
 
         const mockLibraryItems = [
-          { id: 'L1', name: 'Fashion History: From Ancient to Modern', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(800, 1000, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book', measurements:{} },
+          { id: 'L1', name: 'Fashion History', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(800, 1000, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book', measurements:{} },
           { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(800, 1000, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book', measurements:{} },
-          { id: 'L3', name: 'Alexander McQueen: Savage Beauty', author: 'Andrew Bolton', publisher: 'Metropolitan Museum of Art', year: 2011, category: 'biography', images: [getPlaceholderImageUrl(800, 1000, 'Book 3')], description: 'An exploration of McQueen\'s iconic work.', type: 'book', measurements:{} },
+          { id: 'L3', name: 'Savage Beauty', author: 'Andrew Bolton', publisher: 'Metropolitan Museum', year: 2011, category: 'biography', images: [getPlaceholderImageUrl(800, 1000, 'Book 3')], description: 'An exploration of McQueen\'s iconic work.', type: 'book', measurements:{} },
         ];
 
         const filterOptions = {
@@ -143,6 +145,9 @@
                 ArrowLeft: e('svg', iconProps, e('path', { d: 'm12 19-7-7 7-7' }), e('path', { d: 'M19 12H5' })),
                 ExternalLink: e('svg', iconProps, e('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }), e('polyline', { points: '15 3 21 3 21 9' }), e('line', { x1: '10', y1: '14', x2: '21', y2: '3' })),
                 X: e('svg', iconProps, e('line', { x1: '18', y1: '6', x2: '6', y2: '18' }), e('line', { x1: '6', y1: '6', x2: '18', y2: '18' })),
+                FilterSliders: e('svg', { ...iconProps, viewBox: '0 0 24 24', strokeWidth: 1.5 }, e('path', { d: 'M3 6h18M7 12h10M10 18h4' })),
+                Menu: e('svg', iconProps, e('line', { x1: '3', y1: '12', x2: '21', y2: '12' }), e('line', { x1: '3', y1: '6', x2: '21', y2: '6' }), e('line', { x1: '3', y1: '18', x2: '21', y2: '18' })),
+                Instagram: e('svg', iconProps, e('rect', { x: '2', y: '2', width: '20', height: '20', rx: '5', ry: '5' }), e('path', { d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' }), e('line', { x1: '17.5', y1: '6.5', x2: '17.51', y2: '6.5' }))
             };
             return icons[name] || null;
         };
@@ -151,32 +156,58 @@
         // COMPONENTI UI RIUTILIZZABILI
         // ==========================================================
         const Header = ({ navigateTo, currentRoute }) => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
             const navItems = [
                 { label: 'Collection', page: '#collection' },
                 { label: 'Archive', page: '#archive' },
                 { label: 'Library', page: '#library' },
                 { label: 'Contact', page: '#contact' }
             ];
-            return e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-20' },
-                e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    e('div', { className: 'flex items-center justify-between h-20' },
-                        e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateTo('#home'); }, className: 'flex items-center gap-3' },
-                            e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }), // Placeholder per il logo
-                            e('span', { className: 'font-bitcount-single text-4xl' }, 'gdarchivio')
-                        ),
-                        e('nav', { className: 'hidden md:flex md:items-center md:space-x-8' },
-                            navItems.map(item => e('a', {
-                                key: item.label,
-                                href: item.page,
-                                onClick: (ev) => { ev.preventDefault(); navigateTo(item.page); },
-                                className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
-                            }, item.label))
-                        ),
-                        e('div', { className: 'flex items-center' },
-                            e('div', { className: 'relative' },
-                                e('input', { type: 'text', placeholder: 'Search...', className: 'border border-gray-300 rounded-full py-1.5 pl-4 pr-8 w-40 text-sm focus:outline-none focus:ring-1 focus:ring-black' }),
-                                e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
+
+            const navigateAndClose = (path) => {
+                navigateTo(path);
+                setIsMenuOpen(false);
+            };
+
+            return e(Fragment, null, 
+                e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-20' },
+                    e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
+                        e('div', { className: 'flex items-center justify-between h-20' },
+                            e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
+                                e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }),
+                                e('span', { className: 'font-bitcount-single text-4xl' }, 'gdarchivio')
+                            ),
+                            e('nav', { className: 'hidden md:flex md:items-center md:space-x-8' },
+                                navItems.map(item => e('a', {
+                                    key: item.label,
+                                    href: item.page,
+                                    onClick: (ev) => { ev.preventDefault(); navigateTo(item.page); },
+                                    className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
+                                }, item.label))
+                            ),
+                             e('div', { className: 'hidden md:flex items-center' },
+                                e('div', { className: 'relative' },
+                                    e('input', { type: 'text', placeholder: 'Search...', className: 'border border-gray-300 rounded-full py-1.5 pl-4 pr-8 w-40 text-sm focus:outline-none focus:ring-1 focus:ring-black' }),
+                                    e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
+                                )
+                            ),
+                            e('button', { className: 'md:hidden', onClick: () => setIsMenuOpen(!isMenuOpen) },
+                                e(Icon, { name: isMenuOpen ? 'X' : 'Menu', size: 24 })
                             )
+                        )
+                    )
+                ),
+                isMenuOpen && e('div', { className: 'fixed inset-0 bg-white z-10 p-4 animate-fade-in md:hidden' },
+                    e('nav', { className: 'flex flex-col items-center justify-center h-full space-y-8' },
+                         navItems.map(item => e('a', {
+                            key: item.label,
+                            href: item.page,
+                            onClick: (ev) => { ev.preventDefault(); navigateAndClose(item.page); },
+                            className: 'font-martian-mono uppercase tracking-wider text-2xl'
+                        }, item.label)),
+                         e('div', { className: 'relative mt-8' },
+                            e('input', { type: 'text', placeholder: 'Search...', className: 'border border-gray-300 rounded-full py-2 px-5 w-64 text-lg focus:outline-none focus:ring-1 focus:ring-black' }),
+                            e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none' }, e(Icon, { name: 'Search', size: 20, className: 'text-gray-400' }))
                         )
                     )
                 )
@@ -191,7 +222,7 @@
                              e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }), // Placeholder per il logo
                             e('span', { className: 'font-bitcount-single text-4xl' }, 'gdarchivio')
                         ),
-                        e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
+                        e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
                         e('a', {
                             href: 'https://instagram.com',
                             target: '_blank',
@@ -211,33 +242,57 @@
         const FilterBar = ({ options, itemCount }) => {
             const [openFilter, setOpenFilter] = useState(null);
             
-            const FilterButton = ({ label }) => e('button', {
-                onClick: () => setOpenFilter(label === openFilter ? null : label),
-                className: `font-martian-mono uppercase text-sm pb-1 ${openFilter === label ? 'border-b border-black' : 'border-b border-transparent'}`
-            }, label);
+            const FilterDropdown = ({ label, values }) => {
+                const ref = useRef(null);
+                useEffect(() => {
+                    const handleClickOutside = (event) => {
+                        if (ref.current && !ref.current.contains(event.target)) {
+                           if (openFilter === label) setOpenFilter(null);
+                        }
+                    };
+                    document.addEventListener("mousedown", handleClickOutside);
+                    return () => document.removeEventListener("mousedown", handleClickOutside);
+                }, [label, openFilter]);
+
+                return e('div', { className: 'relative', ref: ref },
+                    e('button', {
+                        onClick: () => setOpenFilter(label === openFilter ? null : label),
+                        className: 'flex items-center gap-2 font-martian-mono text-sm'
+                    },
+                        label.toLowerCase(),
+                        e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ${openFilter === label ? 'rotate-180' : ''}` })
+                    ),
+                    openFilter === label && e('div', { className: 'absolute top-full left-0 mt-2 w-72 bg-white border rounded-lg shadow-xl animate-fade-in z-10' },
+                        e('div', { className: 'max-h-80 overflow-y-auto p-2' },
+                            values.map(option => e('label', {
+                                key: option,
+                                className: 'flex items-center w-full text-left px-4 py-2 font-martian-mono text-sm hover:bg-gray-100 cursor-pointer'
+                            },
+                               e('div', { className: 'w-4 h-4 border border-gray-400 rounded-sm mr-3 flex-shrink-0' }),
+                               String(option)
+                            ))
+                        )
+                    )
+                );
+            };
 
             const SortDropdown = () => e('div', { className: 'relative' },
-                e('select', {className: 'font-martian-mono text-sm border border-black py-1 px-2'},
+                e('select', {className: 'font-martian-mono text-sm border border-black py-1 px-2 appearance-none pr-6 bg-white'},
                     sortOptions.map(opt => e('option', {key: opt, value: opt}, opt))
                 )
             );
 
             return e('div', { className: 'sticky top-20 bg-white z-10 py-4 border-b border-gray-200 mb-8' },
-                e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 relative' },
+                e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                     e('div', { className: 'flex items-center justify-between' },
-                        e('div', { className: 'flex items-center gap-4' },
-                            e('span', { className: 'font-martian-mono text-sm text-cold-gray' }, 'FILTER:'),
-                            Object.keys(options).map(label => e(FilterButton, { key: label, label }))
+                        e('div', { className: 'flex items-center gap-x-4 overflow-x-auto no-scrollbar' },
+                            e(Icon, { name: 'FilterSliders', size: 20, className: 'text-cold-gray -rotate-90 flex-shrink-0' }),
+                            e('span', { className: 'font-martian-mono text-sm text-cold-gray flex-shrink-0' }, 'FILTER:'),
+                            Object.entries(options).map(([label, values]) => e(FilterDropdown, { key: label, label, values }))
                         ),
-                        e(SortDropdown)
+                        e('div', {className: 'hidden sm:block'}, e(SortDropdown))
                     ),
-                    openFilter && e('div', { className: 'absolute top-full left-0 w-full bg-white border border-t-0 p-4 mt-[-1px] max-h-64 overflow-y-auto grid grid-cols-2 md:grid-cols-4 gap-4' },
-                        options[openFilter].map(option => e('label', { key: option, className: 'flex items-center font-martian-mono text-sm' },
-                            e('input', { type: 'checkbox', className: 'mr-2' }),
-                            String(option)
-                        ))
-                    ),
-                     e('div', { className: 'mt-4' },
+                    e('div', { className: 'mt-4' },
                         e('span', { className: 'font-martian-mono text-xs text-cold-gray' }, `${itemCount} items found`)
                     )
                 )
@@ -320,7 +375,7 @@
                         e('h1', { className: "font-bitcount-single text-6xl md:text-7xl" }, "gdarchivio"),
                         e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2" }, "fashion archive")
                     ),
-                    e('nav', { className: "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
+                    e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
                         e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Collection"), title: "COLLECTION", caption: "curated pieces", page: "#collection" }),
                         e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Archive"), title: "ARCHIVE", caption: "archive items", page: "#archive" }),
                         e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Library"), title: "LIBRARY", caption: "fashion books", page: "#library" }),
@@ -346,7 +401,7 @@
                         onClick: (ev) => { ev.preventDefault(); navigateTo('#home'); },
                         className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), 'Back'),
-                    e('div', { className: 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8' },
+                    e('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10' },
                         items.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
                     )
                 )
