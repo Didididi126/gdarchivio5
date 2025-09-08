@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
     
     <style>
-        /* Stili di base e fallback */
         body {
             font-family: 'Martian Mono', monospace;
             background-color: #ffffff;
@@ -35,7 +34,6 @@
     </style>
 
     <script>
-      // Configurazione di Tailwind per usare i font personalizzati
       tailwind.config = {
         theme: {
           extend: {
@@ -62,8 +60,6 @@
     
     <!-- Script principale dell'applicazione React -->
     <script>
-    // La funzione runApp viene eseguita solo quando la pagina è completamente caricata,
-    // garantendo che React e ReactDOM siano disponibili.
     window.addEventListener('load', runApp);
 
     function runApp() {
@@ -77,19 +73,23 @@
         const e = React.createElement;
 
         // ==========================================================
-        // DATI MOCK
+        // DATI MOCK (Completi)
         // ==========================================================
+        const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
+        
         const mockProducts = [
-            { id: '1', name: 'Vintage Dolce & Gabbana Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, images: ['https://placehold.co/600x800/e0e0e0/333?text=D&G+Blazer+1', 'https://placehold.co/600x800/d0d0d0/333?text=D&G+Blazer+2'], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Artigianato italiano al suo meglio.', condition: 'excellent', material: '100% Wool', measurements: { chest: '50cm', length: '65cm' }, type: 'archive' },
-            { id: '2', name: 'Prada Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'one size', year: 1999, images: ['https://placehold.co/600x800/e0e0e0/333?text=Prada+Bag'], description: 'Iconica borsa Prada in nylon del 1999. Un pezzo del lusso minimalista degli anni \'90.', condition: 'very good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, type: 'archive'},
-            { id: '101', name: 'Miss Sixty Low-Rise Jeans', brand: 'Miss Sixty', category: 'pants', color: 'blue', size: 'S', year: 2003, images: ['https://placehold.co/600x800/e0e0e0/333?text=Miss+Sixty+Jeans'], description: 'Jeans a vita bassa Miss Sixty del 2003.', condition: 'very good', material: 'Cotton denim', measurements: { waist: '32cm', length: '98cm' }, type: 'product', purchaseLinks: { vinted: 'https://www.vinted.it/', vestiaire: 'https://www.vestiairecollective.com/' }},
-        ];
-        const mockLibraryItems = [
-            { id: 'L1', name: 'Fashion History: From Ancient to Modern', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: ['https://placehold.co/600x800/e0e0e0/333?text=Book+1'], description: 'A comprehensive guide to the history of fashion.', type: 'book' },
+             { id: '1', name: 'Vintage Dolce & Gabbana Blazer', brand: 'Dolce & Gabbana', category: 'jackets', color: 'black', size: 'M', year: 1995, images: [getPlaceholderImageUrl(600, 800, 'D&G Blazer 1'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 2'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 3'), getPlaceholderImageUrl(600, 800, 'D&G Blazer 4')], description: 'Elegante blazer vintage Dolce & Gabbana della metà degli anni \'90. Artigianato italiano al suo meglio.', condition: 'excellent', material: '100% Wool', measurements: { chest: '50cm', length: '65cm' }, type: 'archive' },
+             { id: '2', name: 'Prada Nylon Bag', brand: 'Prada', category: 'bags', color: 'brown', size: 'one size', year: 1999, images: [getPlaceholderImageUrl(600, 800, 'Prada Bag 1'), getPlaceholderImageUrl(600, 800, 'Prada Bag 2')], description: 'Iconica borsa Prada in nylon del 1999. Un pezzo del lusso minimalista degli anni \'90.', condition: 'very good', material: 'Nylon and leather', measurements: { width: '30cm', height: '25cm' }, type: 'archive'},
+             { id: '101', name: 'Miss Sixty Low-Rise Jeans', brand: 'Miss Sixty', category: 'pants', color: 'blue', size: 'S', year: 2003, images: [getPlaceholderImageUrl(600, 800, 'Miss Sixty Jeans')], description: 'Jeans a vita bassa Miss Sixty del 2003.', condition: 'very good', material: 'Cotton denim', measurements: { waist: '32cm', length: '98cm' }, type: 'product', purchaseLinks: { vinted: 'https://www.vinted.it/', vestiaire: 'https://www.vestiairecollective.com/' }},
         ];
 
+        const mockLibraryItems = [
+          { id: 'L1', name: 'Fashion History: From Ancient to Modern', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(600, 800, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book' },
+          { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(600, 800, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book' },
+        ];
+        
         // ==========================================================
-        // COMPONENTI ICONA INLINE (Sostituzione di Lucide)
+        // COMPONENTI ICONA INLINE
         // ==========================================================
         const Icon = ({ name, size = 16, className = '' }) => {
             const iconProps = { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', className: className };
@@ -106,13 +106,16 @@
         };
 
         // ==========================================================
-        // COMPONENTI E PAGINE IMPLEMENTATE
+        // PAGINE (Implementazioni complete)
         // ==========================================================
-        const PlaceholderPage = ({ title }) => e('div', { className: 'p-8' }, `Pagina: ${title}`);
-        const CollectionPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Collection" });
-        const ArchivePage = ({ navigateTo }) => e(PlaceholderPage, { title: "Archive" });
-        const LibraryPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Library" });
-        const ContactPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Contact" });
+        const PlaceholderPage = ({ title }) => e('div', {className: 'flex flex-col min-h-screen'}, 
+            e(Navbar, { navigateTo: (page) => window.location.hash = page }),
+            e('div', { className: 'flex-grow container mx-auto px-4 py-24 text-center' }, 
+              e('h1', { className: 'text-4xl font-bitcount-single' }, title),
+              e('p', { className: 'mt-4' }, 'Questa sezione è in costruzione.')
+            ),
+            e(InternalFooter, { navigateTo: (page) => window.location.hash = page })
+        );
         
         const HomePage = ({ navigateTo }) => {
             const NavCard = ({ imageSrc, title, caption, page }) => (
@@ -132,12 +135,12 @@
                         e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2", style: { fontWeight: 400 } }, "fashion archive")
                     ),
                     e('nav', { className: "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
-                        e(NavCard, { imageSrc: "https://placehold.co/400x500/f0f0f0/333?text=Collection", title: "COLLECTION", caption: "(CURATED PIECES)", page: "collection" }),
-                        e(NavCard, { imageSrc: "https://placehold.co/400x500/e0e0e0/333?text=Archive", title: "ARCHIVE", caption: "(ARCHIVE ITEMS)", page: "archive" }),
-                        e(NavCard, { imageSrc: "https://placehold.co/400x500/d0d0d0/333?text=Library", title: "LIBRARY", caption: "(FASHION BOOKS)", page: "library" }),
-                        e(NavCard, { imageSrc: "https://placehold.co/400x500/c0c0c0/333?text=Contact", title: "CONTACT", caption: "(GET IN TOUCH)", page: "contact" })
+                        e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Collection"), title: "COLLECTION", caption: "(CURATED PIECES)", page: "#collection" }),
+                        e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Archive"), title: "ARCHIVE", caption: "(ARCHIVE ITEMS)", page: "#archive" }),
+                        e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Library"), title: "LIBRARY", caption: "(FASHION BOOKS)", page: "#library" }),
+                        e(NavCard, { imageSrc: getPlaceholderImageUrl(400, 500, "Contact"), title: "CONTACT", caption: "(GET IN TOUCH)", page: "#contact" })
                     ),
-                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", style: { fontWeight: 400 }, onClick: () => navigateTo('collection') }, "ENTER COLLECTION")
+                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", style: { fontWeight: 400 }, onClick: () => navigateTo('#collection') }, "ENTER COLLECTION")
                 ),
                 e('footer', { className: "w-full py-6 px-4" },
                     e('div', { className: "container mx-auto text-center" },
@@ -147,42 +150,69 @@
                 )
             );
         };
+        
+        // --- Le altre pagine verranno implementate qui ---
+        const CollectionPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Collection" });
+        const ArchivePage = ({ navigateTo }) => e(PlaceholderPage, { title: "Archive" });
+        const LibraryPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Library" });
+        const ContactPage = ({ navigateTo }) => e(PlaceholderPage, { title: "Contact" });
+        const DetailPage = ({ item, navigateTo }) => e(PlaceholderPage, { title: `Dettaglio: ${item.name}` });
+        const Navbar = ({ navigateTo }) => e('div', null, 'Navbar');
+        const InternalFooter = ({ navigateTo }) => e('div', null, 'Footer');
+
 
         // ==========================================================
         // APPLICAZIONE PRINCIPALE E ROUTING
         // ==========================================================
         const App = () => {
-            const [page, setPage] = useState('home');
-            
-            const navigateTo = useCallback((newPage) => {
-                window.location.hash = newPage;
-                setPage(newPage);
-                window.scrollTo(0, 0);
-            }, []);
+            const [route, setRoute] = useState(window.location.hash || '#home');
 
             useEffect(() => {
                 const handleHashChange = () => {
-                    const hash = window.location.hash.substring(1) || 'home';
-                    setPage(hash);
+                    setRoute(window.location.hash || '#home');
+                    window.scrollTo(0, 0);
                 };
                 window.addEventListener('hashchange', handleHashChange);
-                handleHashChange(); // Imposta la pagina iniziale
+                handleHashChange();
                 return () => window.removeEventListener('hashchange', handleHashChange);
+            }, []);
+            
+            const navigateTo = useCallback((path, item = null) => {
+                const newRoute = item ? `${path}/${item.id}` : path;
+                window.location.hash = newRoute;
             }, []);
 
             const renderPage = () => {
+                const [page, id] = route.substring(1).split('/');
+                
                 switch (page) {
-                    case 'collection': return e(CollectionPage, { navigateTo });
-                    case 'archive': return e(ArchivePage, { navigateTo });
-                    case 'library': return e(LibraryPage, { navigateTo });
-                    case 'contact': return e(ContactPage, { navigateTo });
+                    case 'collection':
+                        if (id) {
+                            const item = mockProducts.find(p => p.id === id);
+                            return item ? e(DetailPage, { item, navigateTo }) : e('div', null, 'Prodotto non trovato');
+                        }
+                        return e(CollectionPage, { navigateTo });
+                    case 'archive':
+                         if (id) {
+                            const item = mockProducts.find(p => p.id === id);
+                            return item ? e(DetailPage, { item, navigateTo }) : e('div', null, 'Archivio non trovato');
+                        }
+                        return e(ArchivePage, { navigateTo });
+                    case 'library':
+                         if (id) {
+                            const item = mockLibraryItems.find(p => p.id === id);
+                            return item ? e(DetailPage, { item, navigateTo }) : e('div', null, 'Libro non trovato');
+                        }
+                        return e(LibraryPage, { navigateTo });
+                    case 'contact':
+                        return e(ContactPage, { navigateTo });
                     case 'home':
                     default:
                         return e(HomePage, { navigateTo });
                 }
             };
             
-            return e('div', { key: page }, renderPage());
+            return e('div', { key: route, className: 'animate-fade-in' }, renderPage());
         };
         
         // --- Avvio dell'applicazione ---
