@@ -239,44 +239,49 @@
             );
         };
         
-        const FilterDropdown = ({ label, values, openFilter, setOpenFilter }) => {
-            const ref = useRef(null);
-            const isOpen = openFilter === label;
+        const FilterBar = ({ options, itemCount, selectedFilters, onFilterChange }) => {
+            const [openFilter, setOpenFilter] = useState(null);
+            const barRef = useRef(null);
 
             useEffect(() => {
                 const handleClickOutside = (event) => {
-                    if (ref.current && !ref.current.contains(event.target)) {
-                       if (isOpen) setOpenFilter(null);
+                    if (barRef.current && !barRef.current.contains(event.target)) {
+                        setOpenFilter(null);
                     }
                 };
                 document.addEventListener("mousedown", handleClickOutside);
                 return () => document.removeEventListener("mousedown", handleClickOutside);
-            }, [isOpen, setOpenFilter]);
-
-            return e('div', { className: 'relative', ref: ref },
-                e('button', {
-                    onClick: () => setOpenFilter(isOpen ? null : label),
-                    className: 'flex items-center gap-2 font-martian-mono text-sm'
-                },
-                    label.toLowerCase(),
-                    e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}` })
-                ),
-                isOpen && e('div', { className: 'absolute top-full left-0 mt-2 w-72 bg-white border rounded-lg shadow-xl animate-fade-in z-10' },
-                    e('div', { className: 'max-h-80 overflow-y-auto p-2' },
-                        values.map(option => e('label', {
-                            key: option,
-                            className: 'flex items-center w-full text-left px-4 py-2 font-martian-mono text-sm hover:bg-gray-100 cursor-pointer rounded-md'
-                        },
-                           e('div', { className: 'w-4 h-4 border border-gray-400 rounded-sm mr-3 flex-shrink-0 bg-white' }),
-                           String(option)
-                        ))
+            }, []);
+            
+            const FilterDropdown = ({ label, values }) => {
+                const isOpen = openFilter === label;
+                return e('div', { className: 'relative' },
+                    e('button', {
+                        onClick: () => setOpenFilter(isOpen ? null : label),
+                        className: 'flex items-center gap-2 font-martian-mono text-sm'
+                    },
+                        label.toLowerCase(),
+                        e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}` })
+                    ),
+                    isOpen && e('div', { className: 'absolute top-full left-0 mt-2 w-72 bg-white border rounded-lg shadow-xl animate-fade-in z-10' },
+                        e('div', { className: 'max-h-80 overflow-y-auto p-2' },
+                            values.map(option => e('label', {
+                                key: option,
+                                className: 'flex items-center w-full text-left px-4 py-2 font-martian-mono text-sm hover:bg-gray-100 cursor-pointer rounded-md'
+                            },
+                               e('input', { 
+                                   type: 'checkbox', 
+                                   className: 'hidden', 
+                                   checked: (selectedFilters[label] || []).includes(String(option)),
+                                   onChange: () => onFilterChange(label, String(option))
+                                }),
+                               e('div', { className: `w-4 h-4 border border-gray-400 rounded-sm mr-3 flex-shrink-0 bg-white ${(selectedFilters[label] || []).includes(String(option)) ? 'bg-black' : ''}` }),
+                               String(option)
+                            ))
+                        )
                     )
-                )
-            );
-        };
-
-        const FilterBar = ({ options, itemCount }) => {
-            const [openFilter, setOpenFilter] = useState(null);
+                );
+            };
 
             const SortDropdown = () => e('div', { className: 'relative' },
                 e('select', {className: 'font-martian-mono text-sm border border-black py-1 px-2 appearance-none pr-6 bg-white'},
@@ -284,13 +289,13 @@
                 )
             );
 
-            return e('div', { className: 'sticky top-20 bg-white z-10 py-4 border-b border-gray-200 mb-8' },
+            return e('div', { className: 'sticky top-20 bg-white z-10 py-4 border-b border-gray-200 mb-8', ref: barRef },
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                     e('div', { className: 'flex items-center justify-between' },
                         e('div', { className: 'flex items-center gap-x-4 overflow-x-auto no-scrollbar' },
                             e(Icon, { name: 'FilterSliders', size: 20, className: 'text-cold-gray flex-shrink-0' }),
                             e('span', { className: 'font-martian-mono text-sm text-cold-gray uppercase flex-shrink-0' }, 'Filter:'),
-                            Object.entries(options).map(([label, values]) => e(FilterDropdown, { key: label, label, values, openFilter, setOpenFilter }))
+                            Object.entries(options).map(([label, values]) => e(FilterDropdown, { key: label, label, values }))
                         ),
                         e('div', {className: 'hidden sm:block ml-4'}, e(SortDropdown))
                     ),
@@ -395,8 +400,31 @@
         };
 
         const ListPage = ({ items, navigateTo, page, options }) => {
+            const [selectedFilters, setSelectedFilters] = useState({
+                brand: [], category: [], color: [], size: [], year: []
+            });
+
+            const handleFilterChange = useCallback((filterType, value) => {
+                setSelectedFilters(prevFilters => {
+                    const currentValues = prevFilters[filterType] || [];
+                    const newValues = currentValues.includes(value)
+                        ? currentValues.filter(v => v !== value)
+                        : [...currentValues, value];
+                    return { ...prevFilters, [filterType]: newValues };
+                });
+            }, []);
+            
+            const filteredItems = useMemo(() => {
+                return items.filter(item => {
+                    return Object.entries(selectedFilters).every(([key, values]) => {
+                        if (values.length === 0) return true;
+                        return values.includes(String(item[key]));
+                    });
+                });
+            }, [items, selectedFilters]);
+
             return e(Fragment, null,
-                e(FilterBar, { options, itemCount: items.length }),
+                e(FilterBar, { options, itemCount: filteredItems.length, selectedFilters, onFilterChange: handleFilterChange }),
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
                     e('a', { 
                         href: '#home', 
@@ -404,7 +432,7 @@
                         className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), 'Back'),
                     e('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10' },
-                        items.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
+                        filteredItems.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
                     )
                 )
             );
