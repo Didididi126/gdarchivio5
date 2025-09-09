@@ -205,21 +205,22 @@
                                 e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }),
                                 e('span', { className: 'font-bitcount-single text-4xl' }, 'gdarchivio')
                             ),
-                            e('nav', { className: 'hidden md:flex md:items-center md:space-x-8' },
-                                navItems.map(item => e('a', {
-                                    key: item.label,
-                                    href: item.page,
-                                    onClick: (ev) => { ev.preventDefault(); navigateTo(item.page); },
-                                    className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
-                                }, item.label))
-                            ),
-                             e('div', { className: 'hidden md:flex items-center' },
+                            // Contenitore per gli elementi a destra
+                            e('div', { className: 'hidden md:flex items-center gap-x-12 ml-auto' },
+                                e('nav', { className: 'flex items-center space-x-8' },
+                                    navItems.map(item => e('a', {
+                                        key: item.label,
+                                        href: item.page,
+                                        onClick: (ev) => { ev.preventDefault(); navigateTo(item.page); },
+                                        className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
+                                    }, item.label))
+                                ),
                                 e('div', { className: 'relative' },
-                                    e('input', { type: 'text', placeholder: 'Search...', className: 'border border-gray-300 rounded-full py-1.5 pl-4 pr-8 w-40 text-sm focus:outline-none focus:ring-1 focus:ring-black' }),
-                                    e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
+                                    e('input', { type: 'text', placeholder: 'search', className: 'border-b border-gray-300 py-1.5 pl-0 pr-8 w-40 text-sm focus:outline-none focus:border-black font-martian-mono placeholder-cold-gray bg-transparent' }),
+                                    e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-1 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
                                 )
                             ),
-                            e('button', { className: 'md:hidden', onClick: () => setIsMenuOpen(!isMenuOpen) },
+                            e('button', { className: 'md:hidden ml-auto', onClick: () => setIsMenuOpen(!isMenuOpen) },
                                 e(Icon, { name: isMenuOpen ? 'X' : 'Menu', size: 24 })
                             )
                         )
@@ -552,25 +553,26 @@
         const ContactPage = () => {
             const FormInput = ({ id, label, type = 'text', placeholder }) => e('div', { className: 'mb-4' },
                 e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
-                e('input', { type, id, name: id, required: true, placeholder, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-martian-mono' })
+                e('input', { type, id, name: id, required: true, placeholder, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
             );
 
             const FormTextarea = ({ id, label, placeholder }) => e('div', { className: 'mb-4' },
                 e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
-                e('textarea', { id, name: id, required: true, rows: 4, placeholder, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black font-martian-mono' })
+                e('textarea', { id, name: id, required: true, rows: 4, placeholder, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
             );
 
             const FormSelect = ({ id, label, children }) => e('div', { className: 'mb-4' },
                  e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
-                 e('select', {id, name: id, required: true, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white font-martian-mono'}, children)
+                 e('select', {id, name: id, required: true, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black bg-white font-martian-mono pr-6 appearance-none'}, children)
             );
 
             return e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-12' },
-                 e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'Contact'),
-                 e('p', { className: 'font-martian-mono text-sm text-cold-gray mb-10' }, 'questions about a specific piece?...'),
-                e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-12' },
+                 e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'CONTACT'),
+                 e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'questions about a specific piece? want more information? we\'re here to help.'),
+                 e('div', { className: 'border-b border-gray-200 mt-4 mb-10' }),
+                e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
                     e('div', null,
-                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'Send a message'),
+                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'SEND A MESSAGE'),
                         e('form', null,
                             e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
                             e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
@@ -581,15 +583,16 @@
                                 e('option', { value: 'other' }, 'other')
                             ),
                             e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
-                            e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'Send Message')
+                            e('button', { type: 'submit', className: 'bg-black text-white py-3 px-8 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'SEND MESSAGE')
                         )
                     ),
                     e('div', null,
-                         e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'Get in touch'),
-                        e('div', { className: 'mb-8' },
+                         e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'GET IN TOUCH'),
+                        e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
+                            e('p', { className: 'font-martian-mono text-xs uppercase text-cold-gray mb-1' }, 'Email'),
                             e('p', { className: 'font-martian-mono text-sm' }, e('a', { href: 'mailto:gdarchivio0@gmail.com', className: 'underline' }, 'gdarchivio0@gmail.com')),
                         ),
-                        e('div', { className: 'mb-8' },
+                        e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
                            e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-2' }, 'Follow Us'),
                            e('a', {href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'flex items-center gap-2 text-sm font-martian-mono'}, e(Icon, {name: 'Instagram'}), 'Instagram')
                         ),
