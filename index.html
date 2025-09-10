@@ -66,10 +66,10 @@
         
         const generateProducts = (count, type) => {
             const sample = {
-                brands: type === 'product' ? ['Miss Sixty', 'Diesel', 'Blumarine', 'Prada', 'Gucci', 'Jean Paul Gaultier', 'Versace'] : ['Dolce & Gabbana', 'Prada', 'Helmut Lang', 'Maison Martin Margiela', 'Thierry Mugler', 'Comme des Garçons'],
+                brands: type === 'product' ? ['Miss Sixty', 'Diesel', 'Blumarine', 'Prada', 'Gucci', 'Jean Paul Gaultier', 'Versace'] : ['Dolce & Gabbana', 'Prada', 'Helmut Lang', 'Maison Martin Margiela', 'Thierry Mugler', 'Comme des Garçons', 'Plein Sud'],
                 categories: ['jackets', 'pants', 'top', 'dresses', 'bags', 'skirts', 'shoes'],
                 colors: ['black', 'blue', 'white', 'multicolour', 'brown', 'red', 'pink'],
-                names: {jackets: 'Jacket', pants: 'Trousers', top: 'Top', dresses: 'Dress', bags: 'Bag', skirts: 'Skirt', shoes: 'Heels'}
+                names: {jackets: 'Jacket', pants: 'Trousers', top: 'Top', dresses: 'Bodycon Dress', bags: 'Bag', skirts: 'Skirt', shoes: 'Heels'}
             };
             const products = [];
             for (let i = 0; i < count; i++) {
@@ -77,17 +77,17 @@
                 const brand = sample.brands[i % sample.brands.length];
                 const product = {
                     id: `${type === 'product' ? 100 : 0}${i + 1}`,
-                    name: `${sample.names[category]}`,
+                    name: `${brand} ${sample.names[category]}`,
                     brand: brand,
-                    category: category,
-                    color: sample.colors[i % sample.colors.length],
-                    size: ['S', 'M', 'L', 'one size'][i % 4],
+                    category: category === 'dresses' ? 'Dresses' : category,
+                    color: 'black',
+                    size: 'S',
                     year: 2010 - (i % 24),
-                    images: [getPlaceholderImageUrl(800, 1000, `${brand} ${i+1}`)],
-                    description: `Descrizione del prodotto ${brand} ${sample.names[category]}.`,
-                    condition: 'Very Good',
-                    material: 'Varies',
-                    measurements: { chest: '50cm', length: '70cm'},
+                    condition: 'excellent',
+                    material: 'Viscose elastane',
+                    images: [getPlaceholderImageUrl(800, 1000, `${brand} ${i+1}`), getPlaceholderImageUrl(800, 1000, `Detail 1`), getPlaceholderImageUrl(800, 1000, `Detail 2`), getPlaceholderImageUrl(800, 1000, `Detail 3`)],
+                    description: `${brand} ${sample.names[category].toLowerCase()} in black from 2003.`,
+                    measurements: { chest: '48cm', waist: '34cm', length: '84cm'},
                     type: type,
                 };
                 if (type === 'product') {
@@ -101,9 +101,9 @@
         const mockProducts = [...generateProducts(20, 'product'), ...generateProducts(20, 'archive')];
 
         const mockLibraryItems = [
-          { id: 'L1', name: 'Fashion History', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(800, 1000, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book', measurements:{} },
-          { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(800, 1000, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book', measurements:{} },
-          { id: 'L3', name: 'Savage Beauty', author: 'Andrew Bolton', publisher: 'Metropolitan Museum', year: 2011, category: 'biography', images: [getPlaceholderImageUrl(800, 1000, 'Book 3')], description: 'An exploration of McQueen\'s iconic work.', type: 'book', measurements:{} },
+          { id: 'L1', name: 'Fashion History', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(800, 1000, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book', measurements:{}, brand: 'Jane Doe' },
+          { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(800, 1000, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book', measurements:{}, brand: 'John Smith' },
+          { id: 'L3', name: 'Savage Beauty', author: 'Andrew Bolton', publisher: 'Metropolitan Museum', year: 2011, category: 'biography', images: [getPlaceholderImageUrl(800, 1000, 'Book 3')], description: 'An exploration of McQueen\'s iconic work.', type: 'book', measurements:{}, brand: 'Andrew Bolton' },
         ];
 
         const filterOptions = {
@@ -141,15 +141,18 @@
                 ArrowLeft: e('svg', iconProps, e('path', { d: 'm12 19-7-7 7-7' }), e('path', { d: 'M19 12H5' })),
                 ExternalLink: e('svg', iconProps, e('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }), e('polyline', { points: '15 3 21 3 21 9' }), e('line', { x1: '10', y1: '14', x2: '21', y2: '3' })),
                 X: e('svg', iconProps, e('line', { x1: '18', y1: '6', x2: '6', y2: '18' }), e('line', { x1: '6', y1: '6', x2: '18', y2: '18' })),
-                FilterSliders: e('svg', {...iconProps, strokeWidth: 1.5, viewBox: '0 0 24 24'}, e('path', {d: 'M2 6h3m16 0h-9M5 6a2 2 0 0 0-4 0v0a2 2 0 0 0 4 0v0Zm10 6h3m-9 0H2m3 0a2 2 0 0 0-4 0v0a2 2 0 0 0 4 0v0Zm14 6h-3m-9 0H2m9 0a2 2 0 0 0-4 0v0a2 2 0 0 0 4 0v0Z'})),
+                Filter: e('svg', iconProps, e('polygon', { points: '22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3' })),
                 Menu: e('svg', iconProps, e('line', { x1: '3', y1: '12', x2: '21', y2: '12' }), e('line', { x1: '3', y1: '6', x2: '21', y2: '6' }), e('line', { x1: '3', y1: '18', x2: '21', y2: '18' })),
-                Instagram: e('svg', iconProps, e('rect', { x: '2', y: '2', width: '20', height: '20', rx: '5', ry: '5' }), e('path', { d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' }), e('line', { x1: '17.5', y1: '6.5', x2: '17.51', y2: '6.5' }))
+                Instagram: e('svg', iconProps, e('rect', { x: '2', y: '2', width: '20', height: '20', rx: '5', ry: '5' }), e('path', { d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' }), e('line', { x1: '17.5', y1: '6.5', x2: '17.51', y2: '6.5' })),
+                Heart: e('svg', iconProps, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
+                Share: e('svg', iconProps, e('circle', {cx: '18', cy: '5', r: '3'}), e('circle', {cx: '6', cy: '12', r: '3'}), e('circle', {cx: '18', cy: '19', r: '3'}), e('line', {x1: '8.59', y1: '13.51', x2: '15.42', y2: '17.49'}), e('line', {x1: '15.41', y1: '6.51', x2: '8.59', y2: '10.49'})),
+                Mail: e('svg', iconProps, e('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }), e('polyline', { points: '22,6 12,13 2,6' }))
             };
             return icons[name] || null;
         };
 
         // ==========================================================
-        // COMPONENTE DROPDOWN PER FILTRI
+        // COMPONENTI DROPDOWN
         // ==========================================================
         const FilterDropdown = ({ label, values, isOpen, onToggle, selectedValues, onFilterChange }) => {
             return e('div', { className: 'relative' },
@@ -175,6 +178,98 @@
                            e('div', { className: `w-4 h-4 border border-gray-400 rounded-sm mr-3 flex-shrink-0 bg-white ${selectedValues.includes(String(option)) ? 'bg-black' : ''}` }),
                            String(option)
                         ))
+                    )
+                )
+            );
+        };
+        
+        const CustomSortDropdown = ({ options, selectedValue, onSelect, isOpen, onToggle }) => {
+            return e('div', { className: 'relative' },
+                e('button', {
+                    onClick: onToggle,
+                    className: 'flex items-center gap-2 font-martian-mono text-sm w-40 border-b border-gray-300 pb-1'
+                },
+                    selectedValue,
+                    e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ml-auto ${isOpen ? 'rotate-180' : ''}` })
+                ),
+                isOpen && e('div', { className: 'absolute top-full right-0 mt-2 w-48 bg-white border rounded-lg shadow-xl animate-fade-in z-30' },
+                    e('div', { className: 'p-2' },
+                        options.map(option => e('button', {
+                            key: option,
+                            onClick: () => onSelect(option),
+                            className: `block w-full text-left px-4 py-2 font-martian-mono text-sm rounded-md ${selectedValue === option ? 'bg-gray-100' : 'hover:bg-gray-100'}`
+                        }, option))
+                    )
+                )
+            );
+        };
+        
+        // ==========================================================
+        // PANNELLO FILTRI MOBILE (NUOVO)
+        // ==========================================================
+        const MobileFilterPanel = ({ options, initialFilters, selectedFilters, onApply, onClose }) => {
+            const [tempFilters, setTempFilters] = useState(selectedFilters);
+            const [openCategory, setOpenCategory] = useState(Object.keys(options)[0]);
+
+            const handleFilterChange = (filterType, value) => {
+                setTempFilters(prev => {
+                    const currentValues = prev[filterType] || [];
+                    const newValues = currentValues.includes(value)
+                        ? currentValues.filter(v => v !== value)
+                        : [...currentValues, value];
+                    return { ...prev, [filterType]: newValues };
+                });
+            };
+            
+            const handleReset = () => {
+                setTempFilters(initialFilters);
+            };
+            
+            const handleApply = () => {
+                onApply(tempFilters);
+                onClose();
+            };
+            
+            const totalSelections = useMemo(() => {
+                return Object.values(tempFilters).reduce((sum, arr) => sum + arr.length, 0);
+            }, [tempFilters]);
+
+            const AccordionItem = ({ label, values }) => {
+                const isOpen = openCategory === label;
+                return e('div', { className: 'border-b' },
+                    e('button', { 
+                        onClick: () => setOpenCategory(isOpen ? null : label),
+                        className: 'w-full flex justify-between items-center py-4 px-4'
+                    },
+                        e('span', { className: 'font-martian-mono uppercase' }, label),
+                        e(Icon, { name: 'ChevronDown', size: 20, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`})
+                    ),
+                    isOpen && e('div', { className: 'px-4 pb-4 max-h-60 overflow-y-auto'},
+                        values.map(option => e('label', {
+                            key: option,
+                            className: 'flex items-center w-full text-left py-2 font-martian-mono text-sm hover:bg-gray-100 cursor-pointer rounded-md'
+                        },
+                           e('input', { type: 'checkbox', className: 'hidden', checked: (tempFilters[label] || []).includes(String(option)), onChange: () => handleFilterChange(label, String(option)) }),
+                           e('div', { className: `w-5 h-5 border border-gray-400 rounded-sm mr-3 flex-shrink-0 bg-white ${(tempFilters[label] || []).includes(String(option)) ? 'bg-black' : ''}` }),
+                           String(option)
+                        ))
+                    )
+                );
+            };
+
+            return e('div', { className: 'fixed inset-0 z-40' },
+                e('div', { className: 'absolute inset-0 bg-black bg-opacity-50', onClick: onClose }),
+                e('div', { className: 'absolute bottom-0 left-0 right-0 h-[90%] bg-white rounded-t-lg shadow-xl flex flex-col' },
+                    e('header', { className: 'flex items-center justify-between p-4 border-b' },
+                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase' }, 'Filtri'),
+                        e('button', { onClick: onClose }, e(Icon, { name: 'X', size: 24 }))
+                    ),
+                    e('main', { className: 'flex-1 overflow-y-auto' },
+                        Object.entries(options).map(([label, values]) => e(AccordionItem, { key: label, label, values }))
+                    ),
+                    e('footer', { className: 'p-4 border-t flex items-center gap-4' },
+                        e('button', { onClick: handleReset, className: 'font-martian-mono uppercase underline' }, 'Reset'),
+                        e('button', { onClick: handleApply, className: 'flex-1 bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm' }, `Mostra risultati (${totalSelections})`)
                     )
                 )
             );
@@ -205,7 +300,6 @@
                                 e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }),
                                 e('span', { className: 'font-bitcount-single text-4xl' }, 'gdarchivio')
                             ),
-                            // Contenitore per gli elementi a destra
                             e('div', { className: 'hidden md:flex items-center gap-x-12 ml-auto' },
                                 e('nav', { className: 'flex items-center space-x-8' },
                                     navItems.map(item => e('a', {
@@ -268,8 +362,9 @@
             );
         };
         
-        const FilterBar = ({ options, itemCount, selectedFilters, onFilterChange, onResetFilters }) => {
+        const FilterBar = ({ options, initialFilters, selectedFilters, onFilterChange, onResetFilters, onApplyFilters, sortOrder, onSortChange }) => {
             const [openFilter, setOpenFilter] = useState(null);
+            const [isPanelOpen, setIsPanelOpen] = useState(false);
             const barRef = useRef(null);
 
             const areFiltersActive = useMemo(() => {
@@ -290,17 +385,12 @@
                 setOpenFilter(prev => (prev === label ? null : label));
             };
 
-            const SortDropdown = () => e('div', { className: 'relative' },
-                e('select', {className: 'font-martian-mono text-sm border border-black py-1 px-2 appearance-none pr-6 bg-white'},
-                    sortOptions.map(opt => e('option', {key: opt, value: opt}, opt))
-                )
-            );
-
             return e('div', { className: 'sticky top-20 bg-white z-20 py-4 border-b border-gray-200 mb-8', ref: barRef },
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    e('div', { className: 'flex items-center justify-between' },
+                    // Vista Desktop
+                    e('div', { className: 'hidden md:flex items-center justify-between' },
                         e('div', { className: 'flex items-center gap-x-4 flex-wrap' },
-                            e(Icon, { name: 'FilterSliders', size: 20, className: 'text-cold-gray flex-shrink-0' }),
+                            e(Icon, { name: 'Filter', size: 20, className: 'text-cold-gray flex-shrink-0' }),
                             e('span', { className: 'font-martian-mono text-sm text-cold-gray uppercase flex-shrink-0' }, 'Filter:'),
                             Object.entries(options).map(([label, values]) => e(FilterDropdown, { 
                                 key: label, 
@@ -316,12 +406,41 @@
                                 className: 'font-martian-mono text-sm text-cold-gray hover:text-black underline ml-4'
                             }, 'Reset filters')
                         ),
-                        e('div', {className: 'hidden sm:block ml-4'}, e(SortDropdown))
+                        e('div', {className: 'ml-4'}, 
+                            e(CustomSortDropdown, {
+                                options: sortOptions,
+                                selectedValue: sortOrder,
+                                onSelect: (option) => { onSortChange(option); handleToggle('sort'); },
+                                isOpen: openFilter === 'sort',
+                                onToggle: () => handleToggle('sort')
+                            })
+                        )
                     ),
-                    e('div', { className: 'mt-4' },
-                        e('span', { className: 'font-martian-mono text-xs text-cold-gray' }, `${itemCount} items found`)
+                    // Vista Mobile
+                    e('div', { className: 'md:hidden flex items-center justify-between' },
+                        e('button', { 
+                            onClick: () => setIsPanelOpen(true),
+                            className: 'flex items-center gap-2 font-martian-mono uppercase text-sm'
+                        },
+                            e(Icon, { name: 'Filter', size: 20 }),
+                            'Filtri'
+                        ),
+                        e(CustomSortDropdown, {
+                            options: sortOptions,
+                            selectedValue: sortOrder,
+                            onSelect: (option) => { onSortChange(option); handleToggle('sort'); },
+                            isOpen: openFilter === 'sort',
+                            onToggle: () => handleToggle('sort')
+                        })
                     )
-                )
+                ),
+                isPanelOpen && e(MobileFilterPanel, { 
+                    options, 
+                    initialFilters, 
+                    selectedFilters, 
+                    onApply: onApplyFilters, 
+                    onClose: () => setIsPanelOpen(false) 
+                })
             );
         };
 
@@ -335,29 +454,17 @@
                     e('img', { src: item.images[0], alt: item.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })
                 ),
                 e('div', { className: 'mt-3 text-left flex-grow' },
-                    e('h3', { className: "font-martian-mono uppercase text-sm text-cold-gray" }, item.brand || item.author),
-                    e('p', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.name),
+                    e('h3', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.brand || item.author),
+                    e('p', { className: "font-martian-mono uppercase text-sm text-cold-gray" }, item.name),
                     e('p', { className: "font-martian-mono text-xs text-cold-gray mt-1" }, meta)
-                ),
-                 item.type === 'product' && e('div', { className: 'mt-2 space-y-1' },
-                    Object.entries(item.purchaseLinks).map(([platform, url]) => 
-                        e('a', {
-                            key: platform, href: url, target: '_blank', rel: 'noopener noreferrer',
-                            onClick: (e) => e.stopPropagation(),
-                            className: 'flex items-center gap-2 text-xs font-martian-mono text-cold-gray hover:text-black hover:underline'
-                        },
-                            e('span', null, platform),
-                            e(Icon, { name: 'ExternalLink', size: 12 })
-                        )
-                    )
-                 )
+                )
             );
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
             if (!isOpen) return null;
             return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
-                e('div', { className: 'bg-white p-8 relative w-full max-w-md animate-fade-in', onClick: e => e.stopPropagation() },
+                e('div', { className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in', onClick: e => e.stopPropagation() },
                     e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
                     title && e('h3', { className: 'font-martian-mono uppercase font-bold text-center text-lg mb-6' }, title),
                     children
@@ -365,21 +472,52 @@
             );
         };
         
-        const InquiryForm = () => e('form', null,
-            e('div', { className: 'mb-4' },
-                e('label', { htmlFor: 'modal-name', className: 'block font-martian-mono text-xs uppercase mb-1' }, 'Name'),
-                e('input', { type: 'text', id: 'modal-name', className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
-            ),
-            e('div', { className: 'mb-4' },
-                e('label', { htmlFor: 'modal-email', className: 'block font-martian-mono text-xs uppercase mb-1' }, 'Email'),
-                e('input', { type: 'email', id: 'modal-email', className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
-            ),
-            e('div', { className: 'mb-4' },
-                e('label', { htmlFor: 'modal-message', className: 'block font-martian-mono text-xs uppercase mb-1' }, 'Message'),
-                e('textarea', { id: 'modal-message', rows: 4, className: 'w-full border border-black p-2 text-sm focus:outline-none focus:ring-1 focus:ring-black' })
-            ),
-            e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message')
-        );
+        const InquiryForm = ({ item }) => {
+            const meta = [item.size, item.year, item.condition].filter(Boolean).join(' • ');
+            return e('div', null,
+                e('div', { className: 'text-center mb-6' },
+                    e('h2', { className: 'font-martian-mono text-lg font-bold uppercase' }, item.brand),
+                    e('h1', { className: 'font-martian-mono text-base' }, item.name),
+                    e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
+                ),
+                e('h3', { className: 'font-martian-mono uppercase text-sm font-bold mb-4' }, 'Contact Us'),
+                e('form', null,
+                    e('div', { className: 'mb-4' },
+                        e('input', { type: 'text', placeholder: 'name', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
+                    ),
+                    e('div', { className: 'mb-4' },
+                        e('input', { type: 'email', placeholder: 'email', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
+                    ),
+                    e('div', { className: 'mb-4' },
+                        e('textarea', { placeholder: 'message', rows: 4, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
+                    ),
+                    e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 mt-4 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message'),
+                    e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray mt-4' }, 'we will respond within 24 hours.')
+                )
+            );
+        };
+
+        const PlatformsList = ({ item }) => {
+            const meta = [item.size, item.year, item.condition].filter(Boolean).join(' • ');
+            return e('div', null,
+                e('div', { className: 'text-center mb-6' },
+                    e('h2', { className: 'font-martian-mono text-lg font-bold uppercase' }, item.brand),
+                    e('h1', { className: 'font-martian-mono text-base' }, item.name),
+                    e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
+                ),
+                e('div', { className: 'space-y-3' },
+                    Object.entries(item.purchaseLinks || {}).map(([platform, url]) => 
+                        e('a', {
+                            key: platform, href: url, target: '_blank', rel: 'noopener noreferrer',
+                            className: 'flex items-center justify-between w-full border border-gray-200 hover:border-black p-4 font-martian-mono uppercase text-sm transition-colors'
+                        }, 
+                        e('span', null, platform), 
+                        e(Icon, { name: 'ExternalLink', size: 16 }))
+                    )
+                ),
+                e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray mt-4' }, 'external platforms.')
+            );
+        };
 
         // ==========================================================
         // PAGINE
@@ -421,6 +559,7 @@
         const ListPage = ({ items, navigateTo, page, options }) => {
             const initialFilters = useMemo(() => Object.keys(options).reduce((acc, key) => ({ ...acc, [key]: [] }), {}), [options]);
             const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+            const [sortOrder, setSortOrder] = useState(sortOptions[0]);
 
             const handleFilterChange = useCallback((filterType, value) => {
                 setSelectedFilters(prevFilters => {
@@ -435,32 +574,56 @@
             const handleResetFilters = useCallback(() => {
                 setSelectedFilters(initialFilters);
             }, [initialFilters]);
+
+            const handleApplyFilters = useCallback((newFilters) => {
+                setSelectedFilters(newFilters);
+            }, []);
             
-            const filteredItems = useMemo(() => {
-                return items.filter(item => {
+            const processedItems = useMemo(() => {
+                let filtered = items.filter(item => {
                     return Object.entries(selectedFilters).every(([key, values]) => {
                         if (values.length === 0) return true;
-                        return values.includes(String(item[key]));
+                        const itemValue = item[key] || (key === 'author' && item.brand);
+                        return values.includes(String(itemValue));
                     });
                 });
-            }, [items, selectedFilters]);
+
+                const [field, orderPart1, orderPart2] = sortOrder.split(' ');
+                const order = `${orderPart1} ${orderPart2}`;
+                const sortKey = field === 'name' ? 'name' : (field === 'brand' ? 'brand' : 'year');
+
+                filtered.sort((a, b) => {
+                    const valA = a[sortKey];
+                    const valB = b[sortKey];
+                    let comparison = 0;
+
+                    if (typeof valA === 'string') {
+                        comparison = valA.localeCompare(valB);
+                    } else if (typeof valA === 'number') {
+                        comparison = valA - valB;
+                    }
+                    
+                    return order.includes('a-z') || order.includes('old') ? comparison : comparison * -1;
+                });
+
+                return filtered;
+            }, [items, selectedFilters, sortOrder]);
 
             return e(Fragment, null,
                 e(FilterBar, { 
-                    options, 
-                    itemCount: filteredItems.length, 
+                    options,
+                    initialFilters,
+                    itemCount: processedItems.length, 
                     selectedFilters, 
                     onFilterChange: handleFilterChange,
-                    onResetFilters: handleResetFilters
+                    onResetFilters: handleResetFilters,
+                    onApplyFilters: handleApplyFilters,
+                    sortOrder: sortOrder,
+                    onSortChange: setSortOrder
                 }),
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-                    e('a', { 
-                        href: '#home', 
-                        onClick: (ev) => { ev.preventDefault(); navigateTo('#home'); },
-                        className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
-                    }, e(Icon, { name: 'ArrowLeft', size: 16 }), 'Back'),
                     e('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10' },
-                        filteredItems.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
+                        processedItems.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
                     )
                 )
             );
@@ -470,27 +633,26 @@
             const [modal, setModal] = useState(null);
             const [mainImage, setMainImage] = useState(item.images[0]);
             
-            const goBackUrl = `#${item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive')}`;
+            const pageType = item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive');
+            const goBackUrl = `#${pageType}`;
+            const backButtonText = `Back to ${pageType}`;
 
             const renderDetails = () => {
-                const details = [ { label: 'category', value: item.category }, { label: 'year', value: item.year }, { label: 'color', value: item.color }, { label: 'size', value: item.size }, { label: 'condition', value: item.condition }, { label: 'material', value: item.material }, { label: 'author', value: item.author }, { label: 'publisher', value: item.publisher }];
+                const details = [ { label: 'category', value: item.category }, { label: 'color', value: item.color }, { label: 'size', value: item.size }, { label: 'year', value: item.year }, { label: 'condition', value: item.condition }, { label: 'material', value: item.material }, { label: 'author', value: item.author }, { label: 'publisher', value: item.publisher }];
                 return details.filter(d => d.value).map(d => 
-                    e('div', { key: d.label, className: 'flex justify-between text-sm py-2 border-b' },
-                        e('span', { className: 'font-martian-mono text-cold-gray uppercase' }, d.label),
-                        e('span', { className: 'font-martian-mono capitalize' }, d.value)
+                    e('div', { key: d.label, className: 'flex justify-between text-sm py-2' },
+                        e('span', { className: 'font-martian-mono text-cold-gray' }, d.label.toLowerCase()),
+                        e('span', { className: 'font-martian-mono' }, d.value)
                     )
                 );
             };
 
             const renderMeasurements = () => {
                 if (!item.measurements || Object.keys(item.measurements).length === 0) return null;
-                return e('div', { className: 'mt-4' },
-                    e('h4', { className: 'font-martian-mono text-sm uppercase font-bold my-2' }, 'Measurements'),
-                    Object.entries(item.measurements).map(([key, value]) => 
-                        e('div', { key: key, className: 'flex justify-between text-sm py-2 border-b' },
-                            e('span', { className: 'font-martian-mono text-cold-gray capitalize' }, key),
-                            e('span', { className: 'font-martian-mono' }, value)
-                        )
+                return Object.entries(item.measurements).map(([key, value]) => 
+                    e('div', { key: key, className: 'flex justify-between text-sm py-2' },
+                        e('span', { className: 'font-martian-mono text-cold-gray' }, key.toLowerCase()),
+                        e('span', { className: 'font-martian-mono' }, value)
                     )
                 );
             };
@@ -501,8 +663,8 @@
                     buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
                 }
                 if(item.type === 'product'){
-                     buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full border border-black text-black py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-gray-100 transition-colors' }, 'Contact for Inquiry'));
-                     buttons.push(e('button', { key: 'platforms', onClick: () => setModal('platforms'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Available On Platforms'));
+                     buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
+                     buttons.push(e('button', { key: 'platforms', onClick: () => setModal('platforms'), className: 'w-full border border-black text-black py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-gray-100 transition-colors' }, 'Available On Platforms'));
                 }
                 return e('div', { className: 'mt-6 space-y-2' }, ...buttons);
             };
@@ -513,44 +675,57 @@
                         href: goBackUrl, 
                         onClick: (ev) => { ev.preventDefault(); navigateTo(goBackUrl); },
                         className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
-                    }, e(Icon, { name: 'ArrowLeft', size: 16 }), 'Back'),
+                    }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
-                        e('div', { className: 'flex flex-col-reverse lg:flex-row gap-4' },
-                            e('div', { className: 'flex lg:flex-col gap-2 flex-wrap' },
-                                item.images.map((img, index) => e('img', { 
-                                  key: index, src: img, alt: `Thumbnail ${index+1}`, onClick: () => setMainImage(img),
-                                  className: `w-16 h-20 object-cover cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
-                                }))
-                            ),
+                        e('div', { className: 'flex flex-col gap-4' },
                              e('div', { className: 'flex-1 aspect-[4/5] bg-gray-100' },
                                 e('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-cover' })
+                            ),
+                            e('div', { className: 'flex flex-row gap-2 flex-wrap' },
+                                item.images.map((img, index) => e('img', { 
+                                  key: index, src: img, alt: `Thumbnail ${index+1}`, onClick: () => setMainImage(img),
+                                  className: `w-20 h-24 object-cover cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
+                                }))
                             )
                         ),
                         e('div', { className: 'sticky top-24 self-start' },
-                            e('h2', { className: 'font-martian-mono text-2xl font-bold uppercase' }, item.brand || item.author),
-                            e('h1', { className: 'font-martian-mono text-xl mt-1' }, item.name),
-                            e('p', { className: 'font-martian-mono text-sm mt-4 leading-relaxed' }, item.description),
-                            e('div', { className: 'mt-6' }, renderDetails()),
-                            renderMeasurements(),
-                            renderActionButtons()
+                            e('div', { className: 'pb-6 border-b border-gray-100 flex justify-between items-start' },
+                                e('div', null,
+                                    e('h2', { className: 'font-martian-mono text-base uppercase text-cold-gray' }, item.brand || item.author),
+                                    e('h1', { className: 'font-martian-mono text-xl uppercase mt-1' }, item.name)
+                                ),
+                                e('div', { className: 'flex items-center gap-x-4 text-cold-gray' },
+                                    e('button', { className: 'hover:text-black' }, e(Icon, { name: 'Heart', size: 20 })),
+                                    e('button', { className: 'hover:text-black' }, e(Icon, { name: 'Share', size: 20 }))
+                                )
+                            ),
+                            e('div', { className: 'py-6 border-b border-gray-100' },
+                                e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'DESCRIPTION'),
+                                e('p', { className: 'font-martian-mono text-sm leading-relaxed' }, item.description)
+                            ),
+                            e('div', { className: 'py-6 border-b border-gray-100' },
+                                e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'PRODUCT DETAILS'),
+                                renderDetails()
+                            ),
+                            e('div', { className: 'py-6' },
+                                e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'MEASUREMENTS'),
+                                renderMeasurements()
+                            ),
+                            renderActionButtons(),
+                            e('ul', { className: 'mt-6 space-y-1 text-xs text-cold-gray font-martian-mono list-disc list-inside' },
+                                e('li', null, 'all products are carefully authenticated'),
+                                e('li', null, 'detailed condition reports available'),
+                                e('li', null, 'archive consultation by appointment')
+                            )
                         )
                     )
                 ),
-                e(Modal, { isOpen: modal === 'inquiry', onClose: () => setModal(null), title: 'Product Inquiry' }, e(InquiryForm)),
-                e(Modal, { isOpen: modal === 'platforms', onClose: () => setModal(null), title: 'Available On' },
-                    e('div', { className: 'space-y-2' },
-                        Object.entries(item.purchaseLinks || {}).map(([platform, url]) => 
-                            e('a', {
-                                key: platform, href: url, target: '_blank', rel: 'noopener noreferrer',
-                                className: 'flex items-center justify-between w-full bg-gray-100 hover:bg-gray-200 p-4 font-martian-mono uppercase text-sm transition-colors'
-                            }, e('span', null, platform), e(Icon, { name: 'ExternalLink', size: 16 }))
-                        )
-                    )
-                )
+                e(Modal, { isOpen: modal === 'inquiry', onClose: () => setModal(null), title: 'PRODUCT INQUIRY' }, e(InquiryForm, { item })),
+                e(Modal, { isOpen: modal === 'platforms', onClose: () => setModal(null), title: 'AVAILABLE ON' }, e(PlatformsList, { item }))
             );
         };
         
-        const ContactPage = () => {
+        const ContactPage = ({ navigateTo }) => {
             const FormInput = ({ id, label, type = 'text', placeholder }) => e('div', { className: 'mb-4' },
                 e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
                 e('input', { type, id, name: id, required: true, placeholder, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
@@ -589,7 +764,10 @@
                     e('div', null,
                          e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'GET IN TOUCH'),
                         e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
-                            e('p', { className: 'font-martian-mono text-xs uppercase text-cold-gray mb-1' }, 'Email'),
+                            e('div', {className: 'flex items-center gap-2 mb-1'},
+                                e(Icon, {name: 'Mail', size: 16, className: 'text-cold-gray'}),
+                                e('p', { className: 'font-martian-mono text-xs uppercase text-cold-gray' }, 'Email')
+                            ),
                             e('p', { className: 'font-martian-mono text-sm' }, e('a', { href: 'mailto:gdarchivio0@gmail.com', className: 'underline' }, 'gdarchivio0@gmail.com')),
                         ),
                         e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
@@ -643,6 +821,11 @@
                 const [page, id] = route.substring(1).split('/');
                 const allItems = [...mockProducts, ...mockLibraryItems];
                 const item = allItems.find(p => p.id === id);
+
+                if (id && !item) {
+                    navigateTo(page.startsWith('#') ? page : `#${page}`);
+                    return null;
+                }
 
                 switch (page) {
                     case 'collection':
