@@ -17,6 +17,8 @@
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f1f1; } ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #555; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
         .font-bitcount-single { font-family: 'Bitcount Single', monospace; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -187,10 +189,10 @@
             return e('div', { className: 'relative' },
                 e('button', {
                     onClick: onToggle,
-                    className: 'flex items-center gap-2 font-martian-mono text-sm w-40 border-b border-gray-300 pb-1'
+                    className: 'flex items-center justify-between gap-2 font-martian-mono text-sm w-40 border-b border-gray-300 pb-1'
                 },
                     selectedValue,
-                    e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ml-auto ${isOpen ? 'rotate-180' : ''}` })
+                    e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}` })
                 ),
                 isOpen && e('div', { className: 'absolute top-full right-0 mt-2 w-48 bg-white border rounded-lg shadow-xl animate-fade-in z-30' },
                     e('div', { className: 'p-2' },
@@ -259,9 +261,9 @@
 
             return e('div', { className: 'fixed inset-0 z-40' },
                 e('div', { className: 'absolute inset-0 bg-black bg-opacity-50', onClick: onClose }),
-                e('div', { className: 'absolute bottom-0 left-0 right-0 h-[90%] bg-white rounded-t-lg shadow-xl flex flex-col' },
+                e('div', { className: 'absolute bottom-0 left-0 right-0 h-[90%] bg-white rounded-t-lg shadow-xl flex flex-col animate-slide-up' },
                     e('header', { className: 'flex items-center justify-between p-4 border-b' },
-                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase' }, 'Filtri'),
+                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase' }, 'Filter'),
                         e('button', { onClick: onClose }, e(Icon, { name: 'X', size: 24 }))
                     ),
                     e('main', { className: 'flex-1 overflow-y-auto' },
@@ -367,6 +369,17 @@
             const [isPanelOpen, setIsPanelOpen] = useState(false);
             const barRef = useRef(null);
 
+            useEffect(() => {
+                if (isPanelOpen) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = 'unset';
+                }
+                return () => {
+                    document.body.style.overflow = 'unset';
+                };
+            }, [isPanelOpen]);
+
             const areFiltersActive = useMemo(() => {
                 return Object.values(selectedFilters).some(arr => arr.length > 0);
             }, [selectedFilters]);
@@ -387,7 +400,6 @@
 
             return e('div', { className: 'sticky top-20 bg-white z-20 py-4 border-b border-gray-200 mb-8', ref: barRef },
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    // Vista Desktop
                     e('div', { className: 'hidden md:flex items-center justify-between' },
                         e('div', { className: 'flex items-center gap-x-4 flex-wrap' },
                             e(Icon, { name: 'Filter', size: 20, className: 'text-cold-gray flex-shrink-0' }),
@@ -416,14 +428,13 @@
                             })
                         )
                     ),
-                    // Vista Mobile
                     e('div', { className: 'md:hidden flex items-center justify-between' },
                         e('button', { 
                             onClick: () => setIsPanelOpen(true),
                             className: 'flex items-center gap-2 font-martian-mono uppercase text-sm'
                         },
                             e(Icon, { name: 'Filter', size: 20 }),
-                            'Filtri'
+                            'FILTER'
                         ),
                         e(CustomSortDropdown, {
                             options: sortOptions,
@@ -622,7 +633,7 @@
                     onSortChange: setSortOrder
                 }),
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-                    e('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10' },
+                    e('div', { className: 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10' },
                         processedItems.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
                     )
                 )
