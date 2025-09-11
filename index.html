@@ -147,6 +147,7 @@
                 Menu: e('svg', iconProps, e('line', { x1: '3', y1: '12', x2: '21', y2: '12' }), e('line', { x1: '3', y1: '6', x2: '21', y2: '6' }), e('line', { x1: '3', y1: '18', x2: '21', y2: '18' })),
                 Instagram: e('svg', iconProps, e('rect', { x: '2', y: '2', width: '20', height: '20', rx: '5', ry: '5' }), e('path', { d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' }), e('line', { x1: '17.5', y1: '6.5', x2: '17.51', y2: '6.5' })),
                 Heart: e('svg', iconProps, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
+                HeartFilled: e('svg', {...iconProps, fill: 'currentColor', stroke: 'currentColor'}, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
                 Share: e('svg', iconProps, e('circle', {cx: '18', cy: '5', r: '3'}), e('circle', {cx: '6', cy: '12', r: '3'}), e('circle', {cx: '18', cy: '19', r: '3'}), e('line', {x1: '8.59', y1: '13.51', x2: '15.42', y2: '17.49'}), e('line', {x1: '15.41', y1: '6.51', x2: '8.59', y2: '10.49'})),
                 Mail: e('svg', iconProps, e('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }), e('polyline', { points: '22,6 12,13 2,6' }))
             };
@@ -659,7 +660,14 @@
         const DetailPage = ({ item, navigateTo }) => {
             const [modal, setModal] = useState(null);
             const [mainImage, setMainImage] = useState(item.images[0]);
+            const [wishlist, setWishlist] = useState([]);
+            const [shareFeedback, setShareFeedback] = useState('');
             
+            useEffect(() => {
+                const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                setWishlist(savedWishlist);
+            }, []);
+
             useEffect(() => {
                 if (modal) {
                     document.body.style.overflow = 'hidden';
@@ -668,7 +676,36 @@
                 }
                 return () => { document.body.style.overflow = 'unset'; };
             }, [modal]);
+            
+            const handleToggleWishlist = (itemId) => {
+                const newWishlist = wishlist.includes(itemId)
+                    ? wishlist.filter(id => id !== itemId)
+                    : [...wishlist, itemId];
+                setWishlist(newWishlist);
+                localStorage.setItem('wishlist', JSON.stringify(newWishlist));
+            };
 
+            const handleShare = async () => {
+                const shareData = {
+                    title: item.name,
+                    text: `Check out this from gdarchivio: ${item.name}`,
+                    url: window.location.href
+                };
+                try {
+                    if (navigator.share) {
+                        await navigator.share(shareData);
+                    } else {
+                        throw new Error('Web Share API not supported');
+                    }
+                } catch (err) {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        setShareFeedback('Link copied!');
+                        setTimeout(() => setShareFeedback(''), 2000);
+                    });
+                }
+            };
+            
+            const isWishlisted = wishlist.includes(item.id);
             const pageType = item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive');
             const goBackUrl = `#${pageType}`;
             const backButtonText = `Back to ${pageType}`;
@@ -730,9 +767,14 @@
                                     e('h2', { className: 'font-martian-mono text-base uppercase text-cold-gray' }, item.brand || item.author),
                                     e('h1', { className: 'font-martian-mono text-xl uppercase mt-1' }, item.name)
                                 ),
-                                e('div', { className: 'flex items-center gap-x-4 text-cold-gray' },
-                                    e('button', { className: 'hover:text-black' }, e(Icon, { name: 'Heart', size: 20 })),
-                                    e('button', { className: 'hover:text-black' }, e(Icon, { name: 'Share', size: 20 }))
+                                e('div', { className: 'flex items-center gap-x-3' },
+                                    e('span', { className: `text-xs text-cold-gray transition-opacity duration-300 ${shareFeedback ? 'opacity-100' : 'opacity-0'}` }, shareFeedback),
+                                    e('button', { onClick: () => handleToggleWishlist(item.id), className: isWishlisted ? 'text-black' : 'text-cold-gray hover:text-black' }, 
+                                        e(Icon, { name: isWishlisted ? 'HeartFilled' : 'Heart', size: 20 })
+                                    ),
+                                    e('button', { onClick: handleShare, className: 'text-cold-gray hover:text-black' }, 
+                                        e(Icon, { name: 'Share', size: 20 })
+                                    )
                                 )
                             ),
                             e('div', { className: 'py-6 border-b border-gray-100' },
