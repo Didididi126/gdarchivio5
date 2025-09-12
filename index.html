@@ -260,7 +260,7 @@
                 );
             };
 
-            return e('div', { className: 'fixed inset-0 z-40' },
+            return e('div', { className: 'fixed inset-0 z-50' },
                 e('div', { className: 'absolute inset-0 bg-black bg-opacity-50', onClick: onClose }),
                 e('div', { className: 'absolute top-0 right-0 bottom-0 h-full bg-white w-full max-w-sm flex flex-col animate-slide-in-right' },
                     e('header', { className: 'flex items-center justify-between p-4 border-b' },
@@ -308,11 +308,16 @@
                     document.body.style.width = '';
                     window.scrollTo(0, scrollYRef.current);
                 }
-                return () => { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; };
+                const cleanup = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                };
+                return cleanup;
             }, [isMenuOpen]);
 
             return e(Fragment, null, 
-                e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-20' },
+                e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-40' },
                     e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                         e('div', { className: 'flex items-center justify-between h-20' },
                             e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
@@ -404,7 +409,12 @@
                     document.body.style.width = '';
                     window.scrollTo(0, scrollYRef.current);
                 }
-                return () => { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; };
+                const cleanup = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                };
+                return cleanup;
             }, [isPanelOpen]);
 
             const areFiltersActive = useMemo(() => {
@@ -691,7 +701,12 @@
                     document.body.style.width = '';
                     window.scrollTo(0, scrollYRef.current);
                 }
-                return () => { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; };
+                const cleanup = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                };
+                return cleanup;
             }, [modal]);
             
             const handleToggleWishlist = (itemId) => {
