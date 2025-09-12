@@ -60,54 +60,10 @@
         const { useState, useEffect, useMemo, useCallback, Fragment, useRef } = React;
         const { createRoot } = ReactDOM;
         const e = React.createElement;
-
-        // ==========================================================
-        // DATI MOCK E COSTANTI
-        // ==========================================================
-        const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
         
-        const generateProducts = (count, type) => {
-            const sample = {
-                brands: type === 'product' ? ['Miss Sixty', 'Diesel', 'Blumarine', 'Prada', 'Gucci', 'Jean Paul Gaultier', 'Versace'] : ['Dolce & Gabbana', 'Prada', 'Helmut Lang', 'Maison Martin Margiela', 'Thierry Mugler', 'Comme des Garçons', 'Plein Sud'],
-                categories: ['jackets', 'pants', 'top', 'dresses', 'bags', 'skirts', 'shoes'],
-                colors: ['black', 'blue', 'white', 'multicolour', 'brown', 'red', 'pink'],
-                names: {jackets: 'Jacket', pants: 'Trousers', top: 'Top', dresses: 'Bodycon Dress', bags: 'Bag', skirts: 'Skirt', shoes: 'Heels'}
-            };
-            const products = [];
-            for (let i = 0; i < count; i++) {
-                const category = sample.categories[i % sample.categories.length];
-                const brand = sample.brands[i % sample.brands.length];
-                const product = {
-                    id: `${type === 'product' ? 100 : 0}${i + 1}`,
-                    name: `${brand} ${sample.names[category]}`,
-                    brand: brand,
-                    category: category === 'dresses' ? 'Dresses' : category,
-                    color: 'black',
-                    size: 'S',
-                    year: 2010 - (i % 24),
-                    condition: 'excellent',
-                    material: 'Viscose elastane',
-                    images: [getPlaceholderImageUrl(800, 1000, `${brand} ${i+1}`), getPlaceholderImageUrl(800, 1000, `Detail 1`), getPlaceholderImageUrl(800, 1000, `Detail 2`), getPlaceholderImageUrl(800, 1000, `Detail 3`)],
-                    description: `${brand} ${sample.names[category].toLowerCase()} in black from 2003.`,
-                    measurements: { chest: '48cm', waist: '34cm', length: '84cm'},
-                    type: type,
-                };
-                if (type === 'product') {
-                    product.purchaseLinks = { VINTED: 'https://www.vinted.it/', 'VESTIAIRE COLLECTIVE': 'https://www.vestiairecollective.com/' };
-                }
-                products.push(product);
-            }
-            return products;
-        };
-
-        const mockProducts = [...generateProducts(20, 'product'), ...generateProducts(20, 'archive')];
-
-        const mockLibraryItems = [
-          { id: 'L1', name: 'Fashion History', author: 'Jane Doe', publisher: 'Fashion Books Inc.', year: 2015, category: 'history', images: [getPlaceholderImageUrl(800, 1000, 'Book 1')], description: 'A comprehensive guide to the history of fashion.', type: 'book', measurements:{}, brand: 'Jane Doe' },
-          { id: 'L2', name: 'The Art of Dressmaking', author: 'John Smith', publisher: 'Craft Publications', year: 2008, category: 'craft', images: [getPlaceholderImageUrl(800, 1000, 'Book 2')], description: 'Techniques and tips for haute couture.', type: 'book', measurements:{}, brand: 'John Smith' },
-          { id: 'L3', name: 'Savage Beauty', author: 'Andrew Bolton', publisher: 'Metropolitan Museum', year: 2011, category: 'biography', images: [getPlaceholderImageUrl(800, 1000, 'Book 3')], description: 'An exploration of McQueen\'s iconic work.', type: 'book', measurements:{}, brand: 'Andrew Bolton' },
-        ];
-
+        // ==========================================================
+        // COSTANTI
+        // ==========================================================
         const filterOptions = {
             collection: {
                 brand: ['Alexander McQueen', 'Ann Demeulemeester', 'Blumarine', 'Christian Dior', 'Comme des Garçons', 'D&G', 'Diesel', 'Dolce & Gabbana', 'Emilio Pucci', 'Faycal Amor', 'Gianni Versace', 'Gucci', 'Helmut Lang', 'Jean Paul Gaultier', 'John Galliano', 'MM6', 'Maison Martin Margiela', 'Marité Francois Girbaud', 'Miss Sixty', 'Miu Miu', 'Plein Sud', 'Prada', 'Roberto Cavalli', 'Thierry Mugler', 'Versace', 'Vivienne Westwood'],
@@ -155,7 +111,7 @@
         };
 
         // ==========================================================
-        // COMPONENTI DROPDOWN
+        // COMPONENTI DROPDOWN E PANEL
         // ==========================================================
         const FilterDropdown = ({ label, values, isOpen, onToggle, selectedValues, onFilterChange }) => {
             return e('div', { className: 'relative' },
@@ -207,9 +163,6 @@
             );
         };
         
-        // ==========================================================
-        // PANNELLO FILTRI MOBILE
-        // ==========================================================
         const MobileFilterPanel = ({ options, initialFilters, selectedFilters, onApply, onClose }) => {
             const [tempFilters, setTempFilters] = useState(selectedFilters);
             const [openCategory, setOpenCategory] = useState(null);
@@ -510,7 +463,30 @@
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
+            const scrollYRef = useRef(0);
+            
+            useEffect(() => {
+                if (isOpen) {
+                    scrollYRef.current = window.scrollY;
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = `-${scrollYRef.current}px`;
+                    document.body.style.width = '100%';
+                } else {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    window.scrollTo(0, scrollYRef.current);
+                }
+                const cleanup = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                };
+                return cleanup;
+            }, [isOpen]);
+            
             if (!isOpen) return null;
+
             return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
                 e('div', { className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in', onClick: e => e.stopPropagation() },
                     e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),

@@ -1,0 +1,28 @@
+[
+  { 
+    "id": "L1", 
+    "name": "Fashion History", 
+    "author": "Jane Doe", 
+    "brand": "Jane Doe",
+    "publisher": "Fashion Books Inc.", 
+    "year": 2015, 
+    "category": "history", 
+    "images": ["images/placeholder.jpg"], 
+    "description": "A comprehensive guide to the history of fashion.", 
+    "type": "book", 
+    "measurements":{} 
+  },
+  { 
+    "id": "L2", 
+    "name": "The Art of Dressmaking", 
+    "author": "John Smith", 
+    "brand": "John Smith",
+    "publisher": "Craft Publications", 
+    "year": 2008, 
+    "category": "craft", 
+    "images": ["images/placeholder.jpg"], 
+    "description": "Techniques and tips for haute couture.", 
+    "type": "book", 
+    "measurements":{} 
+  }
+]

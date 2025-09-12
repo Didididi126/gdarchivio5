@@ -1,0 +1,38 @@
+[
+  {
+    "id": "101",
+    "name": "Plein Sud Bodycon Dress",
+    "brand": "Plein Sud",
+    "category": "Dresses",
+    "color": "black",
+    "size": "S",
+    "year": 2003,
+    "condition": "excellent",
+    "material": "Viscose elastane",
+    "images": [
+      "images/placeholder.jpg"
+    ],
+    "description": "Plein Sud bodycon dress in black from 2003.",
+    "measurements": { "chest": "48cm", "waist": "34cm", "length": "84cm"},
+    "type": "archive",
+    "purchaseLinks": null
+  },
+  {
+    "id": "102",
+    "name": "Prada Trousers",
+    "brand": "Prada",
+    "category": "pants",
+    "color": "black",
+    "size": "M",
+    "year": 1999,
+    "condition": "very good",
+    "material": "Nylon",
+    "images": [
+      "images/placeholder.jpg"
+    ],
+    "description": "Iconic Prada trousers in black nylon from 1999.",
+    "measurements": { "waist": "40cm", "length": "102cm"},
+    "type": "product",
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+  }
+]
