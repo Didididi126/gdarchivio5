@@ -34,5 +34,37 @@
     "measurements": { "waist": "40cm", "length": "102cm"},
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+  },
+  {
+    "id": "103",
+    "name": "Dolce & Gabbana F/W 1992 silk jacket",
+    "brand": "Dolce & Gabbana",
+    "category": "jackets",
+    "color": "multicolour",
+    "size": "M",
+    "year": 1992,
+    "condition": "excellent condition",
+    "material": "Silk",
+    "images": [
+      "images/dolcegabbana-jackets-01.jpg",
+      "images/dolcegabbana-jackets-02.jpg",
+      "images/dolcegabbana-jackets-03.jpg",
+      "images/dolcegabbana-jackets-04.jpg",
+      "images/dolcegabbana-jackets-05.jpg",
+      "images/dolcegabbana-jackets-06.jpg",
+      "images/dolcegabbana-jackets-07.jpg",
+      "images/dolcegabbana-jackets-08.jpg",
+      "images/dolcegabbana-jackets-09.jpg",
+      "images/dolcegabbana-jackets-10.jpg",
+      "images/dolcegabbana-jackets-11.jpg"
+    ],
+    "description": "Dolce & Gabbana F/W 1992 silk jacket with a superbe print of an Italian medieval battle.",
+    "measurements": { 
+      "chest": "...", 
+      "waist": "...", 
+      "length": "..."
+    },
+    "type": "product",
+    "purchaseLinks": null
   }
 ]
