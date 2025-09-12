@@ -289,6 +289,7 @@
                 { label: 'Library', page: '#library' },
                 { label: 'Contact', page: '#contact' }
             ];
+            const scrollYRef = useRef(0);
 
             const navigateAndClose = (path) => {
                 navigateTo(path);
@@ -297,13 +298,17 @@
 
             useEffect(() => {
                 if (isMenuOpen) {
-                    document.body.style.overflow = 'hidden';
+                    scrollYRef.current = window.scrollY;
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = `-${scrollYRef.current}px`;
+                    document.body.style.width = '100%';
                 } else {
-                    document.body.style.overflow = 'unset';
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    window.scrollTo(0, scrollYRef.current);
                 }
-                return () => {
-                    document.body.style.overflow = 'unset';
-                };
+                return () => { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; };
             }, [isMenuOpen]);
 
             return e(Fragment, null, 
@@ -385,16 +390,21 @@
             const [openFilter, setOpenFilter] = useState(null);
             const [isPanelOpen, setIsPanelOpen] = useState(false);
             const barRef = useRef(null);
+            const scrollYRef = useRef(0);
 
             useEffect(() => {
                 if (isPanelOpen) {
-                    document.body.style.overflow = 'hidden';
+                    scrollYRef.current = window.scrollY;
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = `-${scrollYRef.current}px`;
+                    document.body.style.width = '100%';
                 } else {
-                    document.body.style.overflow = 'unset';
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    window.scrollTo(0, scrollYRef.current);
                 }
-                return () => {
-                    document.body.style.overflow = 'unset';
-                };
+                return () => { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; };
             }, [isPanelOpen]);
 
             const areFiltersActive = useMemo(() => {
@@ -662,6 +672,7 @@
             const [mainImage, setMainImage] = useState(item.images[0]);
             const [wishlist, setWishlist] = useState([]);
             const [shareFeedback, setShareFeedback] = useState('');
+            const scrollYRef = useRef(0);
             
             useEffect(() => {
                 const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
@@ -670,11 +681,17 @@
 
             useEffect(() => {
                 if (modal) {
-                    document.body.style.overflow = 'hidden';
+                    scrollYRef.current = window.scrollY;
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = `-${scrollYRef.current}px`;
+                    document.body.style.width = '100%';
                 } else {
-                    document.body.style.overflow = 'unset';
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    window.scrollTo(0, scrollYRef.current);
                 }
-                return () => { document.body.style.overflow = 'unset'; };
+                return () => { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; };
             }, [modal]);
             
             const handleToggleWishlist = (itemId) => {
