@@ -463,30 +463,7 @@
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
-            const scrollYRef = useRef(0);
-            
-            useEffect(() => {
-                if (isOpen) {
-                    scrollYRef.current = window.scrollY;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${scrollYRef.current}px`;
-                    document.body.style.width = '100%';
-                } else {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, scrollYRef.current);
-                }
-                const cleanup = () => {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                };
-                return cleanup;
-            }, [isOpen]);
-            
             if (!isOpen) return null;
-
             return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
                 e('div', { className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in', onClick: e => e.stopPropagation() },
                     e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
@@ -883,6 +860,18 @@
         // ==========================================================
         const App = () => {
             const [route, setRoute] = useState(window.location.hash || '#home');
+            const [products, setProducts] = useState([]);
+            const [libraryItems, setLibraryItems] = useState([]);
+
+            useEffect(() => {
+                Promise.all([
+                    fetch('./products.json').then(res => res.json()),
+                    fetch('./library.json').then(res => res.json())
+                ]).then(([productData, libraryData]) => {
+                    setProducts(productData);
+                    setLibraryItems(libraryData);
+                }).catch(error => console.error("Errore nel caricamento dei dati JSON:", error));
+            }, []);
 
             useEffect(() => {
                 const handleHashChange = () => {
@@ -905,21 +894,25 @@
 
             const renderPage = () => {
                 const [page, id] = route.substring(1).split('/');
-                const allItems = [...mockProducts, ...mockLibraryItems];
+                const allItems = [...products, ...libraryItems];
                 const item = allItems.find(p => p.id === id);
 
-                if (id && !item) {
+                if (id && !item && (products.length > 0 || libraryItems.length > 0)) {
                     navigateTo(page.startsWith('#') ? page : `#${page}`);
                     return null;
+                }
+                
+                if (!item && id) {
+                    return e('div', { className: 'text-center p-8' }, 'Loading item...');
                 }
 
                 switch (page) {
                     case 'collection':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: mockProducts.filter(p => p.type === 'product'), navigateTo, page: '#collection', options: filterOptions.collection });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'product'), navigateTo, page: '#collection', options: filterOptions.collection });
                     case 'archive':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: mockProducts.filter(p => p.type === 'archive'), navigateTo, page: '#archive', options: filterOptions.archive });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'archive'), navigateTo, page: '#archive', options: filterOptions.archive });
                     case 'library':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: mockLibraryItems, navigateTo, page: '#library', options: filterOptions.library });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: libraryItems, navigateTo, page: '#library', options: filterOptions.library });
                     case 'contact':
                         return e(ContactPage, { navigateTo });
                     case 'home':
