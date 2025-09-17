@@ -453,7 +453,7 @@
                 className: "group cursor-pointer flex flex-col",
                 onClick: () => navigateTo(page, item)
             },
-                e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden" },
+                e('div', { className: "aspect-square bg-gray-100 overflow-hidden" },
                     e('img', { src: item.images[0], alt: item.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })
                 ),
                 e('div', { className: 'mt-3 text-left flex-grow' },
@@ -557,22 +557,22 @@
                     ),
                     e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection') },
-                            e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "COLLECTION"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "curated pieces")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive') },
-                            e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "ARCHIVE"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "archive items")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library') },
-                            e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "LIBRARY"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "fashion books")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact') },
-                            e('div', { className: "aspect-[4/5] bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(400, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "CONTACT"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "get in touch")
                         )
@@ -765,7 +765,7 @@
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
-                             e('div', { className: 'flex-1 aspect-[4/5] bg-gray-100' },
+                             e('div', { className: 'flex-1 aspect-square bg-gray-100' },
                                 e('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-cover' })
                             ),
                             e('div', { className: 'flex flex-row gap-2 flex-wrap' },
