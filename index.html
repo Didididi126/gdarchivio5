@@ -771,7 +771,7 @@
                             e('div', { className: 'flex flex-row gap-2 flex-wrap' },
                                 item.images.map((img, index) => e('img', { 
                                   key: index, src: img, alt: `Thumbnail ${index+1}`, onClick: () => setMainImage(img),
-                                  className: `w-20 h-24 object-cover cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
+                                  className: `w-24 h-24 object-cover cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
                                 }))
                             )
                         ),
