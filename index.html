@@ -169,11 +169,13 @@
             const [tempFilters, setTempFilters] = useState(selectedFilters);
             const [openCategory, setOpenCategory] = useState(null);
 
-            // MODIFICA: Corretto il blocco dello scroll usando `overflow: hidden`
+            // MODIFICA: Metodo robusto per bloccare lo scroll su HTML e BODY
             useEffect(() => {
+                document.documentElement.style.overflow = 'hidden';
                 document.body.style.overflow = 'hidden';
                 return () => {
-                    document.body.style.overflow = 'auto';
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
                 };
             }, []);
 
@@ -258,15 +260,18 @@
                 setIsMenuOpen(false);
             };
 
-            // MODIFICA: Corretto il blocco dello scroll usando `overflow: hidden`
+            // MODIFICA: Metodo robusto per bloccare lo scroll su HTML e BODY
             useEffect(() => {
                 if (isMenuOpen) {
+                    document.documentElement.style.overflow = 'hidden';
                     document.body.style.overflow = 'hidden';
                 } else {
-                    document.body.style.overflow = 'auto';
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
                 }
                 return () => {
-                    document.body.style.overflow = 'auto';
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
                 };
             }, [isMenuOpen]);
 
@@ -445,21 +450,25 @@
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
-            // MODIFICA: Corretto il blocco dello scroll usando `overflow: hidden`
+            // MODIFICA: Metodo robusto per bloccare lo scroll su HTML e BODY
             useEffect(() => {
                 if (isOpen) {
+                    document.documentElement.style.overflow = 'hidden';
                     document.body.style.overflow = 'hidden';
                 } else {
-                    document.body.style.overflow = 'auto';
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
                 }
                 return () => {
-                    document.body.style.overflow = 'auto';
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
                 };
             }, [isOpen]);
             
             if (!isOpen) return null;
 
-            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
+            // MODIFICA: Aggiunto `overflow-y-auto` per lo scroll interno e `items-start` per allineare in alto
+            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-start justify-center p-4 overflow-y-auto py-10', onClick: onClose },
                 e('div', { className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in', onClick: e => e.stopPropagation() },
                     e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
                     title && e('h3', { className: 'font-martian-mono uppercase font-bold text-center text-lg mb-6' }, title),
