@@ -22,6 +22,11 @@
         .font-bitcount-single { font-family: 'Bitcount Single', monospace; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* MODIFICA: Aggiunta una classe per bloccare lo scroll del body in modo pulito */
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 
     <script>
@@ -169,13 +174,11 @@
             const [tempFilters, setTempFilters] = useState(selectedFilters);
             const [openCategory, setOpenCategory] = useState(null);
 
-            // MODIFICA: Metodo robusto per bloccare lo scroll su HTML e BODY
+            // MODIFICA: Metodo di blocco scroll stabile con classe CSS
             useEffect(() => {
-                document.documentElement.style.overflow = 'hidden';
-                document.body.style.overflow = 'hidden';
+                document.body.classList.add('modal-open');
                 return () => {
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
+                    document.body.classList.remove('modal-open');
                 };
             }, []);
 
@@ -260,18 +263,15 @@
                 setIsMenuOpen(false);
             };
 
-            // MODIFICA: Metodo robusto per bloccare lo scroll su HTML e BODY
+            // MODIFICA: Metodo di blocco scroll stabile con classe CSS
             useEffect(() => {
                 if (isMenuOpen) {
-                    document.documentElement.style.overflow = 'hidden';
-                    document.body.style.overflow = 'hidden';
+                    document.body.classList.add('modal-open');
                 } else {
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
+                    document.body.classList.remove('modal-open');
                 }
                 return () => {
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
+                    document.body.classList.remove('modal-open');
                 };
             }, [isMenuOpen]);
 
@@ -450,26 +450,26 @@
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
-            // MODIFICA: Metodo robusto per bloccare lo scroll su HTML e BODY
+            // MODIFICA: Metodo di blocco scroll stabile con classe CSS
             useEffect(() => {
                 if (isOpen) {
-                    document.documentElement.style.overflow = 'hidden';
-                    document.body.style.overflow = 'hidden';
+                    document.body.classList.add('modal-open');
                 } else {
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
+                    document.body.classList.remove('modal-open');
                 }
                 return () => {
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
+                    document.body.classList.remove('modal-open');
                 };
             }, [isOpen]);
             
             if (!isOpen) return null;
 
-            // MODIFICA: Aggiunto `overflow-y-auto` per lo scroll interno e `items-start` per allineare in alto
-            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-start justify-center p-4 overflow-y-auto py-10', onClick: onClose },
-                e('div', { className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in', onClick: e => e.stopPropagation() },
+            // MODIFICA: Ripristinato il centraggio e aggiunta la logica di scroll INTERNO alla finestra
+            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
+                e('div', { 
+                    className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in max-h-[90vh] overflow-y-auto', 
+                    onClick: e => e.stopPropagation() 
+                },
                     e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
                     title && e('h3', { className: 'font-martian-mono uppercase font-bold text-center text-lg mb-6' }, title),
                     children
