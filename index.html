@@ -169,6 +169,14 @@
             const [tempFilters, setTempFilters] = useState(selectedFilters);
             const [openCategory, setOpenCategory] = useState(null);
 
+            // MODIFICA: Corretto il blocco dello scroll usando `overflow: hidden`
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                return () => {
+                    document.body.style.overflow = 'auto';
+                };
+            }, []);
+
             const handleFilterChange = (filterType, value) => {
                 setTempFilters(prev => {
                     const currentValues = prev[filterType] || [];
@@ -244,31 +252,22 @@
                 { label: 'Library', page: '#library' },
                 { label: 'Contact', page: '#contact' }
             ];
-            const scrollYRef = useRef(0);
 
             const navigateAndClose = (path) => {
                 navigateTo(path);
                 setIsMenuOpen(false);
             };
 
+            // MODIFICA: Corretto il blocco dello scroll usando `overflow: hidden`
             useEffect(() => {
                 if (isMenuOpen) {
-                    scrollYRef.current = window.scrollY;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${scrollYRef.current}px`;
-                    document.body.style.width = '100%';
+                    document.body.style.overflow = 'hidden';
                 } else {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, scrollYRef.current);
+                    document.body.style.overflow = 'auto';
                 }
-                const cleanup = () => {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
+                return () => {
+                    document.body.style.overflow = 'auto';
                 };
-                return cleanup;
             }, [isMenuOpen]);
 
             return e(Fragment, null, 
@@ -356,32 +355,7 @@
             const [openFilter, setOpenFilter] = useState(null);
             const [isPanelOpen, setIsPanelOpen] = useState(false);
             const barRef = useRef(null);
-            const scrollYRef = useRef(0);
-
-            useEffect(() => {
-                if (isPanelOpen) {
-                    scrollYRef.current = window.scrollY;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${scrollYRef.current}px`;
-                    document.body.style.width = '100%';
-                } else {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, scrollYRef.current);
-                }
-                const cleanup = () => {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                };
-                return cleanup;
-            }, [isPanelOpen]);
-
-            const areFiltersActive = useMemo(() => {
-                return Object.values(selectedFilters).some(arr => arr.length > 0);
-            }, [selectedFilters]);
-
+            
             useEffect(() => {
                 const handleClickOutside = (event) => {
                     if (barRef.current && !barRef.current.contains(event.target)) {
@@ -411,7 +385,7 @@
                                 selectedValues: selectedFilters[label] || [],
                                 onFilterChange
                             })),
-                            areFiltersActive && e('button', {
+                            (Object.values(selectedFilters).some(arr => arr.length > 0)) && e('button', {
                                 onClick: onResetFilters,
                                 className: 'font-martian-mono text-sm text-cold-gray hover:text-black underline ml-4'
                             }, 'Reset filters')
@@ -471,26 +445,16 @@
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
-            const scrollYRef = useRef(0);
-            
+            // MODIFICA: Corretto il blocco dello scroll usando `overflow: hidden`
             useEffect(() => {
                 if (isOpen) {
-                    scrollYRef.current = window.scrollY;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${scrollYRef.current}px`;
-                    document.body.style.width = '100%';
+                    document.body.style.overflow = 'hidden';
                 } else {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, scrollYRef.current);
+                    document.body.style.overflow = 'auto';
                 }
-                const cleanup = () => {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
+                return () => {
+                    document.body.style.overflow = 'auto';
                 };
-                return cleanup;
             }, [isOpen]);
             
             if (!isOpen) return null;
@@ -513,7 +477,6 @@
                     e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
                 ),
                 e('h3', { className: 'font-martian-mono uppercase text-sm font-bold mb-4' }, 'Contact Us'),
-                // MODIFICA: Implementazione per Netlify Forms
                 e('form', { name: "inquiry", "data-netlify": "true" },
                     e('input', { type: 'hidden', name: 'form-name', value: 'inquiry' }),
                     e('div', { className: 'mb-4' },
@@ -683,33 +646,12 @@
             const [mainImage, setMainImage] = useState(item.images[0]);
             const [wishlist, setWishlist] = useState([]);
             const [shareFeedback, setShareFeedback] = useState('');
-            const scrollYRef = useRef(0);
             
             useEffect(() => {
                 const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
                 setWishlist(savedWishlist);
             }, []);
 
-            useEffect(() => {
-                if (modal) {
-                    scrollYRef.current = window.scrollY;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${scrollYRef.current}px`;
-                    document.body.style.width = '100%';
-                } else {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, scrollYRef.current);
-                }
-                const cleanup = () => {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                };
-                return cleanup;
-            }, [modal]);
-            
             const handleToggleWishlist = (itemId) => {
                 const newWishlist = wishlist.includes(itemId)
                     ? wishlist.filter(id => id !== itemId)
@@ -859,7 +801,6 @@
                 e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
                     e('div', { className: 'mb-12 md:mb-0' },
                         e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'SEND A MESSAGE'),
-                        // MODIFICA: Implementazione per Netlify Forms
                         e('form', { name: "contact", "data-netlify": "true" },
                             e('input', { type: 'hidden', name: 'form-name', value: 'contact' }),
                             e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
