@@ -236,7 +236,7 @@
         // ==========================================================
         // COMPONENTI UI RIUTILIZZABILI
         // ==========================================================
-        const Header = ({ navigateTo, currentRoute }) => {
+        const Header = ({ navigateTo, currentRoute, searchQuery, onSearchChange }) => {
             const [isMenuOpen, setIsMenuOpen] = useState(false);
             const navItems = [
                 { label: 'Collection', page: '#collection' },
@@ -289,7 +289,13 @@
                                     }, item.label))
                                 ),
                                 e('div', { className: 'relative' },
-                                    e('input', { type: 'text', placeholder: 'search', className: 'border-b border-gray-300 py-1.5 pl-0 pr-8 w-40 text-sm focus:outline-none focus:border-black font-martian-mono placeholder-cold-gray bg-transparent' }),
+                                    e('input', { 
+                                        type: 'text', 
+                                        placeholder: 'search', 
+                                        className: 'border-b border-gray-300 py-1.5 pl-0 pr-8 w-40 text-sm focus:outline-none focus:border-black font-martian-mono placeholder-cold-gray bg-transparent',
+                                        value: searchQuery,
+                                        onChange: (ev) => onSearchChange(ev.target.value)
+                                    }),
                                     e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-1 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
                                 )
                             ),
@@ -457,7 +463,7 @@
                     e('img', { src: item.images[0], alt: item.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })
                 ),
                 e('div', { className: 'mt-3 text-left flex-grow' },
-                    e('h3', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.brand || item.author),
+                    e('h3', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.author || item.brand),
                     e('p', { className: "font-martian-mono uppercase text-sm text-cold-gray" }, item.name),
                     e('p', { className: "font-martian-mono text-xs text-cold-gray mt-1" }, meta)
                 )
@@ -507,15 +513,17 @@
                     e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
                 ),
                 e('h3', { className: 'font-martian-mono uppercase text-sm font-bold mb-4' }, 'Contact Us'),
-                e('form', null,
+                // MODIFICA: Implementazione per Netlify Forms
+                e('form', { name: "inquiry", "data-netlify": "true" },
+                    e('input', { type: 'hidden', name: 'form-name', value: 'inquiry' }),
                     e('div', { className: 'mb-4' },
-                        e('input', { type: 'text', placeholder: 'name', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
+                        e('input', { type: 'text', name: 'name', placeholder: 'name', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
                     ),
                     e('div', { className: 'mb-4' },
-                        e('input', { type: 'email', placeholder: 'email', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
+                        e('input', { type: 'email', name: 'email', placeholder: 'email', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
                     ),
                     e('div', { className: 'mb-4' },
-                        e('textarea', { placeholder: 'message', rows: 4, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
+                        e('textarea', { name: 'message', placeholder: 'message', rows: 4, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
                     ),
                     e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 mt-4 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message'),
                     e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray mt-4' }, 'we will respond within 24 hours.')
@@ -588,7 +596,7 @@
             );
         };
 
-        const ListPage = ({ items, navigateTo, page, options }) => {
+        const ListPage = ({ items, navigateTo, page, options, searchQuery }) => {
             const initialFilters = useMemo(() => Object.keys(options).reduce((acc, key) => ({ ...acc, [key]: [] }), {}), [options]);
             const [selectedFilters, setSelectedFilters] = useState(initialFilters);
             const [sortOrder, setSortOrder] = useState(sortOptions[0]);
@@ -613,11 +621,22 @@
             
             const processedItems = useMemo(() => {
                 let filtered = items.filter(item => {
-                    return Object.entries(selectedFilters).every(([key, values]) => {
+                    const filterMatch = Object.entries(selectedFilters).every(([key, values]) => {
                         if (values.length === 0) return true;
                         const itemValue = item[key] || (key === 'author' && item.brand);
                         return values.includes(String(itemValue));
                     });
+
+                    if (!filterMatch) return false;
+
+                    if (!searchQuery) return true;
+                    const query = searchQuery.toLowerCase();
+                    const nameMatch = (item.name || '').toLowerCase().includes(query);
+                    const brandMatch = (item.brand || '').toLowerCase().includes(query);
+                    const authorMatch = (item.author || '').toLowerCase().includes(query);
+                    const descriptionMatch = (item.description || '').toLowerCase().includes(query);
+                    
+                    return nameMatch || brandMatch || authorMatch || descriptionMatch;
                 });
 
                 const [field, orderPart1, orderPart2] = sortOrder.split(' ');
@@ -637,7 +656,7 @@
                 });
 
                 return filtered;
-            }, [items, selectedFilters, sortOrder]);
+            }, [items, selectedFilters, sortOrder, searchQuery]);
 
             return e(Fragment, null,
                 e(FilterBar, { 
@@ -766,12 +785,12 @@
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
                              e('div', { className: 'flex-1 aspect-square bg-gray-100' },
-                                e('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-cover' })
+                                e('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-contain' })
                             ),
                             e('div', { className: 'flex flex-row gap-2 flex-wrap' },
                                 item.images.map((img, index) => e('img', { 
                                   key: index, src: img, alt: `Thumbnail ${index+1}`, onClick: () => setMainImage(img),
-                                  className: `w-24 h-24 object-cover cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
+                                  className: `w-24 h-24 object-contain cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
                                 }))
                             )
                         ),
@@ -840,7 +859,9 @@
                 e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
                     e('div', { className: 'mb-12 md:mb-0' },
                         e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'SEND A MESSAGE'),
-                        e('form', null,
+                        // MODIFICA: Implementazione per Netlify Forms
+                        e('form', { name: "contact", "data-netlify": "true" },
+                            e('input', { type: 'hidden', name: 'form-name', value: 'contact' }),
                             e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
                             e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
                             e(FormSelect, { id: 'subject', label: 'Subject' },
@@ -891,6 +912,7 @@
             const [route, setRoute] = useState(window.location.hash || '#home');
             const [products, setProducts] = useState([]);
             const [libraryItems, setLibraryItems] = useState([]);
+            const [searchQuery, setSearchQuery] = useState('');
 
             useEffect(() => {
                 Promise.all([
@@ -937,11 +959,11 @@
 
                 switch (page) {
                     case 'collection':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'product'), navigateTo, page: '#collection', options: filterOptions.collection });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'product'), navigateTo, page: '#collection', options: filterOptions.collection, searchQuery: searchQuery });
                     case 'archive':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'archive'), navigateTo, page: '#archive', options: filterOptions.archive });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'archive'), navigateTo, page: '#archive', options: filterOptions.archive, searchQuery: searchQuery });
                     case 'library':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: libraryItems, navigateTo, page: '#library', options: filterOptions.library });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: libraryItems, navigateTo, page: '#library', options: filterOptions.library, searchQuery: searchQuery });
                     case 'contact':
                         return e(ContactPage, { navigateTo });
                     case 'home':
@@ -953,7 +975,7 @@
             const isHomePage = route === '#home' || route === '';
 
             return e('div', { key: route, className: 'animate-fade-in' },
-                !isHomePage && e(Header, { navigateTo, currentRoute: route }),
+                !isHomePage && e(Header, { navigateTo, currentRoute: route, searchQuery: searchQuery, onSearchChange: setSearchQuery }),
                 renderPage(),
                 !isHomePage && e(Footer)
             );
