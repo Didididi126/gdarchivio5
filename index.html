@@ -23,7 +23,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* MODIFICA: Aggiunta una classe per bloccare lo scroll del body in modo pulito */
         body.modal-open {
             overflow: hidden;
         }
@@ -47,6 +46,19 @@
     </script>
 </head>
 <body class="antialiased">
+    
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <select name="subject"></select>
+      <textarea name="message"></textarea>
+    </form>
+    <form name="inquiry" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <textarea name="message"></textarea>
+    </form>
+    
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     <div id="root"></div>
 
@@ -174,7 +186,6 @@
             const [tempFilters, setTempFilters] = useState(selectedFilters);
             const [openCategory, setOpenCategory] = useState(null);
 
-            // MODIFICA: Metodo di blocco scroll stabile con classe CSS
             useEffect(() => {
                 document.body.classList.add('modal-open');
                 return () => {
@@ -263,7 +274,6 @@
                 setIsMenuOpen(false);
             };
 
-            // MODIFICA: Metodo di blocco scroll stabile con classe CSS
             useEffect(() => {
                 if (isMenuOpen) {
                     document.body.classList.add('modal-open');
@@ -450,7 +460,6 @@
         };
         
         const Modal = ({ isOpen, onClose, children, title }) => {
-            // MODIFICA: Metodo di blocco scroll stabile con classe CSS
             useEffect(() => {
                 if (isOpen) {
                     document.body.classList.add('modal-open');
@@ -464,8 +473,8 @@
             
             if (!isOpen) return null;
 
-            // MODIFICA: Ripristinato il centraggio e aggiunta la logica di scroll INTERNO alla finestra
-            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4', onClick: onClose },
+            // MODIFICA: Rimozione del padding verticale (p-4 -> px-4) per un centraggio perfetto
+            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center px-4', onClick: onClose },
                 e('div', { 
                     className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in max-h-[90vh] overflow-y-auto', 
                     onClick: e => e.stopPropagation() 
@@ -525,7 +534,9 @@
             );
         };
 
-        // ==========================================================
+        // ... (resto del codice, che è identico a prima)
+        
+    // ==========================================================
         // PAGINE
         // ==========================================================
         const HomePage = ({ navigateTo }) => {
