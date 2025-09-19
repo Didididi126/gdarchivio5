@@ -80,9 +80,6 @@
         const { createRoot } = ReactDOM;
         const e = React.createElement;
         
-        // ==========================================================
-        // COSTANTI E FUNZIONI UTILI
-        // ==========================================================
         const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
 
         const filterOptions = {
@@ -109,9 +106,6 @@
 
         const sortOptions = ['name a–z', 'name z–a', 'brand a-z', 'brand z-a', 'year old to new', 'year new to old'];
         
-        // ==========================================================
-        // COMPONENTI ICONA INLINE
-        // ==========================================================
         const Icon = ({ name, size = 16, className = '' }) => {
             const iconProps = { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', className: className };
             const icons = {
@@ -131,9 +125,6 @@
             return icons[name] || null;
         };
 
-        // ==========================================================
-        // COMPONENTI DROPDOWN E PANEL
-        // ==========================================================
         const FilterDropdown = ({ label, values, isOpen, onToggle, selectedValues, onFilterChange }) => {
             return e('div', { className: 'relative' },
                 e('button', {
@@ -737,9 +728,6 @@
             );
         };
 
-        // ==========================================================
-        // APPLICAZIONE PRINCIPALE E ROUTING
-        // ==========================================================
         const App = () => {
             const [route, setRoute] = useState(window.location.hash || '#home');
             const [products, setProducts] = useState([]);
@@ -813,7 +801,6 @@
             );
         };
         
-        // --- Avvio dell'applicazione ---
         const rootElement = document.getElementById('root');
         if (rootElement) {
             createRoot(rootElement).render(e(App));
