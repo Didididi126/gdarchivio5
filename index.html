@@ -57,6 +57,7 @@
         <input type="text" name="name" />
         <input type="email" name="email" />
         <textarea name="message"></textarea>
+        <input type="text" name="product-inquiry" />
     </form>
     
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
@@ -473,7 +474,6 @@
             
             if (!isOpen) return null;
 
-            // MODIFICA: Rimozione del padding verticale (p-4 -> px-4) per un centraggio perfetto
             return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center px-4', onClick: onClose },
                 e('div', { 
                     className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in max-h-[90vh] overflow-y-auto', 
@@ -486,7 +486,32 @@
             );
         };
         
+        // ==========================================================
+        // COMPONENTE InquiryForm MODIFICATO
+        // ==========================================================
         const InquiryForm = ({ item }) => {
+            const [submitted, setSubmitted] = useState(false);
+
+            const handleSubmit = (event) => {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString(),
+                })
+                .then(() => setSubmitted(true))
+                .catch((error) => alert(error));
+            };
+
+            if (submitted) {
+                return e('div', { className: 'text-center' },
+                    e('h3', { className: 'font-martian-mono uppercase font-bold text-lg mb-2' }, 'Thank You!'),
+                    e('p', { className: 'font-martian-mono' }, 'Your inquiry has been sent. We will respond within 24 hours.')
+                );
+            }
+            
             const meta = [item.size, item.year, item.condition].filter(Boolean).join(' • ');
             return e('div', null,
                 e('div', { className: 'text-center mb-6' },
@@ -495,16 +520,17 @@
                     e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
                 ),
                 e('h3', { className: 'font-martian-mono uppercase text-sm font-bold mb-4' }, 'Contact Us'),
-                e('form', { name: "inquiry", "data-netlify": "true" },
+                e('form', { name: "inquiry", "data-netlify": "true", onSubmit: handleSubmit },
                     e('input', { type: 'hidden', name: 'form-name', value: 'inquiry' }),
+                    e('input', { type: 'hidden', name: 'product-inquiry', value: `${item.brand} - ${item.name} (ID: ${item.id})` }),
                     e('div', { className: 'mb-4' },
-                        e('input', { type: 'text', name: 'name', placeholder: 'name', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
+                        e('input', { type: 'text', name: 'name', placeholder: 'name', required: true, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
                     ),
                     e('div', { className: 'mb-4' },
-                        e('input', { type: 'email', name: 'email', placeholder: 'email', className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
+                        e('input', { type: 'email', name: 'email', placeholder: 'email', required: true, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
                     ),
                     e('div', { className: 'mb-4' },
-                        e('textarea', { name: 'message', placeholder: 'message', rows: 4, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
+                        e('textarea', { name: 'message', placeholder: 'message', rows: 4, required: true, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
                     ),
                     e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 mt-4 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message'),
                     e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray mt-4' }, 'we will respond within 24 hours.')
@@ -534,9 +560,7 @@
             );
         };
 
-        // ... (resto del codice, che è identico a prima)
-        
-    // ==========================================================
+        // ==========================================================
         // PAGINE
         // ==========================================================
         const HomePage = ({ navigateTo }) => {
@@ -661,12 +685,27 @@
             );
         };
         
+        // ==========================================================
+        // COMPONENTE DetailPage MODIFICATO
+        // ==========================================================
         const DetailPage = ({ item, navigateTo }) => {
             const [modal, setModal] = useState(null);
-            const [mainImage, setMainImage] = useState(item.images[0]);
+            const [currentImageIndex, setCurrentImageIndex] = useState(0); 
             const [wishlist, setWishlist] = useState([]);
             const [shareFeedback, setShareFeedback] = useState('');
             
+            const goToPreviousImage = () => {
+                const isFirstImage = currentImageIndex === 0;
+                const newIndex = isFirstImage ? item.images.length - 1 : currentImageIndex - 1;
+                setCurrentImageIndex(newIndex);
+            };
+
+            const goToNextImage = () => {
+                const isLastImage = currentImageIndex === item.images.length - 1;
+                const newIndex = isLastImage ? 0 : currentImageIndex + 1;
+                setCurrentImageIndex(newIndex);
+            };
+
             useEffect(() => {
                 const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
                 setWishlist(savedWishlist);
@@ -746,13 +785,23 @@
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
-                             e('div', { className: 'flex-1 aspect-square bg-gray-100' },
-                                e('img', { src: mainImage, alt: item.name, className: 'w-full h-full object-contain' })
+                             e('div', { className: 'flex-1 aspect-square bg-gray-100 relative' },
+                                e('img', { src: item.images[currentImageIndex], alt: item.name, className: 'w-full h-full object-contain' }),
+                                
+                                item.images.length > 1 && e(Fragment, null,
+                                    e('button', { onClick: goToPreviousImage, className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
+                                        e(Icon, { name: 'ArrowLeft', size: 24 })
+                                    ),
+                                    e('button', { onClick: goToNextImage, className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
+                                        e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' })
+                                    )
+                                )
                             ),
                             e('div', { className: 'flex flex-row gap-2 flex-wrap' },
                                 item.images.map((img, index) => e('img', { 
-                                  key: index, src: img, alt: `Thumbnail ${index+1}`, onClick: () => setMainImage(img),
-                                  className: `w-24 h-24 object-contain cursor-pointer bg-gray-100 ${mainImage === img ? 'outline outline-2 outline-black' : ''}`
+                                  key: index, src: img, alt: `Thumbnail ${index+1}`, 
+                                  onClick: () => setCurrentImageIndex(index),
+                                  className: `w-24 h-24 object-contain cursor-pointer bg-gray-100 ${currentImageIndex === index ? 'outline outline-2 outline-black' : ''}`
                                 }))
                             )
                         ),
@@ -798,7 +847,25 @@
             );
         };
         
+        // ==========================================================
+        // COMPONENTE ContactPage MODIFICATO
+        // ==========================================================
         const ContactPage = ({ navigateTo }) => {
+            const [submitted, setSubmitted] = useState(false);
+
+            const handleSubmit = (event) => {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString(),
+                })
+                .then(() => setSubmitted(true))
+                .catch((error) => alert(error));
+            };
+
             const FormInput = ({ id, label, type = 'text', placeholder }) => e('div', { className: 'mb-4' },
                 e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
                 e('input', { type, id, name: id, required: true, placeholder, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
@@ -813,6 +880,11 @@
                  e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
                  e('select', {id, name: id, required: true, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black bg-white font-martian-mono pr-6 appearance-none'}, children)
             );
+            
+            const successMessage = e('div', null, 
+                e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'MESSAGE SENT!'),
+                e('p', { className: 'font-martian-mono' }, 'Thank you for getting in touch. We will get back to you shortly.')
+            );
 
             return e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-12' },
                  e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'CONTACT'),
@@ -820,19 +892,21 @@
                  e('div', { className: 'border-b border-gray-200 mt-4 mb-10' }),
                 e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
                     e('div', { className: 'mb-12 md:mb-0' },
-                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'SEND A MESSAGE'),
-                        e('form', { name: "contact", "data-netlify": "true" },
-                            e('input', { type: 'hidden', name: 'form-name', value: 'contact' }),
-                            e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
-                            e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
-                            e(FormSelect, { id: 'subject', label: 'Subject' },
-                                e('option', { value: '' }, 'select message subject'),
-                                e('option', { value: 'inquiry' }, 'product inquiry'),
-                                e('option', { value: 'research' }, 'research request'),
-                                e('option', { value: 'other' }, 'other')
-                            ),
-                            e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
-                            e('button', { type: 'submit', className: 'bg-black text-white py-3 px-8 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'SEND MESSAGE')
+                        submitted ? successMessage : e(Fragment, null,
+                            e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'SEND A MESSAGE'),
+                            e('form', { name: "contact", "data-netlify": "true", onSubmit: handleSubmit },
+                                e('input', { type: 'hidden', name: 'form-name', value: 'contact' }),
+                                e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
+                                e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
+                                e(FormSelect, { id: 'subject', label: 'Subject' },
+                                    e('option', { value: '' }, 'select message subject'),
+                                    e('option', { value: 'inquiry' }, 'product inquiry'),
+                                    e('option', { value: 'research' }, 'research request'),
+                                    e('option', { value: 'other' }, 'other')
+                                ),
+                                e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
+                                e('button', { type: 'submit', className: 'bg-black text-white py-3 px-8 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'SEND MESSAGE')
+                            )
                         )
                     ),
                     e('div', null,
@@ -867,7 +941,7 @@
         };
 
         // ==========================================================
-        // APPLICAZIONE PRINCIPALE E ROUTING
+        // APPLICAZIONE PRINCIPALE E ROUTING (INVARIATO)
         // ==========================================================
         const App = () => {
             const [route, setRoute] = useState(window.location.hash || '#home');
