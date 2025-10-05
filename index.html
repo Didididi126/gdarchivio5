@@ -84,9 +84,6 @@
         // ==========================================================
         const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
 
-        // ==========================================================
-        // FUNZIONE PER GENERARE I FILTRI DINAMICI
-        // ==========================================================
         const generateFilterOptions = (products, libraryItems) => {
             const collectionItems = products.filter(p => p.type === 'product');
             const archiveItems = products.filter(p => p.type === 'archive');
@@ -317,7 +314,7 @@
                     e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                         e('div', { className: 'flex items-center justify-between h-20' },
                             e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                                e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }),
+                                e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
                                 e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                             ),
                             e('div', { className: 'hidden md:flex items-center gap-x-12 ml-auto' },
@@ -349,7 +346,7 @@
                 isMenuOpen && e('div', { className: 'fixed inset-0 bg-white z-50 p-4 animate-fade-in md:hidden' },
                     e('div', { className: 'flex justify-between items-center mb-12'},
                         e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                            e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }),
+                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
                         e('button', { className: 'md:hidden', onClick: () => setIsMenuOpen(false) },
@@ -373,12 +370,12 @@
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                     e('div', { className: 'py-12 text-left border-t border-gray-200' },
                         e('a', { href: '#home', className: 'flex items-center gap-3 mb-6' },
-                             e('div', { className: 'w-8 h-8 border border-black flex-shrink-0' }),
+                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
                         e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
                         e('a', {
-                            href: 'https://instagram.com',
+                            href: 'https://www.instagram.com/gdarchivio',
                             target: '_blank',
                             rel: 'noopener noreferrer',
                             className: 'font-martian-mono text-sm uppercase tracking-wider mt-6 inline-block hover:underline'
@@ -476,7 +473,12 @@
                 onClick: () => navigateTo(page, item)
             },
                 e('div', { className: "aspect-square bg-gray-100 overflow-hidden" },
-                    e('img', { src: item.images[0], alt: item.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })
+                    e('img', { 
+                        src: item.images[0], 
+                        alt: item.name, 
+                        loading: 'lazy',
+                        className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                    })
                 ),
                 e('div', { className: 'mt-3 text-left flex-grow' },
                     e('h3', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.author || item.brand),
@@ -863,7 +865,12 @@
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
                              e('div', { className: 'flex-1 aspect-square bg-gray-100 relative' },
-                                e('img', { src: item.images[currentImageIndex], alt: item.name, className: 'w-full h-full object-contain' }),
+                                e('img', { 
+                                    src: item.images[currentImageIndex], 
+                                    alt: item.name, 
+                                    loading: 'lazy',
+                                    className: 'w-full h-full object-contain' 
+                                }),
                                 
                                 item.images.length > 1 && e(Fragment, null,
                                     e('button', { onClick: goToPreviousImage, className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
@@ -877,6 +884,7 @@
                             e('div', { className: 'flex flex-row gap-2 flex-wrap' },
                                 item.images.map((img, index) => e('img', { 
                                   key: index, src: img, alt: `Thumbnail ${index+1}`, 
+                                  loading: 'lazy',
                                   onClick: () => setCurrentImageIndex(index),
                                   className: `w-24 h-24 object-contain cursor-pointer bg-gray-100 ${currentImageIndex === index ? 'outline outline-2 outline-black' : ''}`
                                 }))
@@ -990,12 +998,11 @@
                                 e(Icon, {name: 'Mail', size: 16, className: 'text-cold-gray'}),
                                 e('p', { className: 'font-martian-mono text-xs uppercase text-cold-gray' }, 'Email')
                             ),
-                            // MODIFICATO: Email aggiornata
                             e('p', { className: 'font-martian-mono text-sm' }, e('a', { href: 'mailto:info@gdarchivio.com', className: 'underline' }, 'info@gdarchivio.com')),
                         ),
                         e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
                            e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-2' }, 'Follow Us'),
-                           e('a', {href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'flex items-center gap-2 text-sm font-martian-mono'}, e(Icon, {name: 'Instagram'}), 'Instagram')
+                           e('a', {href: 'https://www.instagram.com/gdarchivio', target: '_blank', rel: 'noopener noreferrer', className: 'flex items-center gap-2 text-sm font-martian-mono'}, e(Icon, {name: 'Instagram'}), 'Instagram')
                         ),
                         e('div', null,
                             e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-4' }, 'Frequently Asked'),
@@ -1016,7 +1023,7 @@
         };
 
         // ==========================================================
-        // APPLICAZIONE PRINCIPALE E ROUTING - MODIFICATO PER FILTRI DINAMICI
+        // APPLICAZIONE PRINCIPALE E ROUTING
         // ==========================================================
         const App = () => {
             const [route, setRoute] = useState(window.location.hash || '#home');
@@ -1032,7 +1039,6 @@
                 ]).then(([productData, libraryData]) => {
                     setProducts(productData);
                     setLibraryItems(libraryData);
-                    // Genera e imposta le opzioni dei filtri dopo aver caricato i dati
                     setDynamicFilterOptions(generateFilterOptions(productData, libraryData));
                 }).catch(error => console.error("Errore nel caricamento dei dati JSON:", error));
             }, []);
@@ -1057,7 +1063,6 @@
             }, []);
 
             const renderPage = () => {
-                // Mostra un messaggio di caricamento finché i dati e i filtri non sono pronti
                 if (!dynamicFilterOptions) {
                     return e('div', { className: 'flex justify-center items-center h-screen' }, 
                         e('p', { className: 'font-martian-mono' }, 'Loading archive...')
