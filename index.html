@@ -16,1103 +16,532 @@
         body { font-family: 'Martian Mono', monospace; background-color: #ffffff; color: #000000; }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f1f1; } ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #555; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes slideInFromRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        .animate-slide-in-right { animation: slideInFromRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-        .font-bitcount-single { font-family: 'Bitcount Single', monospace; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        body.modal-open {
-            overflow: hidden;
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        .header-logo {
+            height: 40px; 
+            width: auto;
+            /* FIX LOGO: ASSICURA CHE L'IMMAGINE NON SI STRECCHI */
+            object-fit: contain; 
+        }
+        @media (min-width: 768px) {
+            .header-logo {
+                height: 50px; 
+            }
         }
     </style>
-
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { 
-              'martian-mono': ['"Martian Mono"', 'monospace'], 
-              'bitcount-single': ['"Bitcount Single"', 'monospace'], 
-            },
-            colors: { 
-              'dark-gray': '#333333', 
-              'cold-gray': '#888888', 
-            }
-          }
-        }
-      };
-    </script>
+    
 </head>
-<body class="antialiased">
-    
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <select name="subject"></select>
-      <textarea name="message"></textarea>
-    </form>
-    <form name="inquiry" netlify netlify-honeypot="bot-field" hidden>
-        <input type="text" name="name" />
-        <input type="email" name="email" />
-        <textarea name="message"></textarea>
-        <input type="text" name="product-inquiry" />
-    </form>
-    
-    <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
+<body>
+
     <div id="root"></div>
 
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+    <script type="text/babel">
+    const { useState, useEffect, createElement: e, useRef } = React;
+    const { createRoot } = ReactDOM;
+
+    const DATA_URLS = {
+        products: 'products.json',
+        library: 'library.json',
+    };
+
+    const PRODUCTS_PER_PAGE = 12;
+
+    // --- Data Loading and Filtering ---
+
+    const useData = () => {
+        const [data, setData] = useState({ products: [], library: [] });
+        const [loading, setLoading] = useState(true);
+
+        useEffect(() => {
+            const loadData = async () => {
+                try {
+                    const [productsRes, libraryRes] = await Promise.all([
+                        fetch(DATA_URLS.products).then(res => res.json()),
+                        fetch(DATA_URLS.library).then(res => res.json()),
+                    ]);
+                    
+                    const archiveProducts = productsRes.filter(p => p.type === 'archive');
+                    const regularProducts = productsRes.filter(p => p.type === 'product');
+                    
+                    setData({
+                        products: regularProducts,
+                        archive: archiveProducts,
+                        library: libraryRes,
+                    });
+                } catch (error) {
+                    console.error("Error loading data:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            loadData();
+        }, []);
+
+        return { data, loading };
+    };
+
+    const useDynamicFilters = (items) => {
+        const getUniqueValues = (key) => [...new Set(items.map(item => item[key]).filter(Boolean))].sort();
+        
+        return {
+            brands: getUniqueValues('brand'),
+            categories: getUniqueValues('category'),
+            colors: getUniqueValues('color'),
+            years: getUniqueValues('year'),
+        };
+    };
+
+    // --- Utility Components ---
+
+    const ScrollToTop = (currentRoute) => {
+        useEffect(() => {
+            window.scrollTo(0, 0);
+        }, [currentRoute]);
+        return null;
+    };
+
+    const FilterSidebar = ({ options, filters, onFilterChange }) => {
+        const renderFilterGroup = (title, key, values) => {
+            if (values.length === 0) return null;
+
+            return e('div', { key: key, className: 'mb-4 border-t border-black pt-4' },
+                e('h3', { className: 'font-bold mb-2 text-lg' }, title),
+                e('div', { className: 'space-y-1' },
+                    values.map(value => e('label', { key: value, className: 'flex items-center text-sm cursor-pointer' },
+                        e('input', {
+                            type: 'checkbox',
+                            checked: filters[key]?.includes(value),
+                            onChange: (e) => onFilterChange(key, value, e.target.checked),
+                            className: 'mr-2 cursor-pointer'
+                        }),
+                        value
+                    ))
+                )
+            );
+        };
+
+        return e('div', { className: 'p-4 border-r border-black md:sticky md:top-0 h-full overflow-y-auto' },
+            e('div', { className: 'mb-6' }, 
+                e('button', {
+                    onClick: () => onFilterChange(null, null, false, true), // Clear all
+                    className: 'text-sm underline'
+                }, 'Cancella Filtri')
+            ),
+            renderFilterGroup('Brand', 'brand', options.brands),
+            renderFilterGroup('Categoria', 'category', options.categories),
+            renderFilterGroup('Colore', 'color', options.colors),
+            renderFilterGroup('Anno', 'year', options.years),
+        );
+    };
     
-    <script>
-    window.addEventListener('load', runApp);
+    // --- Page Components ---
 
-    function runApp() {
-        if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
-            console.error('React o ReactDOM non sono stati caricati.');
-            return;
-        }
+    const Header = ({ navigateTo, currentRoute, searchQuery, onSearchChange }) => {
+        const menuItems = [
+            { route: '#home', label: 'Home' },
+            { route: '#product', label: 'Shop' },
+            { route: '#archive', label: 'Archivio' },
+            { route: '#library', label: 'Library' },
+            { route: '#contact', label: 'Contatti' }
+        ];
 
-        const { useState, useEffect, useMemo, useCallback, Fragment, useRef } = React;
-        const { createRoot } = ReactDOM;
-        const e = React.createElement;
-        
-        // ==========================================================
-        // COSTANTI E FUNZIONI UTILI
-        // ==========================================================
-        const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
-
-        const generateFilterOptions = (products, libraryItems) => {
-            const collectionItems = products.filter(p => p.type === 'product');
-            const archiveItems = products.filter(p => p.type === 'archive');
-
-            const getUniqueSortedValues = (items, key) => {
-                const values = items
-                    .map(item => item[key])
-                    .filter(value => value !== null && value !== undefined && value !== ''); 
-                
-                const uniqueValues = [...new Set(values)];
-
-                uniqueValues.sort((a, b) => {
-                    if (key === 'year' && typeof a === 'number' && typeof b === 'number') {
-                        return b - a; 
-                    }
-                    return String(a).localeCompare(String(b), undefined, { numeric: true });
-                });
-                
-                return uniqueValues;
-            };
-
-            return {
-                collection: {
-                    brand: getUniqueSortedValues(collectionItems, 'brand'),
-                    category: getUniqueSortedValues(collectionItems, 'category'),
-                    color: getUniqueSortedValues(collectionItems, 'color'),
-                    size: getUniqueSortedValues(collectionItems, 'size'),
-                    year: getUniqueSortedValues(collectionItems, 'year'),
-                },
-                archive: {
-                    brand: getUniqueSortedValues(archiveItems, 'brand'),
-                    category: getUniqueSortedValues(archiveItems, 'category'),
-                    color: getUniqueSortedValues(archiveItems, 'color'),
-                    size: getUniqueSortedValues(archiveItems, 'size'),
-                    year: getUniqueSortedValues(archiveItems, 'year'),
-                },
-                library: {
-                    author: getUniqueSortedValues(libraryItems, 'author'),
-                    category: getUniqueSortedValues(libraryItems, 'category'),
-                    year: getUniqueSortedValues(libraryItems, 'year'),
-                }
-            };
-        };
-
-
-        const sortOptions = ['name a–z', 'name z–a', 'brand a-z', 'brand z-a', 'year old to new', 'year new to old'];
-        
-        // ==========================================================
-        // COMPONENTI ICONA INLINE
-        // ==========================================================
-        const Icon = ({ name, size = 16, className = '' }) => {
-            const iconProps = { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', className: className };
-            const icons = {
-                Search: e('svg', iconProps, e('circle', { cx: '11', cy: '11', r: '8' }), e('line', { x1: '21', y1: '21', x2: '16.65', y2: '16.65' })),
-                ChevronDown: e('svg', iconProps, e('path', { d: 'm6 9 6 6 6-6' })),
-                ArrowLeft: e('svg', iconProps, e('path', { d: 'm12 19-7-7 7-7' }), e('path', { d: 'M19 12H5' })),
-                ExternalLink: e('svg', iconProps, e('path', { d: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' }), e('polyline', { points: '15 3 21 3 21 9' }), e('line', { x1: '10', y1: '14', x2: '21', y2: '3' })),
-                X: e('svg', iconProps, e('line', { x1: '18', y1: '6', x2: '6', y2: '18' }), e('line', { x1: '6', y1: '6', x2: '18', y2: '18' })),
-                Filter: e('svg', iconProps, e('polygon', { points: '22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3' })),
-                Menu: e('svg', iconProps, e('line', { x1: '3', y1: '12', x2: '21', y2: '12' }), e('line', { x1: '3', y1: '6', x2: '21', y2: '6' }), e('line', { x1: '3', y1: '18', x2: '21', y2: '18' })),
-                Instagram: e('svg', iconProps, e('rect', { x: '2', y: '2', width: '20', height: '20', rx: '5', ry: '5' }), e('path', { d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' }), e('line', { x1: '17.5', y1: '6.5', x2: '17.51', y2: '6.5' })),
-                Heart: e('svg', iconProps, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
-                HeartFilled: e('svg', {...iconProps, fill: 'currentColor', stroke: 'currentColor'}, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
-                Share: e('svg', iconProps, e('circle', {cx: '18', cy: '5', r: '3'}), e('circle', {cx: '6', cy: '12', r: '3'}), e('circle', {cx: '18', cy: '19', r: '3'}), e('line', {x1: '8.59', y1: '13.51', x2: '15.42', y2: '17.49'}), e('line', {x1: '15.41', y1: '6.51', x2: '8.59', y2: '10.49'})),
-                Mail: e('svg', iconProps, e('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }), e('polyline', { points: '22,6 12,13 2,6' }))
-            };
-            return icons[name] || null;
-        };
-
-        // ==========================================================
-        // COMPONENTI DROPDOWN E PANEL
-        // ==========================================================
-        const FilterDropdown = ({ label, values, isOpen, onToggle, selectedValues, onFilterChange }) => {
-            return e('div', { className: 'relative' },
-                e('button', {
-                    onClick: onToggle,
-                    className: 'flex items-center gap-2 font-martian-mono text-sm'
-                },
-                    label.toLowerCase(),
-                    e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}` })
-                ),
-                isOpen && e('div', { className: 'absolute top-full left-0 mt-2 w-72 bg-white border rounded-lg shadow-xl animate-fade-in z-30' },
-                    e('div', { className: 'max-h-80 overflow-y-auto p-2' },
-                        values.map(option => e('label', {
-                            key: option,
-                            className: 'flex items-center w-full text-left px-4 py-2 font-martian-mono text-sm hover:bg-gray-100 cursor-pointer rounded-md'
-                        },
-                           e('input', { 
-                               type: 'checkbox', 
-                               className: 'hidden', 
-                               checked: selectedValues.includes(String(option)),
-                               onChange: () => onFilterChange(label, String(option))
-                            }),
-                           e('div', { className: `w-4 h-4 border border-gray-400 rounded-sm mr-3 flex-shrink-0 bg-white ${selectedValues.includes(String(option)) ? 'bg-black' : ''}` }),
-                           String(option)
-                        ))
-                    )
-                )
-            );
-        };
-        
-        const CustomSortDropdown = ({ options, selectedValue, onSelect, isOpen, onToggle }) => {
-            return e('div', { className: 'relative' },
-                e('button', {
-                    onClick: onToggle,
-                    className: 'flex items-center justify-between gap-2 font-martian-mono text-sm w-40 border-b border-gray-300 pb-1'
-                },
-                    selectedValue,
-                    e(Icon, { name: 'ChevronDown', size: 14, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}` })
-                ),
-                isOpen && e('div', { className: 'absolute top-full right-0 mt-2 w-48 bg-white border rounded-lg shadow-xl animate-fade-in z-30' },
-                    e('div', { className: 'p-2' },
-                        options.map(option => e('button', {
-                            key: option,
-                            onClick: () => onSelect(option),
-                            className: `block w-full text-left px-4 py-2 font-martian-mono text-sm rounded-md ${selectedValue === option ? 'bg-gray-100' : 'hover:bg-gray-100'}`
-                        }, option))
-                    )
-                )
-            );
-        };
-        
-        const MobileFilterPanel = ({ options, initialFilters, selectedFilters, onApply, onClose }) => {
-            const [tempFilters, setTempFilters] = useState(selectedFilters);
-            const [openCategory, setOpenCategory] = useState(null);
-
-            useEffect(() => {
-                document.body.classList.add('modal-open');
-                return () => {
-                    document.body.classList.remove('modal-open');
-                };
-            }, []);
-
-            const handleFilterChange = (filterType, value) => {
-                setTempFilters(prev => {
-                    const currentValues = prev[filterType] || [];
-                    const newValues = currentValues.includes(value)
-                        ? currentValues.filter(v => v !== value)
-                        : [...currentValues, value];
-                    return { ...prev, [filterType]: newValues };
-                });
-            };
-            
-            const handleReset = () => {
-                setTempFilters(initialFilters);
-            };
-            
-            const handleApply = () => {
-                onApply(tempFilters);
-                onClose();
-            };
-            
-            const totalSelections = useMemo(() => {
-                return Object.values(tempFilters).reduce((sum, arr) => sum + arr.length, 0);
-            }, [tempFilters]);
-
-            const AccordionItem = ({ label, values }) => {
-                const isOpen = openCategory === label;
-                return e('div', { className: 'border-b' },
-                    e('button', { 
-                        onClick: () => setOpenCategory(isOpen ? null : label),
-                        className: 'w-full flex justify-between items-center py-4 px-4'
-                    },
-                        e('span', { className: 'font-martian-mono uppercase' }, label),
-                        e(Icon, { name: 'ChevronDown', size: 20, className: `transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`})
-                    ),
-                    isOpen && e('div', { className: 'px-4 pb-4 max-h-60 overflow-y-auto'},
-                        values.map(option => e('label', {
-                            key: option,
-                            className: 'flex items-center w-full text-left py-2 font-martian-mono text-sm hover:bg-gray-100 cursor-pointer rounded-md'
-                        },
-                           e('input', { type: 'checkbox', className: 'hidden', checked: (tempFilters[label] || []).includes(String(option)), onChange: () => handleFilterChange(label, String(option)) }),
-                           e('div', { className: `w-5 h-5 border border-gray-400 rounded-sm mr-3 flex-shrink-0 bg-white ${(tempFilters[label] || []).includes(String(option)) ? 'bg-black' : ''}` }),
-                           String(option)
-                        ))
-                    )
-                );
-            };
-
-            return e('div', { className: 'fixed inset-0 z-50' },
-                e('div', { className: 'absolute inset-0 bg-black bg-opacity-50', onClick: onClose }),
-                e('div', { className: 'absolute top-0 right-0 bottom-0 h-full bg-white w-full max-w-sm flex flex-col animate-slide-in-right' },
-                    e('header', { className: 'flex items-center justify-between p-4 border-b' },
-                        e('h3', { className: 'font-martian-mono text-lg font-bold uppercase' }, 'FILTER'),
-                        e('button', { onClick: onClose }, e(Icon, { name: 'X', size: 24 }))
-                    ),
-                    e('main', { className: 'flex-1 overflow-y-auto' },
-                        Object.entries(options).map(([label, values]) => e(AccordionItem, { key: label, label, values }))
-                    ),
-                    e('footer', { className: 'p-4 border-t flex items-center gap-4' },
-                        e('button', { onClick: handleReset, className: 'font-martian-mono uppercase underline' }, 'Reset'),
-                        e('button', { onClick: handleApply, className: 'flex-1 bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm' }, `Mostra risultati (${totalSelections})`)
-                    )
-                )
-            );
-        };
-
-        // ==========================================================
-        // COMPONENTI UI RIUTILIZZABILI
-        // ==========================================================
-        const Header = ({ navigateTo, currentRoute, searchQuery, onSearchChange }) => {
-            const [isMenuOpen, setIsMenuOpen] = useState(false);
-            const navItems = [
-                { label: 'Collection', page: '#collection' },
-                { label: 'Archive', page: '#archive' },
-                { label: 'Library', page: '#library' },
-                { label: 'Contact', page: '#contact' }
-            ];
-
-            const navigateAndClose = (path) => {
-                navigateTo(path);
-                setIsMenuOpen(false);
-            };
-
-            useEffect(() => {
-                if (isMenuOpen) {
-                    document.body.classList.add('modal-open');
-                } else {
-                    document.body.classList.remove('modal-open');
-                }
-                return () => {
-                    document.body.classList.remove('modal-open');
-                };
-            }, [isMenuOpen]);
-
-            return e(Fragment, null, 
-                e('header', { className: 'sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm border-b border-gray-200 z-40' },
-                    e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                        e('div', { className: 'flex items-center justify-between h-20' },
-                            e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                                e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
-                                e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
-                            ),
-                            e('div', { className: 'hidden md:flex items-center gap-x-12 ml-auto' },
-                                e('nav', { className: 'flex items-center space-x-8' },
-                                    navItems.map(item => e('a', {
-                                        key: item.label,
-                                        href: item.page,
-                                        onClick: (ev) => { ev.preventDefault(); navigateTo(item.page); },
-                                        className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
-                                    }, item.label))
-                                ),
-                                e('div', { className: 'relative' },
-                                    e('input', { 
-                                        type: 'text', 
-                                        placeholder: 'search', 
-                                        className: 'border-b border-gray-300 py-1.5 pl-0 pr-8 w-40 text-sm focus:outline-none focus:border-black font-martian-mono placeholder-cold-gray bg-transparent',
-                                        value: searchQuery,
-                                        onChange: (ev) => onSearchChange(ev.target.value)
-                                    }),
-                                    e('div', { className: 'absolute inset-y-0 right-0 flex items-center pr-1 pointer-events-none' }, e(Icon, { name: 'Search', size: 16, className: 'text-gray-400' }))
-                                )
-                            ),
-                            e('button', { className: 'md:hidden ml-auto', onClick: () => setIsMenuOpen(!isMenuOpen) },
-                                e(Icon, { name: isMenuOpen ? 'X' : 'Menu', size: 24 })
-                            )
-                        )
-                    )
-                ),
-                isMenuOpen && e('div', { className: 'fixed inset-0 bg-white z-50 p-4 animate-fade-in md:hidden' },
-                    e('div', { className: 'flex justify-between items-center mb-12'},
-                        e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
-                            e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
-                        ),
-                        e('button', { className: 'md:hidden', onClick: () => setIsMenuOpen(false) },
-                            e(Icon, { name: 'X', size: 24 })
-                        )
-                    ),
-                    e('nav', { className: 'flex flex-col items-center justify-center space-y-8' },
-                         navItems.map(item => e('a', {
-                            key: item.label,
-                            href: item.page,
-                            onClick: (ev) => { ev.preventDefault(); navigateAndClose(item.page); },
-                            className: 'font-martian-mono uppercase tracking-wider text-2xl'
+        return e('header', { className: 'bg-white sticky top-0 z-10 border-b border-black shadow-md' },
+            e('div', { className: 'container mx-auto p-4 flex justify-between items-center' },
+                e('div', { className: 'flex items-center space-x-4' },
+                    e('img', { 
+                        src: 'images/logo.png', 
+                        alt: 'gdarchivio logo', 
+                        className: 'header-logo w-auto max-h-[40px] md:max-h-[50px] cursor-pointer',
+                        onClick: () => navigateTo('#home')
+                    }),
+                    e('nav', { className: 'hidden md:flex space-x-4' },
+                        menuItems.slice(1).map(item => e('a', { 
+                            key: item.route, 
+                            href: item.route, 
+                            className: `text-sm hover:underline ${currentRoute === item.route ? 'font-bold underline' : ''}`
                         }, item.label))
                     )
+                ),
+                e('div', { className: 'flex items-center space-x-4' },
+                    currentRoute !== '#home' && e('input', {
+                        type: 'text',
+                        placeholder: 'Cerca...',
+                        value: searchQuery,
+                        onChange: (e) => onSearchChange(e.target.value),
+                        className: 'p-2 border border-black rounded text-sm w-32 md:w-48'
+                    }),
+                    e('div', { className: 'md:hidden' }, 'Menu') // Mobile Menu Placeholder
                 )
-            );
+            )
+        );
+    };
+
+    const Footer = () => {
+        return e('footer', { className: 'bg-black text-white p-6 mt-10' },
+            e('div', { className: 'container mx-auto text-center text-xs' },
+                e('p', null, '© 2025 gdarchivio. All rights reserved.')
+            )
+        );
+    };
+
+    const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        if (totalPages <= 1) return null;
+
+        const renderPageButton = (pageNumber) => {
+            const isActive = pageNumber === currentPage;
+            return e('button', {
+                key: pageNumber,
+                onClick: () => onPageChange(pageNumber),
+                disabled: isActive,
+                className: `px-3 py-1 border border-black text-sm transition-colors ${isActive ? 'bg-black text-white' : 'hover:bg-gray-100'}`
+            }, pageNumber);
         };
 
-        const Footer = () => {
-             return e('footer', { className: 'bg-white' },
-                e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    e('div', { className: 'py-12 text-left border-t border-gray-200' },
-                        e('a', { href: '#home', className: 'flex items-center gap-3 mb-6' },
-                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
-                            e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
-                        ),
-                        e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
-                        e('a', {
-                            href: 'https://www.instagram.com/gdarchivio',
-                            target: '_blank',
-                            rel: 'noopener noreferrer',
-                            className: 'font-martian-mono text-sm uppercase tracking-wider mt-6 inline-block hover:underline'
-                        }, 'Instagram')
-                    )
-                ),
-                e('div', { className: 'border-t border-gray-200' },
-                    e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                         e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray py-8' }, '© 2025 GDARCHIVIO. ALL RIGHTS RESERVED.')
-                    )
-                )
-            );
-        };
-        
-        const FilterBar = ({ options, initialFilters, selectedFilters, onFilterChange, onResetFilters, onApplyFilters, sortOrder, onSortChange }) => {
-            const [openFilter, setOpenFilter] = useState(null);
-            const [isPanelOpen, setIsPanelOpen] = useState(false);
-            const barRef = useRef(null);
-            
-            useEffect(() => {
-                const handleClickOutside = (event) => {
-                    if (barRef.current && !barRef.current.contains(event.target)) {
-                        setOpenFilter(null);
-                    }
-                };
-                document.addEventListener("mousedown", handleClickOutside);
-                return () => document.removeEventListener("mousedown", handleClickOutside);
-            }, []);
-            
-            const handleToggle = (label) => {
-                setOpenFilter(prev => (prev === label ? null : label));
-            };
+        const pagesToShow = [];
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, currentPage + 2);
 
-            return e('div', { className: 'sticky top-20 bg-white z-20 py-4 border-b border-gray-200 mb-8', ref: barRef },
-                e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
-                    e('div', { className: 'hidden md:flex items-center justify-between' },
-                        e('div', { className: 'flex items-center gap-x-4 flex-wrap' },
-                            e(Icon, { name: 'Filter', size: 20, className: 'text-cold-gray flex-shrink-0' }),
-                            e('span', { className: 'font-martian-mono text-sm text-cold-gray uppercase flex-shrink-0' }, 'Filter:'),
-                            Object.entries(options).map(([label, values]) => e(FilterDropdown, { 
-                                key: label, 
-                                label, 
-                                values,
-                                isOpen: openFilter === label,
-                                onToggle: () => handleToggle(label),
-                                selectedValues: selectedFilters[label] || [],
-                                onFilterChange
-                            })),
-                            (Object.values(selectedFilters).some(arr => arr.length > 0)) && e('button', {
-                                onClick: onResetFilters,
-                                className: 'font-martian-mono text-sm text-cold-gray hover:text-black underline ml-4'
-                            }, 'Reset filters')
-                        ),
-                        e('div', {className: 'ml-4'}, 
-                            e(CustomSortDropdown, {
-                                options: sortOptions,
-                                selectedValue: sortOrder,
-                                onSelect: (option) => { onSortChange(option); handleToggle('sort'); },
-                                isOpen: openFilter === 'sort',
-                                onToggle: () => handleToggle('sort')
-                            })
-                        )
-                    ),
-                    e('div', { className: 'md:hidden flex items-center justify-between' },
-                        e('button', { 
-                            onClick: () => setIsPanelOpen(true),
-                            className: 'flex items-center gap-2 font-martian-mono uppercase text-sm'
-                        },
-                            e(Icon, { name: 'Filter', size: 20 }),
-                            'FILTER'
-                        ),
-                        e(CustomSortDropdown, {
-                            options: sortOptions,
-                            selectedValue: sortOrder,
-                            onSelect: (option) => { onSortChange(option); handleToggle('sort'); },
-                            isOpen: openFilter === 'sort',
-                            onToggle: () => handleToggle('sort')
-                        })
-                    )
-                ),
-                isPanelOpen && e(MobileFilterPanel, { 
-                    options, 
-                    initialFilters, 
-                    selectedFilters, 
-                    onApply: onApplyFilters, 
-                    onClose: () => setIsPanelOpen(false) 
-                })
-            );
-        };
+        if (startPage === 1 && totalPages > 5) endPage = 5;
+        if (endPage === totalPages && totalPages > 5) startPage = Math.max(1, totalPages - 4);
 
-        const ItemCard = ({ item, navigateTo, page }) => {
-            const meta = [item.year, item.category, item.color, item.size].filter(Boolean).join(' • ');
-            return e('div', {
-                className: "group cursor-pointer flex flex-col",
-                onClick: () => navigateTo(page, item)
-            },
-                e('div', { className: "aspect-square bg-gray-100 overflow-hidden" },
-                    e('img', { 
-                        src: item.images[0], 
-                        alt: item.name, 
-                        loading: 'lazy',
-                        className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                    })
-                ),
-                e('div', { className: 'mt-3 text-left flex-grow' },
-                    e('h3', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.author || item.brand),
-                    e('p', { className: "font-martian-mono uppercase text-sm text-cold-gray" }, item.name),
-                    e('p', { className: "font-martian-mono text-xs text-cold-gray mt-1" }, meta)
-                )
-            );
-        };
-        
-        const Modal = ({ isOpen, onClose, children, title }) => {
-            useEffect(() => {
-                if (isOpen) {
-                    document.body.classList.add('modal-open');
-                } else {
-                    document.body.classList.remove('modal-open');
-                }
-                return () => {
-                    document.body.classList.remove('modal-open');
-                };
-            }, [isOpen]);
-            
-            if (!isOpen) return null;
-
-            return e('div', { className: 'fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center px-4', onClick: onClose },
-                e('div', { 
-                    className: 'bg-white p-8 relative w-full max-w-lg animate-fade-in max-h-[90vh] overflow-y-auto', 
-                    onClick: e => e.stopPropagation() 
-                },
-                    e('button', { onClick: onClose, className: 'absolute top-4 right-4 text-gray-400 hover:text-black' }, e(Icon, { name: 'X', size: 24 })),
-                    title && e('h3', { className: 'font-martian-mono uppercase font-bold text-center text-lg mb-6' }, title),
-                    children
-                )
-            );
-        };
-        
-        const InquiryForm = ({ item }) => {
-            const [submitted, setSubmitted] = useState(false);
-
-            const handleSubmit = (event) => {
-                event.preventDefault();
-                const formData = new FormData(event.target);
-                
-                fetch("/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams(formData).toString(),
-                })
-                .then(() => setSubmitted(true))
-                .catch((error) => alert(error));
-            };
-
-            if (submitted) {
-                return e('div', { className: 'text-center' },
-                    e('h3', { className: 'font-martian-mono uppercase font-bold text-lg mb-2' }, 'Thank You!'),
-                    e('p', { className: 'font-martian-mono' }, 'Your inquiry has been sent. We will respond within 24 hours.')
-                );
-            }
-            
-            const meta = [item.size, item.year, item.condition].filter(Boolean).join(' • ');
-            return e('div', null,
-                e('div', { className: 'text-center mb-6' },
-                    e('h2', { className: 'font-martian-mono text-lg font-bold uppercase' }, item.brand),
-                    e('h1', { className: 'font-martian-mono text-base' }, item.name),
-                    e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
-                ),
-                e('h3', { className: 'font-martian-mono uppercase text-sm font-bold mb-4' }, 'Contact Us'),
-                e('form', { name: "inquiry", "data-netlify": "true", onSubmit: handleSubmit },
-                    e('input', { type: 'hidden', name: 'form-name', value: 'inquiry' }),
-                    e('input', { type: 'hidden', name: 'product-inquiry', value: `${item.brand} - ${item.name} (ID: ${item.id})` }),
-                    e('div', { className: 'mb-4' },
-                        e('input', { type: 'text', name: 'name', placeholder: 'name', required: true, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
-                    ),
-                    e('div', { className: 'mb-4' },
-                        e('input', { type: 'email', name: 'email', placeholder: 'email', required: true, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
-                    ),
-                    e('div', { className: 'mb-4' },
-                        e('textarea', { name: 'message', placeholder: 'message', rows: 4, required: true, className: 'w-full border-b border-gray-300 p-2 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
-                    ),
-                    e('button', { type: 'submit', className: 'w-full bg-black text-white py-3 mt-4 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Send Message'),
-                    e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray mt-4' }, 'we will respond within 24 hours.')
-                )
-            );
-        };
-
-        const PlatformsList = ({ item }) => {
-            const meta = [item.size, item.year, item.condition].filter(Boolean).join(' • ');
-            return e('div', null,
-                e('div', { className: 'text-center mb-6' },
-                    e('h2', { className: 'font-martian-mono text-lg font-bold uppercase' }, item.brand),
-                    e('h1', { className: 'font-martian-mono text-base' }, item.name),
-                    e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-1 capitalize' }, meta)
-                ),
-                e('div', { className: 'space-y-3' },
-                    Object.entries(item.purchaseLinks || {}).map(([platform, url]) => 
-                        e('a', {
-                            key: platform, href: url, target: '_blank', rel: 'noopener noreferrer',
-                            className: 'flex items-center justify-between w-full border border-gray-200 hover:border-black p-4 font-martian-mono uppercase text-sm transition-colors'
-                        }, 
-                        e('span', null, platform), 
-                        e(Icon, { name: 'ExternalLink', size: 16 }))
-                    )
-                ),
-                e('p', { className: 'text-center font-martian-mono text-xs text-cold-gray mt-4' }, 'external platforms.')
-            );
-        };
-
-        const Pagination = ({ itemsPerPage, totalItems, currentPage, onPageChange }) => {
-            const pageNumbers = [];
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-            if (totalPages <= 1) {
-                return null;
-            }
-
-            for (let i = 1; i <= totalPages; i++) {
-                pageNumbers.push(i);
-            }
-
-            return e('nav', { className: 'flex justify-center items-center gap-4 mt-12' },
-                e('button', {
-                    onClick: () => onPageChange(currentPage - 1),
-                    disabled: currentPage === 1,
-                    className: 'font-martian-mono text-sm uppercase disabled:text-gray-300'
-                }, 'Prev'),
-                e('div', { className: 'flex items-center gap-2' },
-                    pageNumbers.map(number => e('button', {
-                        key: number,
-                        onClick: () => onPageChange(number),
-                        className: `h-8 w-8 flex items-center justify-center font-martian-mono text-sm ${currentPage === number ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}`
-                    }, number))
-                ),
-                e('button', {
-                    onClick: () => onPageChange(currentPage + 1),
-                    disabled: currentPage === totalPages,
-                    className: 'font-martian-mono text-sm uppercase disabled:text-gray-300'
-                }, 'Next')
-            );
-        };
-        
-        // ==========================================================
-        // PAGINE
-        // ==========================================================
-        const HomePage = ({ navigateTo }) => {
-            return e('div', { className: "flex flex-col min-h-screen bg-white text-black" },
-                e('main', { className: "flex-grow flex flex-col justify-center items-center p-4" },
-                    e('header', { className: "text-center" },
-                        e('h1', { className: "font-bitcount-single font-medium text-6xl md:text-7xl" }, "gdarchivio"),
-                        e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2" }, "fashion archive")
-                    ),
-                    e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection') },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "COLLECTION"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "curated pieces")
-                        ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive') },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "ARCHIVE"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "archive items")
-                        ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library') },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "LIBRARY"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "fashion books")
-                        ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact') },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "CONTACT"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "get in touch")
-                        )
-                    ),
-                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", onClick: () => navigateTo('#collection') }, "ENTER COLLECTION")
-                ),
-                e('footer', { className: "w-full py-6 px-4" },
-                    e('div', { className: "container mx-auto text-center" },
-                        e('div', { className: "border-b border-gray-300 w-20 mx-auto mb-4" }),
-                        e('p', { className: "font-martian-mono text-xs text-cold-gray uppercase tracking-widest" }, "ITALY • EST. 2025")
-                    )
-                )
-            );
-        };
-        
-        const ListPage = ({ items, navigateTo, page, options, searchQuery }) => {
-            const initialFilters = useMemo(() => Object.keys(options).reduce((acc, key) => ({ ...acc, [key]: [] }), {}), [options]);
-            const [selectedFilters, setSelectedFilters] = useState(initialFilters);
-            const [sortOrder, setSortOrder] = useState(sortOptions[0]);
-            const [currentPage, setCurrentPage] = useState(1);
-            const itemsPerPage = 12;
-
-            useEffect(() => {
-                setCurrentPage(1);
-            }, [selectedFilters, searchQuery]);
-
-            const handleFilterChange = useCallback((filterType, value) => {
-                setSelectedFilters(prevFilters => {
-                    const currentValues = prevFilters[filterType] || [];
-                    const newValues = currentValues.includes(value)
-                        ? currentValues.filter(v => v !== value)
-                        : [...currentValues, value];
-                    return { ...prevFilters, [filterType]: newValues };
-                });
-            }, []);
-            
-            const handleResetFilters = useCallback(() => {
-                setSelectedFilters(initialFilters);
-            }, [initialFilters]);
-
-            const handleApplyFilters = useCallback((newFilters) => {
-                setSelectedFilters(newFilters);
-            }, []);
-            
-            const processedItems = useMemo(() => {
-                let filtered = items.filter(item => {
-                    const filterMatch = Object.entries(selectedFilters).every(([key, values]) => {
-                        if (values.length === 0) return true;
-                        const itemValue = item[key] || (key === 'author' && item.brand);
-                        return values.includes(String(itemValue));
-                    });
-
-                    if (!filterMatch) return false;
-
-                    if (!searchQuery) return true;
-                    const query = searchQuery.toLowerCase();
-                    const nameMatch = (item.name || '').toLowerCase().includes(query);
-                    const brandMatch = (item.brand || '').toLowerCase().includes(query);
-                    const authorMatch = (item.author || '').toLowerCase().includes(query);
-                    const descriptionMatch = (item.description || '').toLowerCase().includes(query);
-                    
-                    return nameMatch || brandMatch || authorMatch || descriptionMatch;
-                });
-
-                const [field, orderPart1, orderPart2] = sortOrder.split(' ');
-                const order = `${orderPart1} ${orderPart2}`;
-                const sortKey = field === 'name' ? 'name' : (field === 'brand' ? 'brand' : 'year');
-
-                filtered.sort((a, b) => {
-                    const valA = a[sortKey];
-                    const valB = b[sortKey];
-                    let comparison = 0;
-                    if (typeof valA === 'string') {
-                        comparison = valA.localeCompare(valB);
-                    } else if (typeof valA === 'number') {
-                        comparison = valA - valB;
-                    }
-                    return order.includes('a-z') || order.includes('old') ? comparison : comparison * -1;
-                });
-
-                return filtered;
-            }, [items, selectedFilters, sortOrder, searchQuery]);
-
-            const indexOfLastItem = currentPage * itemsPerPage;
-            const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-            const currentItems = processedItems.slice(indexOfFirstItem, indexOfLastItem);
-            
-            return e(Fragment, null,
-                e(FilterBar, { 
-                    options,
-                    initialFilters,
-                    itemCount: processedItems.length, 
-                    selectedFilters, 
-                    onFilterChange: handleFilterChange,
-                    onResetFilters: handleResetFilters,
-                    onApplyFilters: handleApplyFilters,
-                    sortOrder: sortOrder,
-                    onSortChange: setSortOrder
-                }),
-                e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-                    processedItems.length > 0
-                        ? e(Fragment, null,
-                            e('div', { className: 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10' },
-                                currentItems.map(item => e(ItemCard, { key: item.id, item, navigateTo, page }))
-                            ),
-                            e(Pagination, {
-                                itemsPerPage: itemsPerPage,
-                                totalItems: processedItems.length,
-                                currentPage: currentPage,
-                                onPageChange: (pageNumber) => setCurrentPage(pageNumber)
-                            })
-                          )
-                        : e('div', { className: 'text-center py-20' },
-                              e('p', { className: 'font-martian-mono text-lg font-bold' }, 'No products found'),
-                              e('p', { className: 'font-martian-mono text-sm text-cold-gray mt-2' }, 'Try adjusting or resetting your filters.')
-                          )
-                )
-            );
-        };
-        
-        const DetailPage = ({ item, navigateTo }) => {
-            const [modal, setModal] = useState(null);
-            const [currentImageIndex, setCurrentImageIndex] = useState(0); 
-            const [wishlist, setWishlist] = useState([]);
-            const [shareFeedback, setShareFeedback] = useState('');
-            
-            const goToPreviousImage = () => {
-                const isFirstImage = currentImageIndex === 0;
-                const newIndex = isFirstImage ? item.images.length - 1 : currentImageIndex - 1;
-                setCurrentImageIndex(newIndex);
-            };
-
-            const goToNextImage = () => {
-                const isLastImage = currentImageIndex === item.images.length - 1;
-                const newIndex = isLastImage ? 0 : currentImageIndex + 1;
-                setCurrentImageIndex(newIndex);
-            };
-
-            useEffect(() => {
-                const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-                setWishlist(savedWishlist);
-                setCurrentImageIndex(0);
-            }, [item]);
-
-            const handleToggleWishlist = (itemId) => {
-                const newWishlist = wishlist.includes(itemId)
-                    ? wishlist.filter(id => id !== itemId)
-                    : [...wishlist, itemId];
-                setWishlist(newWishlist);
-                localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-            };
-
-            const handleShare = async () => {
-                const shareData = {
-                    title: item.name,
-                    text: `Check out this from gdarchivio: ${item.name}`,
-                    url: window.location.href
-                };
-                try {
-                    if (navigator.share) {
-                        await navigator.share(shareData);
-                    } else {
-                        throw new Error('Web Share API not supported');
-                    }
-                } catch (err) {
-                    navigator.clipboard.writeText(window.location.href).then(() => {
-                        setShareFeedback('Link copied!');
-                        setTimeout(() => setShareFeedback(''), 2000);
-                    });
-                }
-            };
-            
-            const isWishlisted = wishlist.includes(item.id);
-            const pageType = item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive');
-            const goBackUrl = `#${pageType}`;
-            const backButtonText = `Back to ${pageType}`;
-
-            const renderDetails = () => {
-                const details = [ { label: 'category', value: item.category }, { label: 'color', value: item.color }, { label: 'size', value: item.size }, { label: 'year', value: item.year }, { label: 'condition', value: item.condition }, { label: 'material', value: item.material }, { label: 'author', value: item.author }, { label: 'publisher', value: item.publisher }];
-                return details.filter(d => d.value).map(d => 
-                    e('div', { key: d.label, className: 'flex justify-between text-sm py-2' },
-                        e('span', { className: 'font-martian-mono text-cold-gray' }, d.label.toLowerCase()),
-                        e('span', { className: 'font-martian-mono' }, d.value)
-                    )
-                );
-            };
-
-            const renderMeasurements = () => {
-                if (!item.measurements || Object.keys(item.measurements).length === 0) return null;
-                return Object.entries(item.measurements).map(([key, value]) => 
-                    e('div', { key: key, className: 'flex justify-between text-sm py-2' },
-                        e('span', { className: 'font-martian-mono text-cold-gray' }, key.toLowerCase()),
-                        e('span', { className: 'font-martian-mono' }, value)
-                    )
-                );
-            };
-
-            const renderActionButtons = () => {
-                const buttons = [];
-                if(item.type === 'archive' || item.type === 'book'){
-                    buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
-                }
-                if(item.type === 'product'){
-                     buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
-                     buttons.push(e('button', { key: 'platforms', onClick: () => setModal('platforms'), className: 'w-full border border-black text-black py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-gray-100 transition-colors' }, 'Available On Platforms'));
-                }
-                return e('div', { className: 'mt-6 space-y-2' }, ...buttons);
-            };
-
-            return e(Fragment, null,
-                e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
-                    e('a', { 
-                        href: goBackUrl, 
-                        onClick: (ev) => { ev.preventDefault(); navigateTo(goBackUrl); },
-                        className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
-                    }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
-                    e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
-                        e('div', { className: 'flex flex-col gap-4' },
-                             e('div', { className: 'flex-1 aspect-square bg-gray-100 relative' },
-                                e('img', { 
-                                    src: item.images[currentImageIndex], 
-                                    alt: item.name, 
-                                    loading: 'lazy',
-                                    className: 'w-full h-full object-contain' 
-                                }),
-                                
-                                item.images.length > 1 && e(Fragment, null,
-                                    e('button', { onClick: goToPreviousImage, className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
-                                        e(Icon, { name: 'ArrowLeft', size: 24 })
-                                    ),
-                                    e('button', { onClick: goToNextImage, className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
-                                        e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' })
-                                    )
-                                )
-                            ),
-                            e('div', { className: 'flex flex-row gap-2 flex-wrap' },
-                                item.images.map((img, index) => e('img', { 
-                                  key: index, src: img, alt: `Thumbnail ${index+1}`, 
-                                  loading: 'lazy',
-                                  onClick: () => setCurrentImageIndex(index),
-                                  className: `w-24 h-24 object-contain cursor-pointer bg-gray-100 ${currentImageIndex === index ? 'outline outline-2 outline-black' : ''}`
-                                }))
-                            )
-                        ),
-                        e('div', { className: 'sticky top-24 self-start z-10' },
-                            e('div', { className: 'pb-6 border-b border-gray-100 flex justify-between items-start' },
-                                e('div', null,
-                                    e('h2', { className: 'font-martian-mono text-base uppercase text-cold-gray' }, item.brand || item.author),
-                                    e('h1', { className: 'font-martian-mono text-xl uppercase mt-1' }, item.name)
-                                ),
-                                e('div', { className: 'flex items-center gap-x-3' },
-                                    e('span', { className: `text-xs text-cold-gray transition-opacity duration-300 ${shareFeedback ? 'opacity-100' : 'opacity-0'}` }, shareFeedback),
-                                    e('button', { onClick: () => handleToggleWishlist(item.id), className: isWishlisted ? 'text-black' : 'text-cold-gray hover:text-black' }, 
-                                        e(Icon, { name: isWishlisted ? 'HeartFilled' : 'Heart', size: 20 })
-                                    ),
-                                    e('button', { onClick: handleShare, className: 'text-cold-gray hover:text-black' }, 
-                                        e(Icon, { name: 'Share', size: 20 })
-                                    )
-                                )
-                            ),
-                            e('div', { className: 'py-6 border-b border-gray-100' },
-                                e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'DESCRIPTION'),
-                                e('p', { className: 'font-martian-mono text-sm leading-relaxed' }, item.description)
-                            ),
-                            e('div', { className: 'py-6 border-b border-gray-100' },
-                                e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'PRODUCT DETAILS'),
-                                renderDetails()
-                            ),
-                            e('div', { className: 'py-6' },
-                                e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'MEASUREMENTS'),
-                                renderMeasurements()
-                            ),
-                            renderActionButtons(),
-                            e('ul', { className: 'mt-6 space-y-1 text-xs text-cold-gray font-martian-mono list-disc list-outside pl-4' },
-                                e('li', null, 'all products are carefully authenticated'),
-                                e('li', null, 'detailed condition reports available'),
-                                e('li', null, 'archive consultation by appointment')
-                            )
-                        )
-                    )
-                ),
-                e(Modal, { isOpen: modal === 'inquiry', onClose: () => setModal(null), title: 'PRODUCT INQUIRY' }, e(InquiryForm, { item })),
-                e(Modal, { isOpen: modal === 'platforms', onClose: () => setModal(null), title: 'AVAILABLE ON' }, e(PlatformsList, { item }))
-            );
-        };
-        
-        const ContactPage = ({ navigateTo }) => {
-            const [submitted, setSubmitted] = useState(false);
-
-            const handleSubmit = (event) => {
-                event.preventDefault();
-                const formData = new FormData(event.target);
-                
-                fetch("/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams(formData).toString(),
-                })
-                .then(() => setSubmitted(true))
-                .catch((error) => alert(error));
-            };
-
-            const FormInput = ({ id, label, type = 'text', placeholder }) => e('div', { className: 'mb-4' },
-                e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
-                e('input', { type, id, name: id, required: true, placeholder, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray' })
-            );
-
-            const FormTextarea = ({ id, label, placeholder }) => e('div', { className: 'mb-4' },
-                e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
-                e('textarea', { id, name: id, required: true, rows: 4, placeholder, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black font-martian-mono bg-transparent placeholder-cold-gray resize-none' })
-            );
-
-            const FormSelect = ({ id, label, children }) => e('div', { className: 'mb-4' },
-                 e('label', { htmlFor: id, className: 'block font-martian-mono text-xs uppercase mb-1' }, e('span', null, label, e('span', {className: 'text-red-500'}, '*'))),
-                 e('select', {id, name: id, required: true, className: 'w-full border-b border-gray-300 p-1 text-sm focus:outline-none focus:border-black bg-white font-martian-mono pr-6 appearance-none'}, children)
-            );
-            
-            const successMessage = e('div', null, 
-                e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'MESSAGE SENT!'),
-                e('p', { className: 'font-martian-mono' }, 'Thank you for getting in touch. We will get back to you shortly.')
-            );
-
-            return e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-12' },
-                 e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'CONTACT'),
-                 e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'questions about a specific piece? want more information? we\'re here to help.'),
-                 e('div', { className: 'border-b border-gray-200 mt-4 mb-10' }),
-                e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
-                    e('div', { className: 'mb-12 md:mb-0' },
-                        submitted ? successMessage : e(Fragment, null,
-                            e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'SEND A MESSAGE'),
-                            e('form', { name: "contact", "data-netlify": "true", onSubmit: handleSubmit },
-                                e('input', { type: 'hidden', name: 'form-name', value: 'contact' }),
-                                e(FormInput, { id: 'name', label: 'Name', placeholder: 'your full name' }),
-                                e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
-                                e(FormSelect, { id: 'subject', label: 'Subject' },
-                                    e('option', { value: '' }, 'select message subject'),
-                                    e('option', { value: 'inquiry' }, 'product inquiry'),
-                                    e('option', { value: 'research' }, 'research request'),
-                                    e('option', { value: 'other' }, 'other')
-                                ),
-                                e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
-                                e('button', { type: 'submit', className: 'bg-black text-white py-3 px-8 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'SEND MESSAGE')
-                            )
-                        )
-                    ),
-                    e('div', null,
-                         e('h3', { className: 'font-martian-mono text-lg font-bold uppercase mb-4' }, 'GET IN TOUCH'),
-                        e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
-                            e('div', {className: 'flex items-center gap-2 mb-1'},
-                                e(Icon, {name: 'Mail', size: 16, className: 'text-cold-gray'}),
-                                e('p', { className: 'font-martian-mono text-xs uppercase text-cold-gray' }, 'Email')
-                            ),
-                            e('p', { className: 'font-martian-mono text-sm' }, e('a', { href: 'mailto:info@gdarchivio.com', className: 'underline' }, 'info@gdarchivio.com')),
-                        ),
-                        e('div', { className: 'pb-8 mb-8 border-b border-gray-100' },
-                           e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-2' }, 'Follow Us'),
-                           e('a', {href: 'https://www.instagram.com/gdarchivio', target: '_blank', rel: 'noopener noreferrer', className: 'flex items-center gap-2 text-sm font-martian-mono'}, e(Icon, {name: 'Instagram'}), 'Instagram')
-                        ),
-                        e('div', null,
-                            e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-4' }, 'Frequently Asked'),
-                            e('div', { className: 'space-y-4' },
-                                e('div', null,
-                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'IS THIS AN ONLINE ARCHIVE ONLY?'),
-                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'yes, gdarchivio operates as a digital fashion archive. Consultations and viewing can be arranged by appointment.')
-                                ),
-                                e('div', null,
-                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'CAN I CONTRIBUTE TO THE ARCHIVE?'),
-                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'we welcome contributions from collectors and fashion enthusiasts. Contact us to discuss adding pieces to our archive.')
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-        };
-
-        // ==========================================================
-        // APPLICAZIONE PRINCIPALE E ROUTING
-        // ==========================================================
-        const App = () => {
-            const [route, setRoute] = useState(window.location.hash || '#home');
-            const [products, setProducts] = useState([]);
-            const [libraryItems, setLibraryItems] = useState([]);
-            const [searchQuery, setSearchQuery] = useState('');
-            const [dynamicFilterOptions, setDynamicFilterOptions] = useState(null);
-
-            useEffect(() => {
-                Promise.all([
-                    fetch('./products.json').then(res => res.json()),
-                    fetch('./library.json').then(res => res.json())
-                ]).then(([productData, libraryData]) => {
-                    setProducts(productData);
-                    setLibraryItems(libraryData);
-                    setDynamicFilterOptions(generateFilterOptions(productData, libraryData));
-                }).catch(error => console.error("Errore nel caricamento dei dati JSON:", error));
-            }, []);
-
-            useEffect(() => {
-                const handleHashChange = () => {
-                    setRoute(window.location.hash || '#home');
-                    window.scrollTo(0, 0);
-                };
-                window.addEventListener('hashchange', handleHashChange);
-                handleHashChange();
-                return () => window.removeEventListener('hashchange', handleHashChange);
-            }, []);
-            
-            const navigateTo = useCallback((path, item = null) => {
-                const newRoute = item ? `${path}/${item.id}` : path;
-                if (window.location.hash !== newRoute) {
-                  window.history.pushState(null, '', newRoute);
-                }
-                setRoute(newRoute);
-                window.scrollTo(0, 0);
-            }, []);
-
-            const renderPage = () => {
-                if (!dynamicFilterOptions) {
-                    return e('div', { className: 'flex justify-center items-center h-screen' }, 
-                        e('p', { className: 'font-martian-mono' }, 'Loading archive...')
-                    );
-                }
-
-                const [page, id] = route.substring(1).split('/');
-                const allItems = [...products, ...libraryItems];
-                const item = allItems.find(p => p.id === id);
-
-                if (id && !item && (products.length > 0 || libraryItems.length > 0)) {
-                    navigateTo(page.startsWith('#') ? page : `#${page}`);
-                    return null;
-                }
-                
-                if (!item && id) {
-                    return e('div', { className: 'text-center p-8' }, 'Loading item...');
-                }
-
-                switch (page) {
-                    case 'collection':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'product'), navigateTo, page: '#collection', options: dynamicFilterOptions.collection, searchQuery: searchQuery });
-                    case 'archive':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'archive'), navigateTo, page: '#archive', options: dynamicFilterOptions.archive, searchQuery: searchQuery });
-                    case 'library':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: libraryItems, navigateTo, page: '#library', options: dynamicFilterOptions.library, searchQuery: searchQuery });
-                    case 'contact':
-                        return e(ContactPage, { navigateTo });
-                    case 'home':
-                    default:
-                        return e(HomePage, { navigateTo });
-                }
-            };
-            
-            const isHomePage = route === '#home' || route === '';
-
-            return e('div', { key: route, className: 'animate-fade-in' },
-                !isHomePage && e(Header, { navigateTo, currentRoute: route, searchQuery: searchQuery, onSearchChange: setSearchQuery }),
-                renderPage(),
-                !isHomePage && e(Footer)
-            );
-        };
-        
-        // --- Avvio dell'applicazione ---
-        const rootElement = document.getElementById('root');
-        if (rootElement) {
-            createRoot(rootElement).render(e(App));
-        } else {
-            console.error("L'elemento 'root' non è stato trovato nel DOM.");
+        for (let i = startPage; i <= endPage; i++) {
+            pagesToShow.push(i);
         }
+
+        return e('div', { className: 'flex justify-center space-x-2 my-8' },
+            e('button', {
+                onClick: () => onPageChange(currentPage - 1),
+                disabled: currentPage === 1,
+                className: 'px-3 py-1 border border-black text-sm hover:bg-gray-100'
+            }, 'Precedente'),
+
+            (startPage > 1) && e(React.Fragment, null,
+                renderPageButton(1),
+                e('span', { className: 'px-2' }, '...'),
+            ),
+
+            pagesToShow.map(renderPageButton),
+
+            (endPage < totalPages) && e(React.Fragment, null,
+                e('span', { className: 'px-2' }, '...'),
+                renderPageButton(totalPages),
+            ),
+
+            e('button', {
+                onClick: () => onPageChange(currentPage + 1),
+                disabled: currentPage === totalPages,
+                className: 'px-3 py-1 border border-black text-sm hover:bg-gray-100'
+            }, 'Successiva')
+        );
+    };
+
+    const ListPage = ({ items, navigateTo, page, options, searchQuery, initialPage, setPage }) => {
+        const [filters, setFilters] = useState({});
+        const [currentPage, setCurrentPage] = useState(initialPage); // UTILIZZA initialPage DAI PROPS
+        
+        // Reset page to 1 on filter/search change
+        useEffect(() => {
+            setCurrentPage(1);
+            setPage(1); // Mantiene lo stato dell'App sincronizzato
+            navigateTo(page, null, 1); // Aggiorna URL hash
+        }, [filters, searchQuery, page]);
+
+        // Filter and Search Logic
+        const filteredItems = items.filter(item => {
+            const searchMatch = searchQuery
+                ? Object.values(item).some(val => 
+                    String(val).toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                : true;
+
+            const filterMatch = Object.keys(filters).every(key => {
+                const activeFilters = filters[key];
+                if (activeFilters && activeFilters.length > 0) {
+                    return activeFilters.includes(item[key]);
+                }
+                return true;
+            });
+
+            return searchMatch && filterMatch;
+        });
+
+        // Pagination Logic
+        const totalItems = filteredItems.length;
+        const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
+        
+        const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+        const paginatedItems = filteredItems.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+
+        const changePage = (pageNumber) => {
+            if (pageNumber < 1 || pageNumber > totalPages) return;
+            setCurrentPage(pageNumber);
+            setPage(pageNumber); // Update the App's state
+            navigateTo(page, null, pageNumber); // AGGIORNA HASH NELL'URL PER SALVARE LO STATO
+        };
+
+        const onFilterChange = (key, value, isChecked, clearAll = false) => {
+            if (clearAll) {
+                setFilters({});
+                return;
+            }
+            
+            setFilters(prev => {
+                const newFilters = { ...prev };
+                if (isChecked) {
+                    newFilters[key] = [...(newFilters[key] || []), value];
+                } else {
+                    newFilters[key] = (newFilters[key] || []).filter(v => v !== value);
+                    if (newFilters[key].length === 0) delete newFilters[key];
+                }
+                return newFilters;
+            });
+        };
+
+        const renderItem = (item) => e('div', { 
+            key: item.id, 
+            className: 'border border-black p-4 cursor-pointer hover:bg-gray-100 transition-colors',
+            onClick: () => navigateTo(page, item.id, currentPage), // PASSA currentPage QUANDO NAVIGHI AL DETTAGLIO
+        },
+            e('img', { 
+                src: item.images ? item.images[0] : 'images/placeholder.jpg', 
+                alt: item.name, 
+                className: 'w-full h-80 object-cover mb-4' 
+            }),
+            e('div', { className: 'text-center' },
+                e('h3', { className: 'font-bold text-lg' }, item.name),
+                e('p', { className: 'text-sm' }, item.brand)
+            )
+        );
+
+        return e('div', { className: 'container mx-auto p-4 flex flex-col md:flex-row' },
+            e('div', { className: 'w-full md:w-1/4' },
+                e(FilterSidebar, { options, filters, onFilterChange })
+            ),
+            e('div', { className: 'w-full md:w-3/4 p-4' },
+                e('div', { className: 'text-center mb-6' },
+                    e('h1', { className: 'text-2xl font-bold' }, page.substring(1).toUpperCase()),
+                    e('p', { className: 'text-sm' }, `Trovati ${totalItems} risultati`)
+                ),
+                e('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' },
+                    paginatedItems.map(renderItem)
+                ),
+                e(Pagination, {
+                    totalItems: totalItems,
+                    itemsPerPage: PRODUCTS_PER_PAGE,
+                    currentPage: currentPage,
+                    onPageChange: changePage,
+                })
+            )
+        );
+    };
+
+    const DetailPage = ({ item, navigateTo }) => {
+        return e('div', { className: 'container mx-auto p-4' },
+            e('button', { 
+                onClick: () => window.history.back(), // USA history.back() per tornare allo stato precedente (incl. pagina)
+                className: 'mb-4 px-4 py-2 border border-black hover:bg-gray-100 transition-colors'
+            }, '← Torna all\'Archivio'),
+            e('div', { className: 'border border-black p-6' },
+                e('h1', { className: 'text-3xl font-bold mb-4' }, item.name),
+                e('div', { className: 'flex flex-col md:flex-row gap-6' },
+                    e('div', { className: 'md:w-1/2' },
+                        item.images.map(imgSrc => e('img', { 
+                            key: imgSrc, 
+                            src: imgSrc, 
+                            alt: item.name, 
+                            className: 'w-full h-auto object-cover mb-4 border border-gray-300' 
+                        }))
+                    ),
+                    e('div', { className: 'md:w-1/2' },
+                        e('h2', { className: 'text-xl font-bold mb-2' }, item.brand),
+                        e('p', { className: 'mb-4' }, item.description),
+                        e('ul', { className: 'space-y-1 text-sm' },
+                            e('li', null, e('strong', null, 'Categoria: '), item.category),
+                            e('li', null, e('strong', null, 'Anno: '), item.year),
+                            e('li', null, e('strong', null, 'Materiale: '), item.material),
+                            e('li', null, e('strong', null, 'Colore: '), item.color),
+                            e('li', null, e('strong', null, 'Taglia: '), item.size)
+                        ),
+                        item.type === 'product' && item.purchaseLinks && e('div', { className: 'mt-6' },
+                            e('h3', { className: 'font-bold mb-2' }, 'Acquista su:'),
+                            Object.keys(item.purchaseLinks).map(platform => e('a', {
+                                key: platform,
+                                href: item.purchaseLinks[platform],
+                                target: '_blank',
+                                className: 'inline-block mr-2 px-3 py-1 border border-black text-sm hover:bg-black hover:text-white transition-colors'
+                            }, platform))
+                        )
+                    )
+                )
+            )
+        );
+    };
+
+    const HomePage = ({ navigateTo }) => {
+        return e('div', { className: 'container mx-auto p-4 text-center' },
+            e('h1', { className: 'text-4xl font-bold mb-8' }, 'Benvenuto in gdarchivio'),
+            e('p', { className: 'text-lg mb-8' }, 'Esplora il nostro archivio e la nostra selezione di prodotti in vendita.'),
+            e('div', { className: 'space-y-4' },
+                e('button', {
+                    onClick: () => navigateTo('#product'),
+                    className: 'w-full md:w-1/3 px-6 py-3 border border-black hover:bg-black hover:text-white transition-colors text-lg'
+                }, 'Vai allo Shop'),
+                e('button', {
+                    onClick: () => navigateTo('#archive'),
+                    className: 'w-full md:w-1/3 px-6 py-3 border border-black hover:bg-black hover:text-white transition-colors text-lg'
+                }, 'Esplora l\'Archivio')
+            )
+        );
+    };
+
+    const ContactPage = ({ navigateTo }) => {
+        return e('div', { className: 'container mx-auto p-4' },
+            e('h1', { className: 'text-4xl font-bold mb-6 text-center' }, 'Contatti'),
+            e('div', { className: 'max-w-md mx-auto border border-black p-6' },
+                e('p', { className: 'mb-4' }, 'Per qualsiasi informazione, richiesta di collaborazione o dettagli sui prodotti, contattaci:'),
+                e('ul', { className: 'space-y-2' },
+                    e('li', null, e('strong', null, 'Email:'), ' [La tua Email]'),
+                    e('li', null, e('strong', null, 'Instagram:'), ' @dididdi126'),
+                    e('li', null, 'o usa il form sottostante (non implementato in questo codice).')
+                )
+            )
+        );
+    };
+
+    // --- Main Application Component ---
+
+    const App = () => {
+        const { data, loading } = useData();
+        
+        // STATO MODIFICATO: Aggiunto lo stato 'page' per il numero di pagina
+        const [route, setRoute] = useState(() => window.location.hash.split('/')[0] || '#home');
+        const [id, setId] = useState(() => window.location.hash.split('/')[1] || null);
+        const [searchQuery, setSearchQuery] = useState('');
+        const [page, setPage] = useState(1); // Nuovo stato per il numero di pagina
+
+        const dynamicFilterOptions = {
+            product: useDynamicFilters(data.products),
+            archive: useDynamicFilters(data.archive),
+            library: useDynamicFilters(data.library),
+        };
+
+        // FUNZIONE MODIFICATA: Legge la URL Hash includendo il parametro di pagina (?p=X)
+        const navigate = () => {
+            const fullHash = window.location.hash.substring(1); 
+            let [routePart, paramsPart] = fullHash.split('?');
+
+            const parts = routePart.split('/');
+            const newRoute = '#' + (parts[0] || 'home');
+            const newId = parts[1] || null;
+
+            let newPage = 1;
+            if (paramsPart) {
+                const params = new URLSearchParams(paramsPart);
+                newPage = parseInt(params.get('p')) || 1;
+            }
+
+            setRoute(newRoute);
+            setId(newId);
+            setPage(newPage); // Aggiorna lo stato della pagina
+            setSearchQuery('');
+        };
+
+        useEffect(() => {
+            navigate(); // Inizializza al caricamento
+            window.addEventListener('hashchange', navigate);
+            return () => window.removeEventListener('hashchange', navigate);
+        }, []);
+
+        // FUNZIONE MODIFICATA: Aggiorna la URL Hash includendo il parametro di pagina
+        const navigateTo = (route, id = null, newPage = 1) => {
+            let newHash = route;
+
+            if (id) {
+                // Navigazione alla pagina di dettaglio (#archive/101)
+                newHash = `${route}/${id}`;
+            } else if (newPage > 1) {
+                // Navigazione alla pagina di lista con parametro (?p=3)
+                newHash = `${route}?p=${newPage}`;
+            }
+
+            window.location.hash = newHash;
+        };
+        
+        // Recupera l'elemento da mostrare nel DetailPage
+        const getItem = () => {
+            if (!id) return null;
+            const allItems = [...data.products, ...data.archive, ...data.library];
+            return allItems.find(item => item.id === id);
+        };
+        
+        const item = getItem();
+
+        const renderPage = () => {
+            if (loading) {
+                return e('div', { className: 'text-center p-20' }, 'Caricamento dati...');
+            }
+
+            switch (route) {
+                case '#product':
+                    return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { 
+                        items: data.products, 
+                        navigateTo, 
+                        page: '#product', 
+                        options: dynamicFilterOptions.product, 
+                        searchQuery: searchQuery,
+                        initialPage: page, // Passa lo stato iniziale della pagina
+                        setPage: setPage // Permette al ListPage di aggiornare lo stato dell'App
+                    });
+                case '#archive':
+                    return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { 
+                        items: data.archive, 
+                        navigateTo, 
+                        page: '#archive', 
+                        options: dynamicFilterOptions.archive, 
+                        searchQuery: searchQuery,
+                        initialPage: page, // Passa lo stato iniziale della pagina
+                        setPage: setPage // Permette al ListPage di aggiornare lo stato dell'App
+                    });
+                case '#library':
+                    return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { 
+                        items: data.library, 
+                        navigateTo, 
+                        page: '#library', 
+                        options: dynamicFilterOptions.library, 
+                        searchQuery: searchQuery,
+                        initialPage: page, // Passa lo stato iniziale della pagina
+                        setPage: setPage // Permette al ListPage di aggiornare lo stato dell'App
+                    });
+                case '#contact':
+                    return e(ContactPage, { navigateTo });
+                case '#home':
+                default:
+                    return e(HomePage, { navigateTo });
+            }
+        };
+        
+        const isHomePage = route === '#home' || route === '';
+
+        return e('div', { key: route, className: 'animate-fade-in' },
+            e(ScrollToTop, { currentRoute: route }), // Scrolla in cima ad ogni cambio di route
+            !isHomePage && e(Header, { navigateTo, currentRoute: route, searchQuery: searchQuery, onSearchChange: setSearchQuery }),
+            renderPage(),
+            !isHomePage && e(Footer)
+        );
+    };
+    
+    // --- Avvio dell'applicazione ---\n
+    const rootElement = document.getElementById('root');
+    if (rootElement) {
+        createRoot(rootElement).render(e(App));
+    } else {
+        console.error("L'elemento 'root' non è stato trovato nel DOM.");
     }
     </script>
 </body>
