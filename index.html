@@ -243,7 +243,7 @@
 
     const ListPage = ({ items, navigateTo, page, options, searchQuery, initialPage, setPage }) => {
         const [filters, setFilters] = useState({});
-        const [currentPage, setCurrentPage] = useState(initialPage); // UTILIZZA initialPage DAI PROPS
+        const [currentPage, setCurrentPage] = useState(initialPage); 
         
         // Reset page to 1 on filter/search change
         useEffect(() => {
@@ -536,7 +536,7 @@
         );
     };
     
-    // --- Avvio dell'applicazione ---\n
+    // --- Avvio dell'applicazione ---
     const rootElement = document.getElementById('root');
     if (rootElement) {
         createRoot(rootElement).render(e(App));
