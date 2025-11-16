@@ -293,7 +293,6 @@
                 { label: 'Contact', page: '#contact' }
             ];
 
-            // MODIFICATO: navigateAndClose ora passa l'opzione resetPage
             const navigateAndClose = (path) => {
                 navigateTo(path, null, { resetPage: true });
                 setIsMenuOpen(false);
@@ -323,7 +322,6 @@
                                     navItems.map(item => e('a', {
                                         key: item.label,
                                         href: item.page,
-                                        // MODIFICATO: Aggiunto l'oggetto opzioni { resetPage: true }
                                         onClick: (ev) => { ev.preventDefault(); navigateTo(item.page, null, { resetPage: true }); },
                                         className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
                                     }, item.label))
@@ -359,7 +357,6 @@
                          navItems.map(item => e('a', {
                             key: item.label,
                             href: item.page,
-                            // MODIFICATO: Aggiunto l'oggetto opzioni { resetPage: true }
                             onClick: (ev) => { ev.preventDefault(); navigateAndClose(item.page); },
                             className: 'font-martian-mono uppercase tracking-wider text-2xl'
                         }, item.label))
@@ -374,7 +371,6 @@
                     e('div', { className: 'py-12 text-left border-t border-gray-200' },
                         e('a', { 
                             href: '#home', 
-                            // MODIFICATO: Aggiunto onClick con resetPage
                             onClick: (ev) => { ev.preventDefault(); navigateTo('#home', null, { resetPage: true }); },
                             className: 'flex items-center gap-3 mb-6' 
                         },
@@ -700,7 +696,11 @@
             );
         };
         
+        // ==========================================================
+        // COMPONENTE ListPage (CORRETTO E FINALE)
+        // ==========================================================
         const ListPage = ({ items, navigateTo, page, options, searchQuery }) => {
+            // Inizializza la pagina leggendo da sessionStorage. Se non c'è, usa 1.
             const [currentPage, setCurrentPage] = useState(() => {
                 const savedPage = sessionStorage.getItem(page); 
                 return savedPage ? parseInt(savedPage, 10) : 1;
@@ -711,14 +711,25 @@
             const [sortOrder, setSortOrder] = useState(sortOptions[0]);
             const itemsPerPage = 12;
 
+            // Salva la pagina in sessionStorage ogni volta che cambia
             useEffect(() => {
                 sessionStorage.setItem(page, currentPage);
             }, [currentPage, page]);
 
-            useEffect(() => {
-                setCurrentPage(1);
-            }, [selectedFilters, searchQuery]);
+            // Ref per tracciare se è il primo render (o se i filtri/search sono cambiati)
+            const queryStateRef = useRef({ filters: selectedFilters, search: searchQuery });
 
+            // Resetta la pagina a 1 SOLO se i filtri o la ricerca sono cambiati
+            useEffect(() => {
+                const hasFiltersChanged = JSON.stringify(queryStateRef.current.filters) !== JSON.stringify(selectedFilters);
+                const hasSearchChanged = queryStateRef.current.search !== searchQuery;
+
+                if (hasFiltersChanged || hasSearchChanged) {
+                    setCurrentPage(1);
+                    queryStateRef.current = { filters: selectedFilters, search: searchQuery };
+                }
+            }, [selectedFilters, searchQuery]);
+            
             const handleFilterChange = useCallback((filterType, value) => {
                 setSelectedFilters(prevFilters => {
                     const currentValues = prevFilters[filterType] || [];
@@ -906,7 +917,6 @@
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
                     e('a', { 
                         href: goBackUrl, 
-                        // MODIFICATO: L'onClick ora chiama navigateTo senza opzioni
                         onClick: (ev) => { ev.preventDefault(); navigateTo(goBackUrl); },
                         className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
@@ -1071,7 +1081,7 @@
         };
 
         // ==========================================================
-        // APPLICAZIONE PRINCIPALE E ROUTING
+        // APPLICAZIONE PRINCIPALE E ROUTING (CORRETTO E FINALE)
         // ==========================================================
         const App = () => {
             const [route, setRoute] = useState(window.location.hash || '#home');
@@ -1101,13 +1111,11 @@
                 return () => window.removeEventListener('hashchange', handleHashChange);
             }, []);
             
-            // MODIFICATO: Aggiunto un terzo parametro 'options'
             const navigateTo = useCallback((path, item = null, options = {}) => {
                 const newRoute = item ? `${path}/${item.id}` : path;
 
-                // MODIFICATO: Se resetPage è true, cancella la pagina salvata per quella sezione
                 if (options.resetPage) {
-                    sessionStorage.removeItem(path);
+                    sessionStorage.removeItem(path + '_page'); // Usa una chiave univoca per la pagina
                 }
                 
                 if (window.location.hash !== newRoute) {
@@ -1145,7 +1153,7 @@
                     case 'library':
                         return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: libraryItems, navigateTo, page: '#library', options: dynamicFilterOptions.library, searchQuery: searchQuery });
                     case 'contact':
-                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'product'), navigateTo, page: '#contact', options: dynamicFilterOptions.collection, searchQuery: searchQuery }); // Pagina Contatti
+                        return e(ContactPage, { navigateTo });
                     case 'home':
                     default:
                         return e(HomePage, { navigateTo });
