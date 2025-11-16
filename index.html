@@ -293,8 +293,9 @@
                 { label: 'Contact', page: '#contact' }
             ];
 
+            // MODIFICATO: navigateAndClose ora passa l'opzione resetPage
             const navigateAndClose = (path) => {
-                navigateTo(path);
+                navigateTo(path, null, { resetPage: true });
                 setIsMenuOpen(false);
             };
 
@@ -322,7 +323,8 @@
                                     navItems.map(item => e('a', {
                                         key: item.label,
                                         href: item.page,
-                                        onClick: (ev) => { ev.preventDefault(); navigateTo(item.page); },
+                                        // MODIFICATO: Aggiunto l'oggetto opzioni { resetPage: true }
+                                        onClick: (ev) => { ev.preventDefault(); navigateTo(item.page, null, { resetPage: true }); },
                                         className: `font-martian-mono uppercase tracking-wider text-sm ${currentRoute.startsWith(item.page) ? 'font-bold' : 'font-normal'} hover:font-bold transition-all`
                                     }, item.label))
                                 ),
@@ -357,6 +359,7 @@
                          navItems.map(item => e('a', {
                             key: item.label,
                             href: item.page,
+                            // MODIFICATO: Aggiunto l'oggetto opzioni { resetPage: true }
                             onClick: (ev) => { ev.preventDefault(); navigateAndClose(item.page); },
                             className: 'font-martian-mono uppercase tracking-wider text-2xl'
                         }, item.label))
@@ -369,7 +372,12 @@
              return e('footer', { className: 'bg-white' },
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                     e('div', { className: 'py-12 text-left border-t border-gray-200' },
-                        e('a', { href: '#home', className: 'flex items-center gap-3 mb-6' },
+                        e('a', { 
+                            href: '#home', 
+                            // MODIFICATO: Aggiunto onClick con resetPage
+                            onClick: (ev) => { ev.preventDefault(); navigateTo('#home', null, { resetPage: true }); },
+                            className: 'flex items-center gap-3 mb-6' 
+                        },
                             e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
@@ -660,28 +668,28 @@
                         e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2" }, "fashion archive")
                     ),
                     e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection') },
+                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection', null, { resetPage: true }) },
                             e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "COLLECTION"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "curated pieces")
                         ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive') },
+                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive', null, { resetPage: true }) },
                             e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "ARCHIVE"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "archive items")
                         ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library') },
+                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library', null, { resetPage: true }) },
                             e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "LIBRARY"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "fashion books")
                         ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact') },
+                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact', null, { resetPage: true }) },
                             e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "CONTACT"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "get in touch")
                         )
                     ),
-                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", onClick: () => navigateTo('#collection') }, "ENTER COLLECTION")
+                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", onClick: () => navigateTo('#collection', null, { resetPage: true }) }, "ENTER COLLECTION")
                 ),
                 e('footer', { className: "w-full py-6 px-4" },
                     e('div', { className: "container mx-auto text-center" },
@@ -898,6 +906,7 @@
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
                     e('a', { 
                         href: goBackUrl, 
+                        // MODIFICATO: L'onClick ora chiama navigateTo senza opzioni
                         onClick: (ev) => { ev.preventDefault(); navigateTo(goBackUrl); },
                         className: 'flex items-center gap-2 font-martian-mono text-sm uppercase text-cold-gray hover:text-black mb-6' 
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
@@ -1092,9 +1101,14 @@
                 return () => window.removeEventListener('hashchange', handleHashChange);
             }, []);
             
-            // MODIFICATO: Rimossa la riga che cancellava il sessionStorage
-            const navigateTo = useCallback((path, item = null) => {
+            // MODIFICATO: Aggiunto un terzo parametro 'options'
+            const navigateTo = useCallback((path, item = null, options = {}) => {
                 const newRoute = item ? `${path}/${item.id}` : path;
+
+                // MODIFICATO: Se resetPage è true, cancella la pagina salvata per quella sezione
+                if (options.resetPage) {
+                    sessionStorage.removeItem(path);
+                }
                 
                 if (window.location.hash !== newRoute) {
                   window.history.pushState(null, '', newRoute);
@@ -1131,7 +1145,7 @@
                     case 'library':
                         return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: libraryItems, navigateTo, page: '#library', options: dynamicFilterOptions.library, searchQuery: searchQuery });
                     case 'contact':
-                        return e(ContactPage, { navigateTo });
+                        return id ? e(DetailPage, { item, navigateTo }) : e(ListPage, { items: products.filter(p => p.type === 'product'), navigateTo, page: '#contact', options: dynamicFilterOptions.collection, searchQuery: searchQuery }); // Pagina Contatti
                     case 'home':
                     default:
                         return e(HomePage, { navigateTo });
