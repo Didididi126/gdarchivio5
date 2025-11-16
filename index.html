@@ -314,7 +314,8 @@
                     e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                         e('div', { className: 'flex items-center justify-between h-20' },
                             e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                                e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
+                                // MODIFICATO: Aggiunto object-cover per correggere lo stretch
+                                e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                                 e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                             ),
                             e('div', { className: 'hidden md:flex items-center gap-x-12 ml-auto' },
@@ -346,7 +347,8 @@
                 isMenuOpen && e('div', { className: 'fixed inset-0 bg-white z-50 p-4 animate-fade-in md:hidden' },
                     e('div', { className: 'flex justify-between items-center mb-12'},
                         e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
+                            // MODIFICATO: Aggiunto object-cover per correggere lo stretch
+                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
                         e('button', { className: 'md:hidden', onClick: () => setIsMenuOpen(false) },
@@ -370,7 +372,8 @@
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                     e('div', { className: 'py-12 text-left border-t border-gray-200' },
                         e('a', { href: '#home', className: 'flex items-center gap-3 mb-6' },
-                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full' }),
+                            // MODIFICATO: Aggiunto object-cover per correggere lo stretch
+                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
                         e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
@@ -617,6 +620,40 @@
                 }, 'Next')
             );
         };
+
+        // ==========================================================
+        // NUOVO COMPONENTE: CookieBanner
+        // ==========================================================
+        const CookieBanner = () => {
+            const [isVisible, setIsVisible] = useState(false);
+
+            useEffect(() => {
+                const consent = localStorage.getItem('gdarchivio_cookie_consent');
+                if (!consent) {
+                    setIsVisible(true);
+                }
+            }, []);
+
+            const handleAccept = () => {
+                localStorage.setItem('gdarchivio_cookie_consent', 'true');
+                setIsVisible(false);
+            };
+
+            if (!isVisible) {
+                return null;
+            }
+
+            return e('div', { className: 'fixed bottom-0 left-0 right-0 bg-black text-white p-4 flex flex-col sm:flex-row justify-between items-center z-50 animate-fade-in' },
+                e('p', { className: 'font-martian-mono text-xs text-center sm:text-left mb-2 sm:mb-0' },
+                    'This site uses technical cookies to enhance your experience. By continuing to browse, you consent to their use. ',
+                    e('a', { href: '#contact', className: 'underline hover:text-gray-300' }, 'Find out more.')
+                ),
+                e('button', {
+                    onClick: handleAccept,
+                    className: 'bg-white text-black py-2 px-4 font-martian-mono uppercase tracking-wider text-xs font-bold hover:bg-gray-200 transition-colors flex-shrink-0'
+                }, 'OK')
+            );
+        };
         
         // ==========================================================
         // PAGINE
@@ -662,12 +699,23 @@
         };
         
         const ListPage = ({ items, navigateTo, page, options, searchQuery }) => {
+            // MODIFICATO: Legge la pagina salvata da sessionStorage all'avvio
+            const [currentPage, setCurrentPage] = useState(() => {
+                const savedPage = sessionStorage.getItem(page); // 'page' è '#collection', '#archive', etc.
+                return savedPage ? parseInt(savedPage, 10) : 1;
+            });
+
             const initialFilters = useMemo(() => Object.keys(options).reduce((acc, key) => ({ ...acc, [key]: [] }), {}), [options]);
             const [selectedFilters, setSelectedFilters] = useState(initialFilters);
             const [sortOrder, setSortOrder] = useState(sortOptions[0]);
-            const [currentPage, setCurrentPage] = useState(1);
             const itemsPerPage = 12;
 
+            // MODIFICATO: Salva la pagina corrente in sessionStorage ogni volta che cambia
+            useEffect(() => {
+                sessionStorage.setItem(page, currentPage);
+            }, [currentPage, page]);
+
+            // Questo resetta la pagina a 1 SOLO se i filtri o la ricerca cambiano
             useEffect(() => {
                 setCurrentPage(1);
             }, [selectedFilters, searchQuery]);
@@ -1055,6 +1103,11 @@
             
             const navigateTo = useCallback((path, item = null) => {
                 const newRoute = item ? `${path}/${item.id}` : path;
+                if (!item) { 
+                    // Se non stiamo andando a un prodotto, cancella la pagina salvata per quella sezione
+                    // Questo assicura che cliccando su "Collection" nel menu si torni a pagina 1
+                    sessionStorage.removeItem(path);
+                }
                 if (window.location.hash !== newRoute) {
                   window.history.pushState(null, '', newRoute);
                 }
@@ -1099,10 +1152,11 @@
             
             const isHomePage = route === '#home' || route === '';
 
-            return e('div', { key: route, className: 'animate-fade-in' },
+            return e('div', { key: route, className: 'relative min-h-screen' }, // Aggiunto relative e min-h-screen per il banner
                 !isHomePage && e(Header, { navigateTo, currentRoute: route, searchQuery: searchQuery, onSearchChange: setSearchQuery }),
                 renderPage(),
-                !isHomePage && e(Footer)
+                !isHomePage && e(Footer),
+                e(CookieBanner) // Aggiunto il componente Cookie Banner
             );
         };
         
