@@ -314,7 +314,6 @@
                     e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                         e('div', { className: 'flex items-center justify-between h-20' },
                             e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                                // MODIFICATO: Aggiunto object-cover per correggere lo stretch
                                 e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                                 e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                             ),
@@ -347,7 +346,6 @@
                 isMenuOpen && e('div', { className: 'fixed inset-0 bg-white z-50 p-4 animate-fade-in md:hidden' },
                     e('div', { className: 'flex justify-between items-center mb-12'},
                         e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                            // MODIFICATO: Aggiunto object-cover per correggere lo stretch
                             e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
@@ -372,7 +370,6 @@
                 e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                     e('div', { className: 'py-12 text-left border-t border-gray-200' },
                         e('a', { href: '#home', className: 'flex items-center gap-3 mb-6' },
-                            // MODIFICATO: Aggiunto object-cover per correggere lo stretch
                             e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
@@ -620,10 +617,7 @@
                 }, 'Next')
             );
         };
-
-        // ==========================================================
-        // NUOVO COMPONENTE: CookieBanner
-        // ==========================================================
+        
         const CookieBanner = () => {
             const [isVisible, setIsVisible] = useState(false);
 
@@ -699,9 +693,8 @@
         };
         
         const ListPage = ({ items, navigateTo, page, options, searchQuery }) => {
-            // MODIFICATO: Legge la pagina salvata da sessionStorage all'avvio
             const [currentPage, setCurrentPage] = useState(() => {
-                const savedPage = sessionStorage.getItem(page); // 'page' è '#collection', '#archive', etc.
+                const savedPage = sessionStorage.getItem(page); 
                 return savedPage ? parseInt(savedPage, 10) : 1;
             });
 
@@ -710,12 +703,10 @@
             const [sortOrder, setSortOrder] = useState(sortOptions[0]);
             const itemsPerPage = 12;
 
-            // MODIFICATO: Salva la pagina corrente in sessionStorage ogni volta che cambia
             useEffect(() => {
                 sessionStorage.setItem(page, currentPage);
             }, [currentPage, page]);
 
-            // Questo resetta la pagina a 1 SOLO se i filtri o la ricerca cambiano
             useEffect(() => {
                 setCurrentPage(1);
             }, [selectedFilters, searchQuery]);
@@ -1101,13 +1092,10 @@
                 return () => window.removeEventListener('hashchange', handleHashChange);
             }, []);
             
+            // MODIFICATO: Rimossa la riga che cancellava il sessionStorage
             const navigateTo = useCallback((path, item = null) => {
                 const newRoute = item ? `${path}/${item.id}` : path;
-                if (!item) { 
-                    // Se non stiamo andando a un prodotto, cancella la pagina salvata per quella sezione
-                    // Questo assicura che cliccando su "Collection" nel menu si torni a pagina 1
-                    sessionStorage.removeItem(path);
-                }
+                
                 if (window.location.hash !== newRoute) {
                   window.history.pushState(null, '', newRoute);
                 }
@@ -1152,11 +1140,11 @@
             
             const isHomePage = route === '#home' || route === '';
 
-            return e('div', { key: route, className: 'relative min-h-screen' }, // Aggiunto relative e min-h-screen per il banner
+            return e('div', { key: route, className: 'relative min-h-screen' }, 
                 !isHomePage && e(Header, { navigateTo, currentRoute: route, searchQuery: searchQuery, onSearchChange: setSearchQuery }),
                 renderPage(),
                 !isHomePage && e(Footer),
-                e(CookieBanner) // Aggiunto il componente Cookie Banner
+                e(CookieBanner)
             );
         };
         
