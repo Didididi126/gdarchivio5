@@ -10,12 +10,24 @@
     "condition": "excellent",
     "material": "vinyl",
     "images": [
-      "images/placeholder.jpg"
+      "images/miumiu-olive-crossbody-bag-01.webp",
+      "images/miumiu-olive-crossbody-bag-02.webp",
+      "images/miumiu-olive-crossbody-bag-03.webp",
+      "images/miumiu-olive-crossbody-bag-04.webp",
+      "images/miumiu-olive-crossbody-bag-05.webp",
+      "images/miumiu-olive-crossbody-bag-06.webp",
+      "images/miumiu-olive-crossbody-bag-07.webp",
+      "images/miumiu-olive-crossbody-bag-08.webp",
+      "images/miumiu-olive-crossbody-bag-09.webp",
+      "images/miumiu-olive-crossbody-bag-10.webp",
+      "images/miumiu-olive-crossbody-bag-11.webp"
+
     ],
     "description": "Miu Miu F/W 1999 olive green crossbody bag. It features an adjustable technical fabric shoulder strap, small front pocket, velcro closure and the back dark green mesh pocket.",
-    "measurements": { "chest": "48cm", "waist": "34cm", "length": "84cm"},
+    "measurements": { "width": "18cm", "height": "22cm", "depth": "5cm"},
     "type": "product",
     "purchaseLinks": null
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-borse/borse/miu-miu/borsa-a-mano-miu-miu-verde-vinile-58869429.shtml/" }
   },
   {
     "id": "102",
@@ -28,7 +40,11 @@
     "condition": "excellent",
     "material": "viscose",
     "images": [
-      "images/placeholder.jpg"
+      "images/dolcegabbana-cardigan-top-01.webp",
+      "images/dolcegabbana-cardigan-top-02.webp",
+      "images/dolcegabbana-cardigan-top-03.webp",
+      "images/dolcegabbana-cardigan-top-04.webp",
+      "images/dolcegabbana-cardigan-top-05.webp"
     ],
     "description": "Dolce & Gabbana S/S 1999 black cropped cardigan top.",
     "measurements": { "waist": "40cm", "length": "102cm"},
@@ -46,8 +62,19 @@
     "condition": "excellent condition",
     "material": "silk",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-leopard-dress-silk-01.webp",
+      "images/robertocavalli-leopard-dress-silk-02.webp",
+      "images/robertocavalli-leopard-dress-silk-03.webp",
+      "images/robertocavalli-leopard-dress-silk-04.webp",
+      "images/robertocavalli-leopard-dress-silk-05.webp",
+      "images/robertocavalli-leopard-dress-silk-06.webp",
+      "images/robertocavalli-leopard-dress-silk-07.webp",
+      "images/robertocavalli-leopard-dress-silk-08.webp",
+      "images/robertocavalli-leopard-dress-silk-09.webp",
+      "images/robertocavalli-leopard-dress-silk-10.webp",
+      "images/robertocavalli-leopard-dress-silk-11.webp",
+      "images/robertocavalli-leopard-dress-silk-12.webp",
+      "images/robertocavalli-leopard-dress-silk-13.webp"
     ],
     "description": "Roberto Cavalli S/S 2002 leopard delavé print silk dress.",
     "measurements": { 
@@ -57,6 +84,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/abiti/roberto-cavalli/abiti-roberto-cavalli-marrone-seta-58669919.shtml/" }
   },
   {
     "id": "104",
@@ -69,8 +97,18 @@
     "condition": "excellent condition",
     "material": "linen",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dirkbikkembergs-skirt-01.webp",
+      "images/dirkbikkembergs-skirt-02.webp",
+      "images/dirkbikkembergs-skirt-03.webp",
+      "images/dirkbikkembergs-skirt-04.webp",
+      "images/dirkbikkembergs-skirt-05.webp",
+      "images/dirkbikkembergs-skirt-06.webp",
+      "images/dirkbikkembergs-skirt-07.webp",
+      "images/dirkbikkembergs-skirt-08.webp",
+      "images/dirkbikkembergs-skirt-09.webp",
+      "images/dirkbikkembergs-skirt-10.webp",
+      "images/dirkbikkembergs-skirt-11.webp",
+      "images/dirkbikkembergs-skirt-12.webp"
     ],
     "description": "Dirk Bikkembergs S/S 2004 deconstructed linen skirt with hand-knotted draperies. Presented in the collection in three different colors.",
     "measurements": { 
@@ -92,8 +130,16 @@
     "condition": "New with tang and hangers",
     "material": "linen",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-deconstructed-tailleur-01.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-02.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-03.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-04.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-05.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-06.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-07.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-08.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-09.webp",
+      "images/jeanpaulgaultier-deconstructed-tailleur-10.webp"
     ],
     "description": "Jean Paul Gaultier S/S 1994 deconstructed tailleur with religious pendants. The sleeves are deconstructed and held together by metal chains with religious charms along the armholes. New with tag and hangers.",
     "measurements": { 
@@ -108,15 +154,25 @@
     "id": "106",
     "name": "Dolce & Gabbana S/S 2002 black lace-up corset",
     "brand": "Dolce & Gabbana",
-    "category": "bustier",
+    "category": "corset",
     "color": "black",
     "size": "M",
     "year": 2002,
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-lace-up-corset-01.webp",
+      "images/dolcegabbana-lace-up-corset-02.webp",
+      "images/dolcegabbana-lace-up-corset-03.webp",
+      "images/dolcegabbana-lace-up-corset-04.webp",
+      "images/dolcegabbana-lace-up-corset-05.webp",
+      "images/dolcegabbana-lace-up-corset-06.webp",
+      "images/dolcegabbana-lace-up-corset-07.webp",
+      "images/dolcegabbana-lace-up-corset-08.webp",
+      "images/dolcegabbana-lace-up-corset-09.webp",
+      "images/dolcegabbana-lace-up-corset-10.webp",
+      "images/dolcegabbana-lace-up-corset-11.webp",
+      "images/dolcegabbana-lace-up-corset-12.webp"
     ],
     "description": "Dolce & Gabbana S/S 2002 black lace-up corset.",
     "measurements": { 
@@ -126,6 +182,8 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "type": "archive",
+    "purchaseLinks": null
   },
   {
     "id": "107",
@@ -138,8 +196,14 @@
     "condition": "excellent",
     "material": "viscose",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/maisonmartinmargiela-circle-dress-01.webp",
+      "images/maisonmartinmargiela-circle-dress-02.webp",
+      "images/maisonmartinmargiela-circle-dress-03.webp",
+      "images/maisonmartinmargiela-circle-dress-04.webp",
+      "images/maisonmartinmargiela-circle-dress-05.webp",
+      "images/maisonmartinmargiela-circle-dress-06.webp",
+      "images/maisonmartinmargiela-circle-dress-07.webp",
+      "images/maisonmartinmargiela-circle-dress-08.webp"
     ],
     "description": "Maison Martin Marginal S/S 2002 artisanal \"white label\" black circle dress. Featuring a boat neck, long sleeves, an over-the-knee length and a back draped in the shape of a circle.",
     "measurements": { 
@@ -161,8 +225,15 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-feather-pants-01.webp",
+      "images/robertocavalli-feather-pants-02.webp",
+      "images/robertocavalli-feather-pants-03.webp",
+      "images/robertocavalli-feather-pants-04.webp",
+      "images/robertocavalli-feather-pants-05.webp",
+      "images/robertocavalli-feather-pants-06.webp",
+      "images/robertocavalli-feather-pants-07.webp",
+      "images/robertocavalli-feather-pants-08.webp",
+      "images/robertocavalli-feather-pants-09.webp"
     ],
     "description": "Roberto Cavalli S/S 2004 pink feather print pants.",
     "measurements": { 
@@ -172,6 +243,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/pantaloni/roberto-cavalli/pantaloni-roberto-cavalli-altro-cotone-56964150.shtml/" }
   },
   {
     "id": "109",
@@ -184,14 +256,22 @@
     "condition": "excellent",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/prada-burgundy-chainlink-bag-01.webp",
+      "images/prada-burgundy-chainlink-bag-02.webp",
+      "images/prada-burgundy-chainlink-bag-03.webp",
+      "images/prada-burgundy-chainlink-bag-04.webp",
+      "images/prada-burgundy-chainlink-bag-05.webp",
+      "images/prada-burgundy-chainlink-bag-06.webp",
+      "images/prada-burgundy-chainlink-bag-07.webp",
+      "images/prada-burgundy-chainlink-bag-08.webp",
+      "images/prada-burgundy-chainlink-bag-09.webp",
+      "images/prada-burgundy-chainlink-bag-10.webp"
     ],
     "description": "Prada F/W 2004 burgundy leather chainlink bag.",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "archive",
     "purchaseLinks": null
@@ -200,15 +280,21 @@
     "id": "110",
     "name": "Jean Paul Gaultier S/S 1994 money print mesh long sleeves shirt",
     "brand": "Jean Paul Gaultier",
-    "category": "long sleeves shirt",
+    "category": "long-sleeves shirt",
     "color": "multicolour",
     "size": "M",
     "year": 1994,
     "condition": "excellent",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-money-mesh-01.webp",
+      "images/jeanpaulgaultier-money-mesh-02.webp",
+      "images/jeanpaulgaultier-money-mesh-03.webp",
+      "images/jeanpaulgaultier-money-mesh-04.webp",
+      "images/jeanpaulgaultier-money-mesh-05.webp",
+      "images/jeanpaulgaultier-money-mesh-06.webp",
+      "images/jeanpaulgaultier-money-mesh-07.webp",
+      "images/jeanpaulgaultier-money-mesh-08.webp"
     ],
     "description": "Jean Paul Gaultier S/S 1994 money print mesh long sleeves shirt.",
     "measurements": { 
@@ -218,6 +304,8 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "type": "archive",
+    "purchaseLinks": null
   },
   {
     "id": "111",
@@ -230,8 +318,16 @@
     "condition": "excellent",
     "material": "silk",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/anndemeulemeester-silk-long-waistcoat-01.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-02.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-03.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-04.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-05.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-06.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-07.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-08.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-09.webp",
+      "images/anndemeulemeester-silk-long-waistcoat-10.webp"
     ],
     "description": "Ann Demeulemeester S/S 2007 ivory silk long waistcoat,featuring all-over perforated floral embroidery. Button fastening at the front and adjustable laces at the back. Made in Belgium. A piece from the same show with the same fabric was exhibited in 2014 at MoMu, the exhibition Birds of Paradise: Plumes and Feathers in Fashion.",
     "measurements": { 
@@ -253,8 +349,13 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-galaxy-print-set-strass-01.webp",
+      "images/robertocavalli-galaxy-print-set-strass-02.webp",
+      "images/robertocavalli-galaxy-print-set-strass-03.webp",
+      "images/robertocavalli-galaxy-print-set-strass-04.webp",
+      "images/robertocavalli-galaxy-print-set-strass-05.webp",
+      "images/robertocavalli-galaxy-print-set-strass-06.webp",
+      "images/robertocavalli-galaxy-print-set-strass-07.webp"
     ],
     "description": "Roberto Cavalli F/W 2000 galaxy print set with strass decoration.",
     "measurements": { 
@@ -276,8 +377,22 @@
     "condition": "new with tag",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/viviennewestwood-cardigan-skirt-set-01.webp",
+      "images/viviennewestwood-cardigan-skirt-set-02.webp",
+      "images/viviennewestwood-cardigan-skirt-set-03.webp",
+      "images/viviennewestwood-cardigan-skirt-set-04.webp",
+      "images/viviennewestwood-cardigan-skirt-set-05.webp",
+      "images/viviennewestwood-cardigan-skirt-set-06.webp",
+      "images/viviennewestwood-cardigan-skirt-set-07.webp",
+      "images/viviennewestwood-cardigan-skirt-set-08.webp",
+      "images/viviennewestwood-cardigan-skirt-set-09.webp",
+      "images/viviennewestwood-cardigan-skirt-set-10.webp",
+      "images/viviennewestwood-cardigan-skirt-set-11.webp",
+      "images/viviennewestwood-cardigan-skirt-set-12.webp",
+      "images/viviennewestwood-cardigan-skirt-set-13.webp",
+      "images/viviennewestwood-cardigan-skirt-set-14.webp",
+      "images/viviennewestwood-cardigan-skirt-set-15.webp",
+      "images/viviennewestwood-cardigan-skirt-set-16.webp"
     ],
     "description": "Vivienne Westwood S/S 1999 rare mustard deconstructed cardigan and skirt knitwear set. Gold Label. New with tag. Made in Italy.",
     "measurements": { 
@@ -299,8 +414,10 @@
     "condition": "new with tag",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-cupid-charms-bikini-01.webp",
+      "images/dolcegabbana-cupid-charms-bikini-02.webp",
+      "images/dolcegabbana-cupid-charms-bikini-03.webp",
+      "images/dolcegabbana-cupid-charms-bikini-04.webp"
     ],
     "description": "Dolce & Gabbana F/W 1995 Cupid charms black bikini.",
     "measurements": { 
@@ -322,8 +439,11 @@
     "condition": "new with tag",
     "material": "viscose",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-virgin-t-shirt-01.webp",
+      "images/dolcegabbana-virgin-t-shirt-02.webp",
+      "images/dolcegabbana-virgin-t-shirt-03.webp",
+      "images/dolcegabbana-virgin-t-shirt-04.webp",
+      "images/dolcegabbana-virgin-t-shirt-05.webp"
     ],
     "description": "Dolce & Gabbana S/S 1995 black Virgin T-shirt.",
     "measurements": { 
@@ -345,8 +465,19 @@
     "condition": "good",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/gianniversace-patchwork-lace-up-heels-01.webp",
+      "images/gianniversace-patchwork-lace-up-heels-02.webp",
+      "images/gianniversace-patchwork-lace-up-heels-03.webp",
+      "images/gianniversace-patchwork-lace-up-heels-04.webp",
+      "images/gianniversace-patchwork-lace-up-heels-05.webp",
+      "images/gianniversace-patchwork-lace-up-heels-06.webp",
+      "images/gianniversace-patchwork-lace-up-heels-07.webp",
+      "images/gianniversace-patchwork-lace-up-heels-08.webp",
+      "images/gianniversace-patchwork-lace-up-heels-09.webp",
+      "images/gianniversace-patchwork-lace-up-heels-10.webp",
+      "images/gianniversace-patchwork-lace-up-heels-11.webp",
+      "images/gianniversace-patchwork-lace-up-heels-12.webp",
+      "images/gianniversace-patchwork-lace-up-heels-13.webp"
     ],
     "description": "Gianni Versace S/S 2002 red leather patchwork lace up heels.",
     "measurements": { 
@@ -356,6 +487,8 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "type": "archive",
+    "purchaseLinks": null
   },
   {
     "id": "117",
@@ -437,8 +570,20 @@
     "condition": "excellent",
     "material": "silk",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/prada-dress-01.webp",
+      "images/prada-dress-02.webp",
+      "images/prada-dress-03.webp",
+      "images/prada-dress-04.webp",
+      "images/prada-dress-05.webp",
+      "images/prada-dress-06.webp",
+      "images/prada-dress-07.webp",
+      "images/prada-dress-08.webp",
+      "images/prada-dress-09.webp",
+      "images/prada-dress-10.webp",
+      "images/prada-dress-11.webp",
+      "images/prada-dress-12.webp",
+      "images/prada-dress-13.webp",
+      "images/prada-dress-14.webp"      
     ],
     "description": "Prada S/S 2010 silk blend purple beach scene print dress. Shown in many Prada ad campaigns. Made in Italy",
     "measurements": { 
@@ -448,6 +593,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/abiti/prada/abiti-prada-rosa-seta-56198294.shtml/" }
   },
   {
     "id": "121",
@@ -460,8 +606,23 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/christiandior-zig-zag-knit-twin-set-01.webp",
+      "images/christiandior-zig-zag-knit-twin-set-02.webp",
+      "images/christiandior-zig-zag-knit-twin-set-03.webp",
+      "images/christiandior-zig-zag-knit-twin-set-04.webp",
+      "images/christiandior-zig-zag-knit-twin-set-05.webp",
+      "images/christiandior-zig-zag-knit-twin-set-06.webp",
+      "images/christiandior-zig-zag-knit-twin-set-07.webp",
+      "images/christiandior-zig-zag-knit-twin-set-08.webp",
+      "images/christiandior-zig-zag-knit-twin-set-09.webp",
+      "images/christiandior-zig-zag-knit-twin-set-10.webp",
+      "images/christiandior-zig-zag-knit-twin-set-11.webp",
+      "images/christiandior-zig-zag-knit-twin-set-12.webp",
+      "images/christiandior-zig-zag-knit-twin-set-13.webp",
+      "images/christiandior-zig-zag-knit-twin-set-14.webp",
+      "images/christiandior-zig-zag-knit-twin-set-15.webp",
+      "images/christiandior-zig-zag-knit-twin-set-16.webp",
+      "images/christiandior-zig-zag-knit-twin-set-17.webp"
     ],
     "description": "Christian Dior by John Galliano S/S 1999 black zig zag knit twin set. Made in France.",
     "measurements": { 
@@ -471,20 +632,33 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/dior/t-shirt-e-camicie-dior-nero-viscosa-48051890.shtml/" }
   }, 
   {
     "id": "122",
     "name": "Junior Gaultier S/S 1989 iconic lace up corset vest jacket",
     "brand": "Jean Paul Gaultier",
-    "category": "jacket",
+    "category": "jackets",
     "color": "beige",
     "size": "S",
     "year": 1989,
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/juniorgaultier-corset-jacket-01.webp",
+      "images/juniorgaultier-corset-jacket-02.webp",
+      "images/juniorgaultier-corset-jacket-03.webp",
+      "images/juniorgaultier-corset-jacket-04.webp",
+      "images/juniorgaultier-corset-jacket-05.webp",
+      "images/juniorgaultier-corset-jacket-06.webp",
+      "images/juniorgaultier-corset-jacket-07.webp",
+      "images/juniorgaultier-corset-jacket-08.webp",
+      "images/juniorgaultier-corset-jacket-09.webp",
+      "images/juniorgaultier-corset-jacket-10.webp",
+      "images/juniorgaultier-corset-jacket-11.webp",
+      "images/juniorgaultier-corset-jacket-12.webp",
+      "images/juniorgaultier-corset-jacket-13.webp",
+      "images/juniorgaultier-corset-jacket-14.webp"
     ],
     "description": "Junior Gaultier S/S 1989 iconic lace up corset vest jacket.",
     "measurements": { 
@@ -498,7 +672,7 @@
   {
     "id": "123",
     "name": "Maison Martin Margiela S/S 2006 blue studded canvas trainers",
-    "brand": "Maison Martin MArgiela",
+    "brand": "Maison Martin Margiela",
     "category": "shoes",
     "color": "blue",
     "size": "41",
@@ -506,8 +680,17 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/maisonmartinmargiela-studded-canvas-trainers-01.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-02.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-03.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-04.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-05.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-06.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-07.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-08.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-09.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-10.webp",
+      "images/maisonmartinmargiela-studded-canvas-trainers-11.webp"
     ],
     "description": "Maison Martin Margiela S/S 2006 blue studded canvas trainers.",
     "measurements": { 
@@ -529,8 +712,20 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-croquet-flower-jeans-01.webp",
+      "images/robertocavalli-croquet-flower-jeans-02.webp",
+      "images/robertocavalli-croquet-flower-jeans-03.webp",
+      "images/robertocavalli-croquet-flower-jeans-04.webp",
+      "images/robertocavalli-croquet-flower-jeans-05.webp",
+      "images/robertocavalli-croquet-flower-jeans-06.webp",
+      "images/robertocavalli-croquet-flower-jeans-07.webp",
+      "images/robertocavalli-croquet-flower-jeans-08.webp",
+      "images/robertocavalli-croquet-flower-jeans-09.webp",
+      "images/robertocavalli-croquet-flower-jeans-10.webp",
+      "images/robertocavalli-croquet-flower-jeans-11.webp",
+      "images/robertocavalli-croquet-flower-jeans-12.webp",
+      "images/robertocavalli-croquet-flower-jeans-13.webp",
+      "images/robertocavalli-croquet-flower-jeans-14.webp"
     ],
     "description": "Roberto Cavalli S/S 2002 croquet flower delavé print jeans.",
     "measurements": { 
@@ -552,10 +747,19 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/miumiu-cardigan-01.webp",
+      "images/miumiu-cardigan-02.webp",
+      "images/miumiu-cardigan-03.webp",
+      "images/miumiu-cardigan-04.webp",
+      "images/miumiu-cardigan-05.webp",
+      "images/miumiu-cardigan-06.webp",
+      "images/miumiu-cardigan-07.webp",
+      "images/miumiu-cardigan-08.webp",
+      "images/miumiu-cardigan-09.webp",
+      "images/miumiu-cardigan-10.webp"
     ],
     "description": "Mis Miu S/S 1997 cardigan with eyelet hook closure and neck string detail. Featuring ruffles on the ends of the sleeves and bottom",
+    "description": "Miu Miu S/S 1997 cardigan with eyelet hook closure and neck string detail. Featuring ruffles on the ends of the sleeves and bottom",
     "measurements": { 
       "chest": "...", 
       "waist": "...", 
@@ -575,8 +779,17 @@
     "condition": "new with tag",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-rose-swimwear-01.webp",
+      "images/dolcegabbana-rose-swimwear-02.webp",
+      "images/dolcegabbana-rose-swimwear-03.webp",
+      "images/dolcegabbana-rose-swimwear-04.webp",
+      "images/dolcegabbana-rose-swimwear-05.webp",
+      "images/dolcegabbana-rose-swimwear-06.webp",
+      "images/dolcegabbana-rose-swimwear-07.webp",
+      "images/dolcegabbana-rose-swimwear-08.webp",
+      "images/dolcegabbana-rose-swimwear-09.webp",
+      "images/dolcegabbana-rose-swimwear-10.webp",
+      "images/dolcegabbana-rose-swimwear-11.webp"
     ],
     "description": "Dolce & Gabbana Mare F/W 1996 rose print swimwear balconette bra and culotte, deadstok.",
     "measurements": { 
@@ -591,21 +804,34 @@
     "id": "127",
     "name": "Paco Rabanne 1969 shoulder bag",
     "brand": "Paco Rabanne",
-    "category": "bag",
+    "category": "bags",
     "color": "blue",
     "size": "one size",
     "year": 1969,
     "condition": "excellent",
     "material": "plastic",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/pacorabanne-shoulder-bag-plastic-plates-01.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-02.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-03.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-04.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-05.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-06.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-07.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-08.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-09.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-10.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-11.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-12.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-13.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-14.webp",
+      "images/pacorabanne-shoulder-bag-plastic-plates-15.webp"
     ],
     "description": "Iconic Paco Rabanne 1969 shoulder bag with blue plastic plates linked together by silver small rings. Original label 'Paco Rabanne - Paris Production Ricaf - Italy, Modél Deposée'",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "archive",
     "purchaseLinks": null
@@ -621,8 +847,18 @@
     "condition": "new with tag",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-01.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-02.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-03.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-04.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-05.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-06.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-07.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-08.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-09.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-10.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-11.webp",
+      "images/viviennewestwood-deconstructed-knitted-top-skirt-12.webp"
     ],
     "description": "Vivienne Westwood S/S 2000 deconstructed black knitted top/skirt and purple necklace set, deadstock. Label MAN, sample item. Made in Italy.",
     "measurements": { 
@@ -632,6 +868,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/vivienne-westwood/t-shirt-e-camicie-vivienne-westwood-nero-cotone-52173240.shtml/" }
   },
   {
     "id": "129",
@@ -644,8 +881,21 @@
     "condition": "excellent",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-rainbow-top-01.webp",
+      "images/jeanpaulgaultier-rainbow-top-02.webp",
+      "images/jeanpaulgaultier-rainbow-top-03.webp",
+      "images/jeanpaulgaultier-rainbow-top-04.webp",
+      "images/jeanpaulgaultier-rainbow-top-05.webp",
+      "images/jeanpaulgaultier-rainbow-top-06.webp",
+      "images/jeanpaulgaultier-rainbow-top-07.webp",
+      "images/jeanpaulgaultier-rainbow-top-08.webp",
+      "images/jeanpaulgaultier-rainbow-top-09.webp",
+      "images/jeanpaulgaultier-rainbow-top-10.webp",
+      "images/jeanpaulgaultier-rainbow-top-11.webp",
+      "images/jeanpaulgaultier-rainbow-top-12.webp",
+      "images/jeanpaulgaultier-rainbow-top-13.webp",
+      "images/jeanpaulgaultier-rainbow-top-14.webp",
+      "images/jeanpaulgaultier-rainbow-top-15.webp"
     ],
     "description": "Jean Paul Gaultier S/S 2005 rainbow coloured arms print mesh top. It has two scarfs attached that can be used in different ways.",
     "measurements": { 
@@ -667,8 +917,16 @@
     "condition": "excellent",
     "material": "silk",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-tattoo-shirt-01.webp",
+      "images/robertocavalli-tattoo-shirt-02.webp",
+      "images/robertocavalli-tattoo-shirt-03.webp",
+      "images/robertocavalli-tattoo-shirt-04.webp",
+      "images/robertocavalli-tattoo-shirt-05.webp",
+      "images/robertocavalli-tattoo-shirt-06.webp",
+      "images/robertocavalli-tattoo-shirt-07.webp",
+      "images/robertocavalli-tattoo-shirt-08.webp",
+      "images/robertocavalli-tattoo-shirt-09.webp",
+      "images/robertocavalli-tattoo-shirt-10.webp"
     ],
     "description": "Roberto Cavalli S/S 2003 iconic tattoo print silk shirt.",
     "measurements": { 
@@ -678,6 +936,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/roberto-cavalli/t-shirt-e-camicie-roberto-cavalli-beige-seta-54098811.shtml/" }
   },
   {
     "id": "131",
@@ -690,8 +949,15 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/d&g-cargo-jeans-01.webp",
+      "images/d&g-cargo-jeans-02.webp",
+      "images/d&g-cargo-jeans-03.webp",
+      "images/d&g-cargo-jeans-04.webp",
+      "images/d&g-cargo-jeans-05.webp",
+      "images/d&g-cargo-jeans-06.webp",
+      "images/d&g-cargo-jeans-07.webp",
+      "images/d&g-cargo-jeans-08.webp",
+      "images/d&g-cargo-jeans-09.webp"
     ],
     "description": "D&G S/S 2000 two-tone cargo jeans, sample item. Unique piece.",
     "measurements": { 
@@ -713,8 +979,17 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-01.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-02.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-03.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-04.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-05.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-06.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-07.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-08.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-09.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-10.webp",
+      "images/maisonmartinmargiela-artisanal-deconstructed-arm-sleeves-collier-11.webp"      
     ],
     "description": "Maison Martin Margiela S/S 2005 Line 0 artisanal deconstructed arm sleeves collier. One size fits all.",
     "measurements": { 
@@ -736,8 +1011,20 @@
     "condition": "new with tag",
     "material": "silk",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/versace-bamboo-dress-01.webp",
+      "images/versace-bamboo-dress-02.webp",
+      "images/versace-bamboo-dress-03.webp",
+      "images/versace-bamboo-dress-04.webp",
+      "images/versace-bamboo-dress-05.webp",
+      "images/versace-bamboo-dress-06.webp",
+      "images/versace-bamboo-dress-07.webp",
+      "images/versace-bamboo-dress-08.webp",
+      "images/versace-bamboo-dress-09.webp",
+      "images/versace-bamboo-dress-10.webp",
+      "images/versace-bamboo-dress-11.webp",
+      "images/versace-bamboo-dress-12.webp",
+      "images/versace-bamboo-dress-13.webp",
+      "images/versace-bamboo-dress-14.webp"
     ],
     "description": "Versace S/S 2000 bamboo print silk dress, deadstock.",
     "measurements": { 
@@ -747,26 +1034,36 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/abiti/versace/abiti-versace-rosso-poliestere-52495361.shtml" }
   },
   {
     "id": "134",
     "name": "Jean Paul Gaultier Maroquinerie F/W 2002 shoulder bag",
     "brand": "Jean Paul Gaultier",
-    "category": "bag",
+    "category": "bags",
     "color": "red",
     "size": "one size",
     "year": 2002,
     "condition": "excellent condition",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-01.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-02.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-03.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-04.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-05.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-06.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-07.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-08.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-09.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-10.webp",
+      "images/jeanpaulgaultier-maroquinerie-shoulder-bag-11.webp"
     ],
-    "description": "Jean Paul Gaultier Maroquinerie F/W 20002 shoulder bag with handle in leather threads embellished with stones. With dustbag",
+    "description": "Jean Paul Gaultier Maroquinerie F/W 2002 shoulder bag with handle in leather threads embellished with stones. With dustbag",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "archive",
     "purchaseLinks": null
@@ -782,8 +1079,15 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-floral-print-set-01.webp",
+      "images/robertocavalli-floral-print-set-02.webp",
+      "images/robertocavalli-floral-print-set-03.webp",
+      "images/robertocavalli-floral-print-set-04.webp",
+      "images/robertocavalli-floral-print-set-05.webp",
+      "images/robertocavalli-floral-print-set-06.webp",
+      "images/robertocavalli-floral-print-set-07.webp",
+      "images/robertocavalli-floral-print-set-08.webp",
+      "images/robertocavalli-floral-print-set-09.webp"
     ],
     "description": "Roberto Cavalli F/W 2000 floral print set composed by pants and long-sleeved wool knit cardigan with a beautiful fox fur collar and gold piercing buttons.",
     "measurements": { 
@@ -805,8 +1109,14 @@
     "condition": "excellent",
     "material": "plastic",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dior-john-galliano-bandage-sunglasses-01.webp",
+      "images/dior-john-galliano-bandage-sunglasses-02.webp",
+      "images/dior-john-galliano-bandage-sunglasses-03.webp",
+      "images/dior-john-galliano-bandage-sunglasses-04.webp",
+      "images/dior-john-galliano-bandage-sunglasses-05.webp",
+      "images/dior-john-galliano-bandage-sunglasses-06.webp",
+      "images/dior-john-galliano-bandage-sunglasses-07.webp",
+      "images/dior-john-galliano-bandage-sunglasses-08.webp"
     ],
     "description": "Dior x John Galliano F/W 2003 bandage sunglasses. With box.",
     "measurements": { 
@@ -816,20 +1126,31 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "type": "archive",
+    "purchaseLinks": null
   },
   {
     "id": "137",
     "name": "Helmut Lang F/W 1998 leather jacket",
     "brand": "Helmut Lang",
-    "category": "jacket",
+    "category": "jackets",
     "color": "black",
     "size": "M",
     "year": 1998,
     "condition": "excellent",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/helmutlang-leather-jacket-01.webp",
+      "images/helmutlang-leather-jacket-02.webp",
+      "images/helmutlang-leather-jacket-03.webp",
+      "images/helmutlang-leather-jacket-04.webp",
+      "images/helmutlang-leather-jacket-05.webp",
+      "images/helmutlang-leather-jacket-06.webp",
+      "images/helmutlang-leather-jacket-07.webp",
+      "images/helmutlang-leather-jacket-08.webp",
+      "images/helmutlang-leather-jacket-09.webp",
+      "images/helmutlang-leather-jacket-10.webp",
+      "images/helmutlang-leather-jacket-11.webp"
     ],
     "description": "Helmut Lang F/W 1998 leather jacket, woven lining, button closures at front.",
     "measurements": { 
@@ -851,8 +1172,16 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/d&g-corset-caution-tape-01.webp",
+      "images/d&g-corset-caution-tape-02.webp",
+      "images/d&g-corset-caution-tape-03.webp",
+      "images/d&g-corset-caution-tape-04.webp",
+      "images/d&g-corset-caution-tape-05.webp",
+      "images/d&g-corset-caution-tape-06.webp",
+      "images/d&g-corset-caution-tape-07.webp",
+      "images/d&g-corset-caution-tape-08.webp",
+      "images/d&g-corset-caution-tape-09.webp",
+      "images/d&g-corset-caution-tape-10.webp"
     ],
     "description": "D&G F/W 2003 corset logo caution tape.",
     "measurements": { 
@@ -867,15 +1196,26 @@
     "id": "139",
     "name": "Jean Paul Gaultier F/W 2008 tiger puffer silk jacket",
     "brand": "Jean Paul Gaultier",
-    "category": "jacket",
+    "category": "jackets",
     "color": "purple",
     "size": "S",
     "year": 2008,
     "condition": "excellent",
     "material": "silk",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-01.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-02.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-03.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-04.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-05.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-06.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-07.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-08.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-09.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-10.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-11.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-12.webp",
+      "images/jeanpaulgaultier-tiger-puffer-silk-jacket-13.webp"      
     ],
     "description": "Jean Paul Gaultier F/W 2008 tiger puffer silk jacket featuring an amazing quilted tiger over the collar.",
     "measurements": { 
@@ -885,6 +1225,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/cappotti/jean-paul-gaultier/cappotti-jean-paul-gaultier-viola-seta-52436613.shtml/" }
   },
   {
     "id": "140",
@@ -897,8 +1238,13 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-zodiac-constellation-astrology-pants-01.webp",
+      "images/robertocavalli-zodiac-constellation-astrology-pants-02.webp",
+      "images/robertocavalli-zodiac-constellation-astrology-pants-03.webp",
+      "images/robertocavalli-zodiac-constellation-astrology-pants-04.webp",
+      "images/robertocavalli-zodiac-constellation-astrology-pants-05.webp",
+      "images/robertocavalli-zodiac-constellation-astrology-pants-06.webp",
+      "images/robertocavalli-zodiac-constellation-astrology-pants-07.webp"
     ],
     "description": "Roberto Cavalli F/W 2000 zodiaco constellation astrology pants.",
     "measurements": { 
@@ -920,8 +1266,16 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/viviennewestwood-print-hoodie-01.webp",
+      "images/viviennewestwood-print-hoodie-02.webp",
+      "images/viviennewestwood-print-hoodie-03.webp",
+      "images/viviennewestwood-print-hoodie-04.webp",
+      "images/viviennewestwood-print-hoodie-05.webp",
+      "images/viviennewestwood-print-hoodie-06.webp",
+      "images/viviennewestwood-print-hoodie-07.webp",
+      "images/viviennewestwood-print-hoodie-08.webp",
+      "images/viviennewestwood-print-hoodie-09.webp",
+      "images/viviennewestwood-print-hoodie-10.webp"
     ],
     "description": "Vivienne Westwood 'Too fast to live, Too young to die' print hoodie in a beautiful washed denim color, with the iconic orb to the left chest.",
     "measurements": { 
@@ -936,15 +1290,21 @@
     "id": "142",
     "name": "Jean Paul Gaultier S/S 2005 bedouin mesh long sleeve",
     "brand": "Jean Paul Gaultier",
-    "category": "long sleeve",
+    "category": "long-sleeves shirt",
     "color": "green",
     "size": "M",
     "year": 2005,
     "condition": "new with tag",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-bedouin-long-sleeve-01.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-02.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-03.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-04.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-05.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-06.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-07.webp",
+      "images/jeanpaulgaultier-bedouin-long-sleeve-08.webp"
     ],
     "description": "Jean Paul Gaultier S/S 2005 bedouin mesh long sleeve. Amazing tribute to the stunning print of the JPG S/S 1998 couture show. Brand new with tag. Super rare.",
     "measurements": { 
@@ -966,8 +1326,17 @@
     "condition": "good",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/miumiu-bubble-sole-lace-up-01.webp",
+      "images/miumiu-bubble-sole-lace-up-02.webp",
+      "images/miumiu-bubble-sole-lace-up-03.webp",
+      "images/miumiu-bubble-sole-lace-up-04.webp",
+      "images/miumiu-bubble-sole-lace-up-05.webp",
+      "images/miumiu-bubble-sole-lace-up-06.webp",
+      "images/miumiu-bubble-sole-lace-up-07.webp",
+      "images/miumiu-bubble-sole-lace-up-08.webp",
+      "images/miumiu-bubble-sole-lace-up-09.webp",
+      "images/miumiu-bubble-sole-lace-up-10.webp",
+      "images/miumiu-bubble-sole-lace-up-11.webp"
     ],
     "description": "Miu Miu F/W 1999 bubble sole lace-up. It features a square toe, architectural heel, and sport laces. The upper combines suede in antique pink, silver mesh and lilac details. The sculptural pink heel with a rubber base adds a futuristic touch, while the orange leather back creates a striking contrast. ",
     "measurements": { 
@@ -977,6 +1346,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-scarpe/scarpette/miu-miu/scarpe-col-tacco-miu-miu-viola-gomma-47791302.shtml/" }
   },
   {
     "id": "144",
@@ -1005,15 +1375,24 @@
     "id": "145",
     "name": "Prada late 90s bomber jacket in genuine dark brown leather",
     "brand": "Prada",
-    "category": "jacket",
+    "category": "jackets",
     "color": "brown",
     "size": "M",
     "year": "90s",
     "condition": "excellent",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/prada-bomber-jacket-genuine-leather-01.webp",
+      "images/prada-bomber-jacket-genuine-leather-02.webp",
+      "images/prada-bomber-jacket-genuine-leather-03.webp",
+      "images/prada-bomber-jacket-genuine-leather-04.webp",
+      "images/prada-bomber-jacket-genuine-leather-05.webp",
+      "images/prada-bomber-jacket-genuine-leather-06.webp",
+      "images/prada-bomber-jacket-genuine-leather-07.webp",
+      "images/prada-bomber-jacket-genuine-leather-08.webp",
+      "images/prada-bomber-jacket-genuine-leather-09.webp",
+      "images/prada-bomber-jacket-genuine-leather-10.webp",
+      "images/prada-bomber-jacket-genuine-leather-11.webp"
     ],
     "description": "Prada late 90s bomber jacket in genuine dark brown leather. Made of soft leather, inside it has Thermore insulation. The model features knitted details on the hem and cuffs and practical pockets on the front and inside. Made in Italy.",
     "measurements": { 
@@ -1035,8 +1414,19 @@
     "condition": "excellent",
     "material": "cashmere",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-distressed-top-01.webp",
+      "images/robertocavalli-distressed-top-02.webp",
+      "images/robertocavalli-distressed-top-03.webp",
+      "images/robertocavalli-distressed-top-04.webp",
+      "images/robertocavalli-distressed-top-05.webp",
+      "images/robertocavalli-distressed-top-06.webp",
+      "images/robertocavalli-distressed-top-07.webp",
+      "images/robertocavalli-distressed-top-08.webp",
+      "images/robertocavalli-distressed-top-09.webp",
+      "images/robertocavalli-distressed-top-10.webp",
+      "images/robertocavalli-distressed-top-11.webp",
+      "images/robertocavalli-distressed-top-12.webp",
+      "images/robertocavalli-distressed-top-13.webp"
     ],
     "description": "Roberto Cavalli F/W 2001 heraldry print distressed top, 100% cashmere with silk distressed parts.",
     "measurements": { 
@@ -1046,6 +1436,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/roberto-cavalli/t-shirt-e-camicie-roberto-cavalli-multicolore-cachemire-52573818.shtml/" }
   },
   {
     "id": "147",
@@ -1058,8 +1449,15 @@
     "condition": "good",
     "material": "wool",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/helmutlang-red-rubber-stripe-jeans-01.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-02.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-03.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-04.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-05.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-06.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-07.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-08.webp",
+      "images/helmutlang-red-rubber-stripe-jeans-09.webp"
     ],
     "description": "Helmut Lang F/W 1997 red rubber stripe wool jeans. Exposed at the LAILA TOKIO exhibition 'Helmut Lang Archive' in 2015. Made in Italy.",
     "measurements": { 
@@ -1069,6 +1467,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/uomo-abbigliamento/pantaloni/helmut-lang/pantaloni-helmut-lang-nero-lana-52191196.shtml/" }
   },
   {
     "id": "148",
@@ -1081,17 +1480,18 @@
     "condition": "excellent condition",
     "material": "Silk",
     "images": [
-      "images/dolcegabbana-jackets-01.jpg",
-      "images/dolcegabbana-jackets-02.jpg",
-      "images/dolcegabbana-jackets-03.jpg",
-      "images/dolcegabbana-jackets-04.jpg",
-      "images/dolcegabbana-jackets-05.jpg",
-      "images/dolcegabbana-jackets-06.jpg",
-      "images/dolcegabbana-jackets-07.jpg",
-      "images/dolcegabbana-jackets-08.jpg",
-      "images/dolcegabbana-jackets-09.jpg",
-      "images/dolcegabbana-jackets-10.jpg",
-      "images/dolcegabbana-jackets-11.jpg"
+      "images/dolcegabbana-silk-jacket-01.webp",
+      "images/dolcegabbana-silk-jacket-02.webp",
+      "images/dolcegabbana-silk-jacket-03.webp",
+      "images/dolcegabbana-silk-jacket-04.webp",
+      "images/dolcegabbana-silk-jacket-05.webp",
+      "images/dolcegabbana-silk-jacket-06.webp",
+      "images/dolcegabbana-silk-jacket-07.webp",
+      "images/dolcegabbana-silk-jacket-08.webp",
+      "images/dolcegabbana-silk-jacket-09.webp",
+      "images/dolcegabbana-silk-jacket-10.webp",
+      "images/dolcegabbana-silk-jacket-11.webp",
+      "images/dolcegabbana-silk-jacket-12.webp"     
     ],
     "description": "Dolce & Gabbana F/W 1992 silk jacket with a superbe print of an Italian medieval battle.",
     "measurements": { 
@@ -1101,6 +1501,7 @@
     },
     "type": "product",
     "purchaseLinks": null
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/giacche/dolce-gabbana/giacca-giubbotto-dolce-gabbana-multicolore-seta-52492738.shtml/" }
   },
   {
     "id": "149",
@@ -1113,8 +1514,21 @@
     "condition": "new with box",
     "material": "satin",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/prada-plexiglass-heels-01.webp",
+      "images/prada-plexiglass-heels-02.webp",
+      "images/prada-plexiglass-heels-03.webp",
+      "images/prada-plexiglass-heels-04.webp",
+      "images/prada-plexiglass-heels-05.webp",
+      "images/prada-plexiglass-heels-06.webp",
+      "images/prada-plexiglass-heels-07.webp",
+      "images/prada-plexiglass-heels-08.webp",
+      "images/prada-plexiglass-heels-09.webp",
+      "images/prada-plexiglass-heels-10.webp",
+      "images/prada-plexiglass-heels-11.webp",
+      "images/prada-plexiglass-heels-12.webp",
+      "images/prada-plexiglass-heels-13.webp",
+      "images/prada-plexiglass-heels-14.webp",
+      "images/prada-plexiglass-heels-15.webp"
     ],
     "description": "Prada S/S 1998 yellow plexiglass heels in black satin, size 36.5. New with box. Campaign with Amber Valletta by Glen Luchforde.",
     "measurements": { 
@@ -1124,6 +1538,8 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "type": "archive",
+    "purchaseLinks": null
   },
   {
     "id": "150",
@@ -1136,8 +1552,21 @@
     "condition": "new with tag",
     "material": "wool",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/viviennewestwood-deconstructed-jumpers-01.webp",
+      "images/viviennewestwood-deconstructed-jumpers-02.webp",
+      "images/viviennewestwood-deconstructed-jumpers-03.webp",
+      "images/viviennewestwood-deconstructed-jumpers-04.webp",
+      "images/viviennewestwood-deconstructed-jumpers-05.webp",
+      "images/viviennewestwood-deconstructed-jumpers-06.webp",
+      "images/viviennewestwood-deconstructed-jumpers-07.webp",
+      "images/viviennewestwood-deconstructed-jumpers-08.webp",
+      "images/viviennewestwood-deconstructed-jumpers-09.webp",
+      "images/viviennewestwood-deconstructed-jumpers-10.webp",
+      "images/viviennewestwood-deconstructed-jumpers-11.webp",
+      "images/viviennewestwood-deconstructed-jumpers-12.webp",
+      "images/viviennewestwood-deconstructed-jumpers-13.webp",
+      "images/viviennewestwood-deconstructed-jumpers-14.webp",
+      "images/viviennewestwood-deconstructed-jumpers-15.webp"
     ],
     "description": "Vivienne Westwood F/W 1998 deconstructed blu knitted jumper deadstock, label MAN, sample item and one of a kind.",
     "measurements": { 
@@ -1147,6 +1576,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/vivienne-westwood/t-shirt-e-camicie-vivienne-westwood-blu-lana-52170953.shtml/" }
   },
   {
     "id": "151",
@@ -1159,8 +1589,18 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-marble-column-print-01.webp",
+      "images/jeanpaulgaultier-marble-column-print-02.webp",
+      "images/jeanpaulgaultier-marble-column-print-03.webp",
+      "images/jeanpaulgaultier-marble-column-print-04.webp",
+      "images/jeanpaulgaultier-marble-column-print-05.webp",
+      "images/jeanpaulgaultier-marble-column-print-06.webp",
+      "images/jeanpaulgaultier-marble-column-print-07.webp",
+      "images/jeanpaulgaultier-marble-column-print-08.webp",
+      "images/jeanpaulgaultier-marble-column-print-09.webp",
+      "images/jeanpaulgaultier-marble-column-print-10.webp",
+      "images/jeanpaulgaultier-marble-column-print-11.webp",
+      "images/jeanpaulgaultier-marble-column-print-12.webp"
     ],
     "description": "Jean Paul Gaultier S/S 1999 marble column print long skirt with engraved graffito inscription 'Jean Paul Gaultier 1999' on a black marbled background.",
     "measurements": { 
@@ -1182,17 +1622,30 @@
     "condition": "excellent",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/miumiu-shoulder-bag-acid-green-01.webp",
+      "images/miumiu-shoulder-bag-acid-green-02.webp",
+      "images/miumiu-shoulder-bag-acid-green-03.webp",
+      "images/miumiu-shoulder-bag-acid-green-04.webp",
+      "images/miumiu-shoulder-bag-acid-green-05.webp",
+      "images/miumiu-shoulder-bag-acid-green-06.webp",
+      "images/miumiu-shoulder-bag-acid-green-07.webp",
+      "images/miumiu-shoulder-bag-acid-green-08.webp",
+      "images/miumiu-shoulder-bag-acid-green-09.webp",
+      "images/miumiu-shoulder-bag-acid-green-10.webp",
+      "images/miumiu-shoulder-bag-acid-green-11.webp",
+      "images/miumiu-shoulder-bag-acid-green-12.webp",
+      "images/miumiu-shoulder-bag-acid-green-13.webp",
+      "images/miumiu-shoulder-bag-acid-green-14.webp"
     ],
-    "description": "Miu Miu F/W 1999 shoulder bag. It's exterior is mix of brown/ acidi green suede, with parts of mesh green, woven fabric and brown lining. It features, three pockets, one front and one inside with the zip and one back with the strap. Adjustable strap made of webbing. 'Miu Miu' logo embossed in the bottom suede part",
+    "description": "Miu Miu F/W 1999 shoulder bag. It's exterior is mix of brown/ acidid green suede, with parts of mesh green, woven fabric and brown lining. It features, three pockets, one front and one inside with the zip and one back with the strap. Adjustable strap made of webbing. 'Miu Miu' logo embossed in the bottom suede part",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-borse/borse/miu-miu/borsa-a-mano-miu-miu-verde-pelle-43911820.shtml/" }
   },
   {
     "id": "153",
@@ -1208,7 +1661,7 @@
       "images/NOME_FOTO_1.jpg",
       "images/NOME_FOTO_2.jpg"
     ],
-    "description": "Roberto Cavalli F/W 20001 crocodile black pants, five pockets and zip closure at the front.",
+    "description": "Roberto Cavalli F/W 2001 crocodile black pants, five pockets and zip closure at the front.",
     "measurements": { 
       "chest": "...", 
       "waist": "...", 
@@ -1228,8 +1681,15 @@
     "condition": "excellent",
     "material": "wool",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-flowers-handmade-dress-01.webp",
+      "images/dolcegabbana-flowers-handmade-dress-02.webp",
+      "images/dolcegabbana-flowers-handmade-dress-03.webp",
+      "images/dolcegabbana-flowers-handmade-dress-04.webp",
+      "images/dolcegabbana-flowers-handmade-dress-05.webp",
+      "images/dolcegabbana-flowers-handmade-dress-06.webp",
+      "images/dolcegabbana-flowers-handmade-dress-07.webp",
+      "images/dolcegabbana-flowers-handmade-dress-08.webp",
+      "images/dolcegabbana-flowers-handmade-dress-09.webp"  
     ],
     "description": "Dolce & Gabbana F/W 1989 runway flowers handmade wool dress, 3D flower crochet work all over. Made in Italy.",
     "measurements": { 
@@ -1251,8 +1711,16 @@
     "condition": "excellent",
     "material": "wool",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-long-sleeved-cardigan-tiger-01.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-02.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-03.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-04.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-05.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-06.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-07.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-08.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-09.webp",
+      "images/robertocavalli-long-sleeved-cardigan-tiger-10.webp"
     ],
     "description": "Roberto Cavalli F/W 2000 tiger print long-sleeved wool knit cardigan with a beautiful fox fur collar and gold piercing buttons. Made in Italy.",
     "measurements": { 
@@ -1274,8 +1742,16 @@
     "condition": "excellent",
     "material": "cotton",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/helmutlang-padded-hooded-jacket-01.webp",
+      "images/helmutlang-padded-hooded-jacket-02.webp",
+      "images/helmutlang-padded-hooded-jacket-03.webp",
+      "images/helmutlang-padded-hooded-jacket-04.webp",
+      "images/helmutlang-padded-hooded-jacket-05.webp",
+      "images/helmutlang-padded-hooded-jacket-06.webp",
+      "images/helmutlang-padded-hooded-jacket-07.webp",
+      "images/helmutlang-padded-hooded-jacket-08.webp",
+      "images/helmutlang-padded-hooded-jacket-09.webp",
+      "images/helmutlang-padded-hooded-jacket-10.webp"
     ],
     "description": "Helmut Lang F/W 1998 padded hooded jacket made from resin-treated cotton. One chest pocket, two side pockets with zip closure, padded interior, adjustable hood and hem with laces. Made in Italy.",
     "measurements": { 
@@ -1297,8 +1773,25 @@
     "condition": "excellent",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/prada-dyed-kid-fur-nylon-vest-01.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-02.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-03.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-04.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-05.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-06.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-07.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-08.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-09.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-10.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-11.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-12.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-13.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-14.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-15.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-16.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-17.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-18.webp",
+      "images/prada-dyed-kid-fur-nylon-vest-19.webp"
     ],
     "description": "Prada Sport Linea Rossa F/W 1999 black dyed kid fur nylon vest. It has two outside and two inside pockets, zip and velcro fastening. It has a removable nylon hood from under the neck and a waist belt, which can be removed. Signature branding on all the perfectly functional, timeless and comfortable Miuccia Prada staple piece. The vest has been presented in both 1999 men's and women's runway shows in different versions. It also appears in different Prada advertisements.",
     "measurements": { 
@@ -1313,15 +1806,32 @@
     "id": "158",
     "name": "Jean Paul Gaultier S/S 2005 arabic print mesh long sleeve",
     "brand": "Jean Paul Gaultier",
-    "category": "long sleeve",
+    "category": "long-sleeves shirt",
     "color": "multicolour",
     "size": "S",
     "year": 2005,
     "condition": "excellent",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-01.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-02.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-03.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-04.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-05.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-06.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-07.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-08.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-09.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-10.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-11.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-12.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-13.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-14.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-15.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-16.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-17.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-18.webp",
+      "images/jeanpaulgaultier-arabic-print-mesh-long-sleeve-19.webp"
     ],
     "description": "Jean Paul Gaultier S/S 2005 arabic print mesh long sleeve, with black knitted laced mohair collar and cuffs. The print shows Sanskrit letters in a copper-red and brown-black circle on a beige background. Shoulders and side seams in black wool. Laser-cut bottom hem. The same cross motif is present in the fashion show. Made in Italy.",
     "measurements": { 
@@ -1331,20 +1841,36 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/jean-paul-gaultier/t-shirt-e-camicie-jean-paul-gaultier-beige-poliammide-34016823.shtml/" }
   },
   {
     "id": "159",
     "name": "Roberto Cavalli F/W 2003 midi skirt made of burnt-effect eroded leather",
     "brand": "Roberto Cavalli",
-    "category": "skirts",
+    "category": "skirt",
     "color": "brown",
     "size": "XS",
     "year": 2003,
     "condition": "excellent",
     "material": "leather",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-01.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-02.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-03.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-04.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-05.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-06.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-07.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-08.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-09.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-10.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-11.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-12.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-13.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-14.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-15.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-16.webp",
+      "images/robertocavalli-midi-skirt-burnt-effect-eroded-17.webp"
     ],
     "description": "Roberto Cavalli F/W 2003 midi skirt made of burnt-effect eroded leather. The burnt leather finish gives it a unique worn effect, making it an extremely rare and iconic piece. Made in Italy.",
     "measurements": { 
@@ -1366,8 +1892,22 @@
     "condition": "excellent",
     "material": "wool",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-tornado-zip-turtleneck-01.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-02.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-03.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-04.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-05.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-06.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-07.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-08.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-09.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-10.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-11.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-12.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-13.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-14.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-15.webp",
+      "images/dolcegabbana-tornado-zip-turtleneck-16.webp"
     ],
     "description": "Dolce & Gabbana F/W 2003 tornado zip turtleneck. An extremely heavyweight black virgin wool, featuring a two-way zipper that wraps around the body from the neck to the hem, this allows for endless custom-ability of the fit.",
     "measurements": { 
@@ -1389,14 +1929,29 @@
     "condition": "good",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/prada-techwear-bowling-nylon-bag-01.webp",
+      "images/prada-techwear-bowling-nylon-bag-02.webp",
+      "images/prada-techwear-bowling-nylon-bag-03.webp",
+      "images/prada-techwear-bowling-nylon-bag-04.webp",
+      "images/prada-techwear-bowling-nylon-bag-05.webp",
+      "images/prada-techwear-bowling-nylon-bag-06.webp",
+      "images/prada-techwear-bowling-nylon-bag-07.webp",
+      "images/prada-techwear-bowling-nylon-bag-08.webp",
+      "images/prada-techwear-bowling-nylon-bag-09.webp",
+      "images/prada-techwear-bowling-nylon-bag-10.webp",
+      "images/prada-techwear-bowling-nylon-bag-11.webp",
+      "images/prada-techwear-bowling-nylon-bag-12.webp",
+      "images/prada-techwear-bowling-nylon-bag-13.webp",
+      "images/prada-techwear-bowling-nylon-bag-14.webp",
+      "images/prada-techwear-bowling-nylon-bag-15.webp",
+      "images/prada-techwear-bowling-nylon-bag-16.webp",
+      "images/prada-techwear-bowling-nylon-bag-17.webp"
     ],
     "description": "Prada Sport Linea Rossa early 2000 techwear bowling nylon bag.",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
@@ -1412,8 +1967,24 @@
     "condition": "excellent",
     "material": "wool",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-01.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-02.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-03.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-04.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-05.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-06.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-07.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-08.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-09.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-10.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-11.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-12.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-13.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-14.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-15.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-16.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-17.webp",
+      "images/jeanpaulgaultier-set-cardigan-longsleeved-18.webp"
     ],
     "description": "Jean Paul Gaultier S/S 1995 'Virgin and Child surrounded by Angels' a 1400 painting by Jean Fouquet, one of the most beautiful and exclusive print ever made by JPG. Set cardigan and long-sleeved shirt made from a fine, 100% wool fabric.",
     "measurements": { 
@@ -1435,8 +2006,25 @@
     "condition": "new with tag",
     "material": "chenille",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/dolcegabbana-chenille-corset-bodysuit-01.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-02.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-03.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-04.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-05.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-06.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-07.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-08.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-09.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-10.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-11.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-12.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-13.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-14.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-15.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-16.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-17.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-18.webp",
+      "images/dolcegabbana-chenille-corset-bodysuit-19.webp"
     ],
     "description": "Dolce & Gabbana S/S 1992 black chenille and lace boned corset bodysuit embellished with lace ruffles, deadstock. Made in Italy.",
     "measurements": { 
@@ -1458,8 +2046,23 @@
     "condition": "new with tag",
     "material": "nylon",
     "images": [
-      "images/NOME_FOTO_1.jpg",
-      "images/NOME_FOTO_2.jpg"
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-01.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-02.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-03.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-04.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-05.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-06.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-07.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-08.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-09.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-10.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-11.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-12.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-13.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-14.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-15.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-16.webp",
+      "images/jeanpaulgaultier-eskimo-mesh-hoodie-17.webp"
     ],
     "description": "Jean Paul Gaultier F/W 1998 'Eskimo' print mesh hoodie deadstock. The piece presented at the men runaway show, features a captivating all-over print resembling a classic painting, likely depicting a historic battle scene with a crowd of people in the snow below the blue and brown of the sky that is showing heavenly figures inspired by 'The Creation of Adam'. It has mohair trims detailing wrist and hood. Made in Italy. deadstock.",
     "measurements": { 
@@ -1578,9 +2181,9 @@
     ],
     "description": "Miu Miu S/S 1999 red nylon waist bag deadstock. Presented in the runway show in different colours and versions it has two compartments and adjustable velcro fastener, allowing it to fit any size. Designed with a red nylon surface and synthetic honeycomb backing, the bag has a distintive appearance. Lightweight and adaptable, it is perfect for everyday use. A meticulous and avant-garde creation combining innovative textures. Embossed logo on the front. The bag still has tags.",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "archive",
     "purchaseLinks": null
@@ -1635,7 +2238,7 @@
     "id": "172",
     "name": "Jean Paul Gaultier F/W 2003 bondage parachute long-sleeve shirt",
     "brand": "Jean Paul Gaultier",
-    "category": "long-sleeved",
+    "category": "long-sleeves shirt",
     "color": "brown",
     "size": "M",
     "year": 2003,
@@ -1670,9 +2273,9 @@
     ],
     "description": "Maison Martin Margiela MM6 F/W 2005-2006 shoulder bag with five detachable cargo pockets in dark brown leather. Made in Italy.",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "archive",
     "purchaseLinks": null
@@ -1745,6 +2348,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/giacche/moschino/giacca-giubbotto-moschino-altro-cotone-44144489.shtml/" }
   },
   {
     "id": "177",
@@ -1773,7 +2377,7 @@
     "id": "178",
     "name": "Dsquared2 S/S 2004 pink denim bustier top",
     "brand": "Dsquared2",
-    "category": "top",
+    "category": "corset",
     "color": "pink",
     "size": "M",
     "year": 2004,
@@ -1791,6 +2395,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/dsquared2/t-shirt-e-camicie-dsquared2-rosa-cotone-46549771.shtml/" }
   },
   {
     "id": "179",
@@ -1814,6 +2419,7 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/emporio-armani/t-shirt-e-camicie-emporio-armani-arancione-seta-46567053.shtml/" }
   },
   {
     "id": "180",
@@ -1883,12 +2489,13 @@
     },
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
+    "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://it.vestiairecollective.com/donna-abbigliamento/top/junya-watanabe/t-shirt-e-camicie-junya-watanabe-rosso-poliestere-44139512.shtml/" }
   },
   {
     "id": "183",
     "name": "Claude Montana for Ideal Cuir F/W 1992 high-waisted lace-up genuine lambskin skirt",
     "brand": "Claude Montana",
-    "category": "skirts",
+    "category": "skirt",
     "color": "black",
     "size": "S",
     "year": 1992,
@@ -1946,9 +2553,9 @@
     ],
     "description": "Prada S/S 2001 flap bag with extra wide handle. A combination of red, white and blue leather. It features two snap buttons to close it, as well as a zipper underneath. Subtle beads hardware that turns 360° to avoid any tangling and twisting of the handle and a subtle Prada logo embossed in the fully white side of the exterior. Lined in satin. Measures 29x13x3 with a 26 cm handle drop.",
     "measurements": { 
-      "chest": "...", 
-      "waist": "...", 
-      "length": "..."
+      "width": "...", 
+      "height": "...", 
+      "depth": "..."
     },
     "type": "archive",
     "purchaseLinks": null
@@ -1980,7 +2587,7 @@
     "id": "187",
     "name": "Jean Paul Gaultier S/S 2001 flower print long-sleeved jersey",
     "brand": "Jean Paul Gaultier",
-    "category": "long-sleeved",
+    "category": "long-sleeves shirt",
     "color": "multicolour",
     "size": "S",
     "year": 2001,
@@ -1999,4 +2606,3 @@
     "type": "product",
     "purchaseLinks": { "VINTED": "https://www.vinted.it/", "VESTIAIRE COLLECTIVE": "https://www.vestiairecollective.com/" }
   }
-]
