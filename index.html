@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gdarchivio online</title>
+    <title>gdarchivio | fashion archive</title>
+    
+    <!-- Meta tag SEO & Social Share (Open Graph) -->
+    <meta name="description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
+    <meta property="og:title" content="gdarchivio — fashion archive">
+    <meta property="og:description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
+    <meta property="og:image" content="./images/logo-icona.webp">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="icon" type="image/png" href="https://placehold.co/32x32/000000/FFFFFF/png?text=GD" />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -149,7 +158,8 @@
                 Heart: e('svg', iconProps, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
                 HeartFilled: e('svg', {...iconProps, fill: 'currentColor', stroke: 'currentColor'}, e('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'})),
                 Share: e('svg', iconProps, e('circle', {cx: '18', cy: '5', r: '3'}), e('circle', {cx: '6', cy: '12', r: '3'}), e('circle', {cx: '18', cy: '19', r: '3'}), e('line', {x1: '8.59', y1: '13.51', x2: '15.42', y2: '17.49'}), e('line', {x1: '15.41', y1: '6.51', x2: '8.59', y2: '10.49'})),
-                Mail: e('svg', iconProps, e('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }), e('polyline', { points: '22,6 12,13 2,6' }))
+                Mail: e('svg', iconProps, e('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }), e('polyline', { points: '22,6 12,13 2,6' })),
+                Maximize: e('svg', iconProps, e('path', { d: 'M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3' }))
             };
             return icons[name] || null;
         };
@@ -517,6 +527,67 @@
                 )
             );
         };
+
+        const Lightbox = ({ isOpen, onClose, images, currentIndex, onPrev, onNext, onTouchStart, onTouchEnd }) => {
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (!isOpen) return;
+                    if (e.key === 'Escape') onClose();
+                    if (e.key === 'ArrowLeft') onPrev();
+                    if (e.key === 'ArrowRight') onNext();
+                };
+                if (isOpen) {
+                    document.body.classList.add('modal-open');
+                    window.addEventListener('keydown', handleKeyDown);
+                } else {
+                    document.body.classList.remove('modal-open');
+                }
+                return () => {
+                    document.body.classList.remove('modal-open');
+                    window.removeEventListener('keydown', handleKeyDown);
+                };
+            }, [isOpen, onPrev, onNext, onClose]);
+
+            if (!isOpen) return null;
+
+            return e('div', {
+                className: 'fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center animate-fade-in',
+                onClick: onClose,
+                onTouchStart: onTouchStart,
+                onTouchEnd: onTouchEnd
+            },
+                e('button', {
+                    onClick: onClose,
+                    className: 'absolute top-6 right-6 text-white hover:text-gray-300 p-2 z-50'
+                }, e(Icon, { name: 'X', size: 30 })),
+
+                e('div', {
+                    className: 'relative max-w-5xl max-h-[85vh] w-full h-full flex items-center justify-center p-4',
+                    onClick: (e) => e.stopPropagation()
+                },
+                    e('img', {
+                        src: images[currentIndex],
+                        alt: 'Detail Zoom',
+                        className: 'max-w-full max-h-full object-contain select-none'
+                    }),
+
+                    images.length > 1 && e(Fragment, null,
+                        e('button', {
+                            onClick: onPrev,
+                            className: 'absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/50 hover:bg-black/80 p-3 rounded-full'
+                        }, e(Icon, { name: 'ArrowLeft', size: 24 })),
+                        e('button', {
+                            onClick: onNext,
+                            className: 'absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/50 hover:bg-black/80 p-3 rounded-full'
+                        }, e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' }))
+                    ),
+
+                    e('div', {
+                        className: 'absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/75 text-white text-xs font-martian-mono px-3 py-1.5 rounded-full'
+                    }, `${currentIndex + 1} / ${images.length}`)
+                )
+            );
+        };
         
         const InquiryForm = ({ item }) => {
             const [submitted, setSubmitted] = useState(false);
@@ -818,9 +889,14 @@
         const DetailPage = ({ item, navigateTo }) => {
             const [modal, setModal] = useState(null);
             const [currentImageIndex, setCurrentImageIndex] = useState(0); 
+            const [isLightboxOpen, setIsLightboxOpen] = useState(false);
             const [wishlist, setWishlist] = useState([]);
             const [shareFeedback, setShareFeedback] = useState('');
             
+            // Touch Swipe tracking
+            const touchStartX = useRef(null);
+            const touchEndX = useRef(null);
+
             const isSold = Boolean(item.sold && item.type === 'product');
 
             const goToPreviousImage = () => {
@@ -833,6 +909,29 @@
                 const isLastImage = currentImageIndex === item.images.length - 1;
                 const newIndex = isLastImage ? 0 : currentImageIndex + 1;
                 setCurrentImageIndex(newIndex);
+            };
+
+            const handleTouchStart = (e) => {
+                touchEndX.current = null;
+                touchStartX.current = e.targetTouches[0].clientX;
+            };
+
+            const handleTouchMove = (e) => {
+                touchEndX.current = e.targetTouches[0].clientX;
+            };
+
+            const handleTouchEnd = () => {
+                if (!touchStartX.current || !touchEndX.current) return;
+                const distance = touchStartX.current - touchEndX.current;
+                const isLeftSwipe = distance > 45;
+                const isRightSwipe = distance < -45;
+
+                if (isLeftSwipe && item.images.length > 1) {
+                    goToNextImage();
+                }
+                if (isRightSwipe && item.images.length > 1) {
+                    goToPreviousImage();
+                }
             };
 
             useEffect(() => {
@@ -922,25 +1021,41 @@
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
-                             e('div', { className: 'flex-1 aspect-square relative' },
+                             e('div', { 
+                                className: 'flex-1 aspect-square relative select-none cursor-zoom-in bg-gray-50',
+                                onTouchStart: handleTouchStart,
+                                onTouchMove: handleTouchMove,
+                                onTouchEnd: handleTouchEnd,
+                                onClick: () => setIsLightboxOpen(true)
+                             },
                                 e('img', { 
                                     src: item.images[currentImageIndex], 
                                     alt: item.name, 
                                     loading: 'lazy',
-                                    className: 'w-full h-full object-contain' 
+                                    className: 'w-full h-full object-contain pointer-events-none' 
                                 }),
                                 
                                 isSold && e('div', {
                                     className: 'absolute top-4 right-4 bg-black text-white text-sm font-martian-mono font-bold px-3 py-1.5 tracking-wider uppercase'
                                 }, 'SOLD'),
 
+                                e('div', {
+                                    className: 'absolute bottom-3 left-3 bg-white/80 backdrop-blur-sm text-black text-xs font-martian-mono px-2.5 py-1 rounded'
+                                }, `${currentImageIndex + 1} / ${item.images.length}`),
+
+                                e('div', {
+                                    className: 'absolute bottom-3 right-3 bg-white/80 backdrop-blur-sm p-1.5 rounded hover:bg-white transition-all text-black'
+                                }, e(Icon, { name: 'Maximize', size: 14 })),
+
                                 item.images.length > 1 && e(Fragment, null,
-                                    e('button', { onClick: goToPreviousImage, className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' },
-                                        e(Icon, { name: 'ArrowLeft', size: 24 })
-                                    ),
-                                    e('button', { onClick: goToNextImage, className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' },
-                                        e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' })
-                                    )
+                                    e('button', { 
+                                        onClick: (e) => { e.stopPropagation(); goToPreviousImage(); }, 
+                                        className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
+                                    }, e(Icon, { name: 'ArrowLeft', size: 24 })),
+                                    e('button', { 
+                                        onClick: (e) => { e.stopPropagation(); goToNextImage(); }, 
+                                        className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
+                                    }, e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' }))
                                 )
                             )
                         ),
@@ -982,7 +1097,17 @@
                     )
                 ),
                 e(Modal, { isOpen: modal === 'inquiry', onClose: () => setModal(null), title: 'PRODUCT INQUIRY' }, e(InquiryForm, { item })),
-                e(Modal, { isOpen: modal === 'platforms', onClose: () => setModal(null), title: 'AVAILABLE ON' }, e(PlatformsList, { item }))
+                e(Modal, { isOpen: modal === 'platforms', onClose: () => setModal(null), title: 'AVAILABLE ON' }, e(PlatformsList, { item })),
+                e(Lightbox, {
+                    isOpen: isLightboxOpen,
+                    onClose: () => setIsLightboxOpen(false),
+                    images: item.images,
+                    currentIndex: currentImageIndex,
+                    onPrev: goToPreviousImage,
+                    onNext: goToNextImage,
+                    onTouchStart: handleTouchStart,
+                    onTouchEnd: handleTouchEnd
+                })
             );
         };
         
