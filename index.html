@@ -9,7 +9,8 @@
     <meta name="description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
     <meta property="og:title" content="gdarchivio — fashion archive">
     <meta property="og:description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
-    <meta property="og:image" content="./images/logo-icona.webp">
+    <meta property="og:image" content="https://gdarchivio.com/images/logo-icona.webp">
+    <meta property="og:url" content="https://gdarchivio.com">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
@@ -96,7 +97,24 @@
             });
         };
 
-        const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
+        const createPlaceholderSvg = (title = "gdarchivio") => {
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+                    <rect width="100%" height="100%" fill="#fafafa"/>
+                    <rect x="20" y="20" width="760" height="760" fill="none" stroke="#e5e5e5" stroke-dasharray="6 6"/>
+                    <text x="50%" y="48%" font-family="monospace" font-size="20" fill="#111" text-anchor="middle" letter-spacing="3" text-transform="uppercase" font-weight="bold">${title}</text>
+                    <text x="50%" y="54%" font-family="monospace" font-size="12" fill="#999" text-anchor="middle" letter-spacing="2" text-transform="uppercase">image in archive</text>
+                </svg>
+            `;
+            return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+        };
+
+        const resolveImage = (imgSrc, title = "gdarchivio") => {
+            if (!imgSrc || imgSrc.includes('placeholder') || imgSrc.includes('NOME_FOTO')) {
+                return createPlaceholderSvg(title);
+            }
+            return imgSrc;
+        };
 
         const generateFilterOptions = (products, libraryItems) => {
             const collectionItems = products.filter(p => p.type === 'product');
@@ -319,7 +337,12 @@
                     e('div', { className: 'container mx-auto px-4 sm:px-6 lg:px-8' },
                         e('div', { className: 'flex items-center justify-between h-20' },
                             e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                                e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
+                                e('img', { 
+                                    src: './images/logo-icona.webp', 
+                                    alt: 'gdarchivio icona', 
+                                    className: 'w-8 h-8 rounded-full object-cover',
+                                    onError: (ev) => { ev.target.src = createPlaceholderSvg("GD"); }
+                                }),
                                 e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                             ),
                             e('div', { className: 'hidden md:flex items-center gap-x-8 ml-auto' },
@@ -369,7 +392,12 @@
                 isMenuOpen && e('div', { className: 'fixed inset-0 bg-white z-50 p-4 animate-fade-in md:hidden' },
                     e('div', { className: 'flex justify-between items-center mb-12'},
                         e('a', { href: '#home', onClick: (ev) => { ev.preventDefault(); navigateAndClose('#home'); }, className: 'flex items-center gap-3' },
-                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
+                            e('img', { 
+                                src: './images/logo-icona.webp', 
+                                alt: 'gdarchivio icona', 
+                                className: 'w-8 h-8 rounded-full object-cover',
+                                onError: (ev) => { ev.target.src = createPlaceholderSvg("GD"); }
+                            }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
                         e('button', { className: 'md:hidden', onClick: () => setIsMenuOpen(false) },
@@ -402,7 +430,12 @@
                             onClick: (ev) => { ev.preventDefault(); navigateTo('#home', null, { resetPage: true }); },
                             className: 'flex items-center gap-3 mb-6' 
                         },
-                            e('img', { src: './images/logo-icona.webp', alt: 'gdarchivio icona', className: 'w-8 h-8 rounded-full object-cover' }),
+                            e('img', { 
+                                src: './images/logo-icona.webp', 
+                                alt: 'gdarchivio icona', 
+                                className: 'w-8 h-8 rounded-full object-cover',
+                                onError: (ev) => { ev.target.src = createPlaceholderSvg("GD"); }
+                            }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
                         e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
@@ -501,6 +534,8 @@
         const ItemCard = ({ item, navigateTo, page }) => {
             const meta = [item.year, item.category, item.color, item.size].filter(Boolean).join(' • ');
             const isSold = Boolean(item.sold && item.type === 'product');
+            const displayTitle = item.brand || item.author || "gdarchivio";
+            const initialImg = resolveImage(item.images && item.images[0], displayTitle);
 
             return e('div', {
                 className: "group cursor-pointer flex flex-col",
@@ -508,9 +543,10 @@
             },
                 e('div', { className: "aspect-square overflow-hidden relative" },
                     e('img', { 
-                        src: item.images[0], 
+                        src: initialImg, 
                         alt: item.name, 
                         loading: 'lazy',
+                        onError: (ev) => { ev.target.src = createPlaceholderSvg(displayTitle); },
                         className: `w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${isSold ? 'opacity-70' : ''}` 
                     }),
                     isSold && e('div', {
@@ -551,7 +587,7 @@
             );
         };
 
-        const Lightbox = ({ isOpen, onClose, images, currentIndex, onPrev, onNext, onTouchStart, onTouchEnd }) => {
+        const Lightbox = ({ isOpen, onClose, images, currentIndex, onPrev, onNext, onTouchStart, onTouchEnd, itemTitle }) => {
             useEffect(() => {
                 const handleKeyDown = (e) => {
                     if (!isOpen) return;
@@ -573,6 +609,8 @@
 
             if (!isOpen) return null;
 
+            const currentImg = resolveImage(images[currentIndex], itemTitle);
+
             return e('div', {
                 className: 'fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center animate-fade-in',
                 onClick: onClose,
@@ -589,8 +627,9 @@
                     onClick: (e) => e.stopPropagation()
                 },
                     e('img', {
-                        src: images[currentIndex],
+                        src: currentImg,
                         alt: 'Detail Zoom',
+                        onError: (ev) => { ev.target.src = createPlaceholderSvg(itemTitle); },
                         className: 'max-w-full max-h-full object-contain select-none'
                     }),
 
@@ -756,22 +795,22 @@
                     ),
                     e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("COLLECTION"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "COLLECTION"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "curated pieces")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("ARCHIVE"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "ARCHIVE"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "archive items")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("LIBRARY"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "LIBRARY"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "fashion books")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("CONTACT"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "CONTACT"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "get in touch")
                         )
@@ -950,15 +989,17 @@
             const touchEndX = useRef(null);
 
             const isSold = Boolean(item.sold && item.type === 'product');
+            const displayTitle = item.brand || item.author || "gdarchivio";
+            const imagesList = (item.images && item.images.length > 0) ? item.images : [createPlaceholderSvg(displayTitle)];
 
             const goToPreviousImage = () => {
                 const isFirstImage = currentImageIndex === 0;
-                const newIndex = isFirstImage ? item.images.length - 1 : currentImageIndex - 1;
+                const newIndex = isFirstImage ? imagesList.length - 1 : currentImageIndex - 1;
                 setCurrentImageIndex(newIndex);
             };
 
             const goToNextImage = () => {
-                const isLastImage = currentImageIndex === item.images.length - 1;
+                const isLastImage = currentImageIndex === imagesList.length - 1;
                 const newIndex = isLastImage ? 0 : currentImageIndex + 1;
                 setCurrentImageIndex(newIndex);
             };
@@ -978,10 +1019,10 @@
                 const isLeftSwipe = distance > 45;
                 const isRightSwipe = distance < -45;
 
-                if (isLeftSwipe && item.images.length > 1) {
+                if (isLeftSwipe && imagesList.length > 1) {
                     goToNextImage();
                 }
-                if (isRightSwipe && item.images.length > 1) {
+                if (isRightSwipe && imagesList.length > 1) {
                     goToPreviousImage();
                 }
             };
@@ -991,22 +1032,33 @@
             }, [item]);
 
             const handleShare = async () => {
-                const shareData = {
-                    title: item.name,
-                    text: `Check out this from gdarchivio: ${item.name}`,
-                    url: window.location.href
-                };
-                try {
-                    if (navigator.share) {
-                        await navigator.share(shareData);
-                    } else {
-                        throw new Error('Web Share API not supported');
+                const shareUrl = window.location.href;
+                const shareText = `Check out this ${item.brand || ''} ${item.name} on gdarchivio: ${shareUrl}`;
+
+                if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+                    try {
+                        await navigator.share({
+                            title: `gdarchivio | ${item.name}`,
+                            text: shareText,
+                            url: shareUrl
+                        });
+                        return;
+                    } catch (err) {
+                        // Se l'utente annulla la condivisione, non facciamo nulla
+                        if (err.name === 'AbortError') return;
                     }
-                } catch (err) {
-                    navigator.clipboard.writeText(window.location.href).then(() => {
-                        setShareFeedback('Link copied!');
-                        setTimeout(() => setShareFeedback(''), 2000);
+                }
+
+                // Fallback sicuro su copia negli appunti
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        setShareFeedback('LINK COPIED!');
+                        setTimeout(() => setShareFeedback(''), 2500);
+                    }).catch(() => {
+                        window.prompt("Copy link:", shareUrl);
                     });
+                } else {
+                    window.prompt("Copy link:", shareUrl);
                 }
             };
             
@@ -1017,18 +1069,32 @@
             const backButtonText = `Back to ${pageType}`;
 
             const renderDetails = () => {
-                const details = [ { label: 'category', value: item.category }, { label: 'color', value: item.color }, { label: 'size', value: item.size }, { label: 'year', value: item.year }, { label: 'condition', value: item.condition }, { label: 'material', value: item.material }, { label: 'author', value: item.author }, { label: 'publisher', value: item.publisher }];
-                return details.filter(d => d.value).map(d => 
-                    e('div', { key: d.label, className: 'flex justify-between text-sm py-2' },
-                        e('span', { className: 'font-martian-mono text-cold-gray' }, d.label.toLowerCase()),
-                        e('span', { className: 'font-martian-mono' }, d.value)
-                    )
-                );
+                const details = [ 
+                    { label: 'category', value: item.category }, 
+                    { label: 'color', value: item.color }, 
+                    { label: 'size', value: item.size }, 
+                    { label: 'year', value: item.year }, 
+                    { label: 'condition', value: item.condition }, 
+                    { label: 'material', value: item.material }, 
+                    { label: 'author', value: item.author }, 
+                    { label: 'publisher', value: item.publisher }
+                ];
+                return details
+                    .filter(d => d.value && d.value !== "..." && d.value !== null)
+                    .map(d => 
+                        e('div', { key: d.label, className: 'flex justify-between text-sm py-2' },
+                            e('span', { className: 'font-martian-mono text-cold-gray' }, d.label.toLowerCase()),
+                            e('span', { className: 'font-martian-mono' }, d.value)
+                        )
+                    );
             };
 
             const renderMeasurements = () => {
                 if (!item.measurements || Object.keys(item.measurements).length === 0) return null;
-                return Object.entries(item.measurements).map(([key, value]) => 
+                const validMeasurements = Object.entries(item.measurements).filter(([_, v]) => v && v !== "...");
+                if (validMeasurements.length === 0) return null;
+
+                return validMeasurements.map(([key, value]) => 
                     e('div', { key: key, className: 'flex justify-between text-sm py-2' },
                         e('span', { className: 'font-martian-mono text-cold-gray' }, key.toLowerCase()),
                         e('span', { className: 'font-martian-mono' }, value)
@@ -1054,6 +1120,8 @@
                 return e('div', { className: 'mt-6 space-y-2' }, ...buttons);
             };
 
+            const mainImgSrc = resolveImage(imagesList[currentImageIndex], displayTitle);
+
             return e(Fragment, null,
                 e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-8' },
                     e('a', { 
@@ -1071,9 +1139,10 @@
                                 onClick: () => setIsLightboxOpen(true)
                              },
                                 e('img', { 
-                                    src: item.images[currentImageIndex], 
+                                    src: mainImgSrc, 
                                     alt: item.name, 
                                     loading: 'lazy',
+                                    onError: (ev) => { ev.target.src = createPlaceholderSvg(displayTitle); },
                                     className: 'w-full h-full object-contain pointer-events-none' 
                                 }),
                                 
@@ -1083,13 +1152,13 @@
 
                                 e('div', {
                                     className: 'absolute bottom-3 left-3 bg-white/80 backdrop-blur-sm text-black text-xs font-martian-mono px-2.5 py-1 rounded'
-                                }, `${currentImageIndex + 1} / ${item.images.length}`),
+                                }, `${currentImageIndex + 1} / ${imagesList.length}`),
 
                                 e('div', {
                                     className: 'absolute bottom-3 right-3 bg-white/80 backdrop-blur-sm p-1.5 rounded hover:bg-white transition-all text-black'
                                 }, e(Icon, { name: 'Maximize', size: 14 })),
 
-                                item.images.length > 1 && e(Fragment, null,
+                                imagesList.length > 1 && e(Fragment, null,
                                     e('button', { 
                                         onClick: (e) => { e.stopPropagation(); goToPreviousImage(); }, 
                                         className: 'hidden md:block absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
@@ -1108,7 +1177,7 @@
                                     e('h1', { className: 'font-martian-mono text-xl uppercase mt-1' }, item.name)
                                 ),
                                 e('div', { className: 'flex items-center gap-x-3' },
-                                    e('span', { className: `text-xs text-cold-gray transition-opacity duration-300 ${shareFeedback ? 'opacity-100' : 'opacity-0'}` }, shareFeedback),
+                                    e('span', { className: `text-xs font-bold text-black transition-opacity duration-300 ${shareFeedback ? 'opacity-100' : 'opacity-0'}` }, shareFeedback),
                                     e('button', { onClick: () => onToggleWishlist(item.id), className: isWishlisted ? 'text-black' : 'text-cold-gray hover:text-black' }, 
                                         e(Icon, { name: isWishlisted ? 'HeartFilled' : 'Heart', size: 20 })
                                     ),
@@ -1125,7 +1194,7 @@
                                 e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'PRODUCT DETAILS'),
                                 renderDetails()
                             ),
-                            e('div', { className: 'py-6' },
+                            renderMeasurements() && e('div', { className: 'py-6' },
                                 e('h4', { className: 'font-martian-mono text-sm uppercase font-bold mb-2' }, 'MEASUREMENTS'),
                                 renderMeasurements()
                             ),
@@ -1143,12 +1212,13 @@
                 e(Lightbox, {
                     isOpen: isLightboxOpen,
                     onClose: () => setIsLightboxOpen(false),
-                    images: item.images,
+                    images: imagesList,
                     currentIndex: currentImageIndex,
                     onPrev: goToPreviousImage,
                     onNext: goToNextImage,
                     onTouchStart: handleTouchStart,
-                    onTouchEnd: handleTouchEnd
+                    onTouchEnd: handleTouchEnd,
+                    itemTitle: displayTitle
                 })
             );
         };
