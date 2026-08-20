@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio | fashion archive</title>
     
-    <!-- Meta tag SEO & Social Share (Open Graph) -->
     <meta name="description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
     <meta property="og:title" content="gdarchivio — fashion archive">
     <meta property="og:description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
@@ -786,42 +785,64 @@
             );
         };
         
-        const HomePage = ({ navigateTo }) => {
-            return e('div', { className: "flex flex-col min-h-screen bg-white text-black" },
-                e('main', { className: "flex-grow flex flex-col justify-center items-center p-4" },
-                    e('header', { className: "text-center" },
-                        e('h1', { className: "font-bitcount-single font-medium text-6xl md:text-7xl" }, "gdarchivio"),
-                        e('p', { className: "font-martian-mono text-dark-gray tracking-widest mt-2" }, "fashion archive")
-                    ),
-                    e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("COLLECTION"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "COLLECTION"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "curated pieces")
-                        ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("ARCHIVE"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "ARCHIVE"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "archive items")
-                        ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("LIBRARY"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "LIBRARY"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "fashion books")
-                        ),
-                        e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: createPlaceholderSvg("CONTACT"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
-                            e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "CONTACT"),
-                            e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "get in touch")
-                        )
-                    ),
-                    e('button', { className: "font-martian-mono uppercase tracking-wider border border-black px-8 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm", onClick: () => navigateTo('#collection', null, { resetPage: true }) }, "ENTER COLLECTION")
+        // HOME PAGE EDITORIALE CON HOVER REVEAL
+        const HomePage = ({ navigateTo, products, libraryItems }) => {
+            const [activeImage, setActiveImage] = useState(null);
+
+            const previewCollection = products.find(p => p.type === 'product')?.images[0];
+            const previewArchive = products.find(p => p.type === 'archive')?.images[0];
+            const previewLibrary = libraryItems[0]?.images[0];
+
+            const navItems = [
+                { id: '01', title: 'Collection', subtitle: 'curated pieces for acquisition', link: '#collection', img: previewCollection },
+                { id: '02', title: 'Archive', subtitle: 'permanent historical garments', link: '#archive', img: previewArchive },
+                { id: '03', title: 'Library', subtitle: 'fashion monographs, books & ephemera', link: '#library', img: previewLibrary },
+                { id: '04', title: 'Contact', subtitle: 'inquiries & physical consultations', link: '#contact', img: './images/logo-icona.webp' }
+            ];
+
+            return e('div', { className: "flex flex-col min-h-screen bg-white text-black relative select-none" },
+                // Immagine fluttuante di sfondo con dissolvenza morbida
+                activeImage && e('div', {
+                    className: 'fixed right-8 lg:right-24 top-1/2 -translate-y-1/2 w-64 h-64 lg:w-80 lg:h-80 pointer-events-none hidden md:block animate-fade-in z-0'
+                },
+                    e('img', {
+                        src: activeImage,
+                        alt: 'preview',
+                        className: 'w-full h-full object-contain filter grayscale opacity-20 transition-all duration-300'
+                    })
                 ),
-                e('footer', { className: "w-full py-6 px-4" },
-                    e('div', { className: "container mx-auto text-center" },
-                        e('div', { className: "border-b border-gray-300 w-20 mx-auto mb-4" }),
-                        e('p', { className: "font-martian-mono text-xs text-cold-gray uppercase tracking-widest" }, "ITALY • EST. 2025")
+
+                e('main', { className: "flex-grow flex flex-col justify-center container mx-auto px-6 lg:px-16 py-12 z-10" },
+                    e('header', { className: "mb-12 lg:mb-16 text-left" },
+                        e('h1', { className: "font-bitcount-single font-medium text-5xl sm:text-6xl lg:text-7xl" }, "gdarchivio"),
+                        e('p', { className: "font-martian-mono text-dark-gray text-xs sm:text-sm tracking-widest mt-2 uppercase" }, "digital fashion archive • curated maison pieces")
+                    ),
+
+                    e('nav', { className: "flex flex-col space-y-6 lg:space-y-8 max-w-2xl text-left" },
+                        navItems.map(item => e('div', {
+                            key: item.id,
+                            onMouseEnter: () => item.img && setActiveImage(item.img),
+                            onMouseLeave: () => setActiveImage(null),
+                            onClick: () => navigateTo(item.link, null, { resetPage: true }),
+                            className: "group cursor-pointer border-b border-gray-200 pb-4 transition-all hover:border-black"
+                        },
+                            e('div', { className: "flex items-baseline gap-4" },
+                                e('span', { className: "font-martian-mono text-xs text-cold-gray group-hover:text-black transition-colors" }, `[${item.id}]`),
+                                e('h2', { className: "font-martian-mono text-2xl sm:text-3xl lg:text-4xl uppercase tracking-tight group-hover:translate-x-2 transition-transform duration-200" }, item.title)
+                            ),
+                            e('p', { className: "font-martian-mono text-xs text-cold-gray mt-1 ml-10 uppercase tracking-wider" }, item.subtitle)
+                        ))
                     )
+                ),
+
+                e('footer', { className: "w-full py-6 px-6 lg:px-16 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-martian-mono text-cold-gray uppercase tracking-widest gap-2" },
+                    e('span', null, "ITALY • EST. 2025"),
+                    e('a', {
+                        href: 'https://www.instagram.com/gdarchivio',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        className: 'hover:text-black underline'
+                    }, 'Instagram')
                 )
             );
         };
@@ -1031,35 +1052,36 @@
                 setCurrentImageIndex(0);
             }, [item]);
 
+            // CONDIVISIONE OTTIMIZZATA PER SAFARI E WHATSAPP
             const handleShare = async () => {
                 const shareUrl = window.location.href;
-                const shareText = `Check out this ${item.brand || ''} ${item.name} on gdarchivio: ${shareUrl}`;
+                const shareTitle = `gdarchivio | ${item.name}`;
 
-                if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+                // Prova 1: Condivisione nativa pulita con solo URL (compatibilità totale iOS/Safari)
+                if (navigator.share) {
                     try {
                         await navigator.share({
-                            title: `gdarchivio | ${item.name}`,
-                            text: shareText,
+                            title: shareTitle,
                             url: shareUrl
                         });
                         return;
                     } catch (err) {
-                        // Se l'utente annulla la condivisione, non facciamo nulla
-                        if (err.name === 'AbortError') return;
+                        if (err.name === 'AbortError') return; // Utente ha chiuso il menu
                     }
                 }
 
-                // Fallback sicuro su copia negli appunti
+                // Prova 2: Copia diretta negli appunti
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(shareUrl).then(() => {
+                    try {
+                        await navigator.clipboard.writeText(shareUrl);
                         setShareFeedback('LINK COPIED!');
                         setTimeout(() => setShareFeedback(''), 2500);
-                    }).catch(() => {
-                        window.prompt("Copy link:", shareUrl);
-                    });
-                } else {
-                    window.prompt("Copy link:", shareUrl);
+                        return;
+                    } catch (e) {}
                 }
+
+                // Prova 3: Fallback compatibilità universale
+                window.prompt("Copy link:", shareUrl);
             };
             
             const isWishlisted = wishlist.includes(item.id);
@@ -1406,7 +1428,7 @@
                         return e(ContactPage, { navigateTo });
                     case 'home':
                     default:
-                        return e(HomePage, { navigateTo });
+                        return e(HomePage, { navigateTo, products, libraryItems });
                 }
             };
             
