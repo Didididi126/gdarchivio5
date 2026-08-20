@@ -79,6 +79,14 @@
         const { createRoot } = ReactDOM;
         const e = React.createElement;
         
+        const forceScrollTop = () => {
+            requestAnimationFrame(() => {
+                window.scrollTo(0, 0);
+                if (document.documentElement) document.documentElement.scrollTop = 0;
+                if (document.body) document.body.scrollTop = 0;
+            });
+        };
+
         const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
 
         const generateFilterOptions = (products, libraryItems) => {
@@ -593,36 +601,21 @@
                 pageNumbers.push(i);
             }
 
-            const scrollToTopReliably = () => {
-                window.scrollTo(0, 0);
-                if (document.documentElement) {
-                    document.documentElement.scrollTop = 0;
-                }
-                if (document.body) {
-                    document.body.scrollTop = 0;
-                }
-            };
-
-            const handlePageClick = (pageNumber) => {
-                onPageChange(pageNumber);
-                scrollToTopReliably();
-            };
-
             return e('nav', { className: 'flex justify-center items-center gap-4 mt-12' },
                 e('button', {
-                    onClick: () => handlePageClick(currentPage - 1),
+                    onClick: () => onPageChange(currentPage - 1),
                     disabled: currentPage === 1,
                     className: 'font-martian-mono text-sm uppercase disabled:text-gray-300 cursor-pointer disabled:cursor-not-allowed'
                 }, 'Prev'),
                 e('div', { className: 'flex items-center gap-2' },
                     pageNumbers.map(number => e('button', {
                         key: number,
-                        onClick: () => handlePageClick(number),
+                        onClick: () => onPageChange(number),
                         className: `h-8 w-8 flex items-center justify-center font-martian-mono text-sm ${currentPage === number ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}`
                     }, number))
                 ),
                 e('button', {
-                    onClick: () => handlePageClick(currentPage + 1),
+                    onClick: () => onPageChange(currentPage + 1),
                     disabled: currentPage === totalPages,
                     className: 'font-martian-mono text-sm uppercase disabled:text-gray-300 cursor-pointer disabled:cursor-not-allowed'
                 }, 'Next')
@@ -713,6 +706,7 @@
 
             useEffect(() => {
                 sessionStorage.setItem(page, currentPage);
+                forceScrollTop();
             }, [currentPage, page]);
 
             const queryStateRef = useRef({ filters: selectedFilters, search: searchQuery });
@@ -1103,7 +1097,7 @@
             useEffect(() => {
                 const handleHashChange = () => {
                     setRoute(window.location.hash || '#home');
-                    window.scrollTo(0, 0);
+                    forceScrollTop();
                 };
                 window.addEventListener('hashchange', handleHashChange);
                 handleHashChange();
@@ -1121,7 +1115,7 @@
                   window.history.pushState(null, '', newRoute);
                 }
                 setRoute(newRoute);
-                window.scrollTo(0, 0);
+                forceScrollTop();
             }, []);
 
             const renderPage = () => {
