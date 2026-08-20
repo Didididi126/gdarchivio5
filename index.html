@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gdarchivio | fashion archive</title>
     
-    <meta name="description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
-    <meta property="og:title" content="gdarchivio — fashion archive">
-    <meta property="og:description" content="Curated fashion archive. Authentic pieces from the world's most iconic maisons.">
+    <meta name="description" content="Digital fashion archive. Authentic pieces from the world's most iconic maisons.">
+    <meta property="og:title" content="gdarchivio — digital fashion archive">
+    <meta property="og:description" content="Digital fashion archive. Authentic pieces from the world's most iconic maisons.">
     <meta property="og:image" content="https://gdarchivio.com/images/logo-icona.webp">
     <meta property="og:url" content="https://gdarchivio.com">
     <meta property="og:type" content="website">
@@ -437,7 +437,7 @@
                             }),
                             e('span', { className: 'font-bitcount-single font-medium text-4xl' }, 'gdarchivio')
                         ),
-                        e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'curated fashion archive. authentic pieces from the world\'s most iconic maisons.'),
+                        e('p', { className: 'font-martian-mono text-sm text-dark-gray max-w-md' }, 'digital fashion archive. authentic pieces from the world\'s most iconic maisons.'),
                         e('a', {
                             href: 'https://www.instagram.com/gdarchivio',
                             target: '_blank',
@@ -785,7 +785,7 @@
             );
         };
         
-        // HOME PAGE EDITORIALE CON HOVER REVEAL
+        // HOME PAGE EDITORIALE CON TESTI AGGIORNATI E LOGO VISIBILE
         const HomePage = ({ navigateTo, products, libraryItems }) => {
             const [activeImage, setActiveImage] = useState(null);
 
@@ -794,14 +794,13 @@
             const previewLibrary = libraryItems[0]?.images[0];
 
             const navItems = [
-                { id: '01', title: 'Collection', subtitle: 'curated pieces for acquisition', link: '#collection', img: previewCollection },
-                { id: '02', title: 'Archive', subtitle: 'permanent historical garments', link: '#archive', img: previewArchive },
-                { id: '03', title: 'Library', subtitle: 'fashion monographs, books & ephemera', link: '#library', img: previewLibrary },
+                { id: '01', title: 'Collection', subtitle: 'curated pieces', link: '#collection', img: previewCollection },
+                { id: '02', title: 'Archive', subtitle: 'permanent garments/pieces', link: '#archive', img: previewArchive },
+                { id: '03', title: 'Library', subtitle: 'fashion books, catalogue', link: '#library', img: previewLibrary },
                 { id: '04', title: 'Contact', subtitle: 'inquiries & physical consultations', link: '#contact', img: './images/logo-icona.webp' }
             ];
 
             return e('div', { className: "flex flex-col min-h-screen bg-white text-black relative select-none" },
-                // Immagine fluttuante di sfondo con dissolvenza morbida
                 activeImage && e('div', {
                     className: 'fixed right-8 lg:right-24 top-1/2 -translate-y-1/2 w-64 h-64 lg:w-80 lg:h-80 pointer-events-none hidden md:block animate-fade-in z-0'
                 },
@@ -814,8 +813,16 @@
 
                 e('main', { className: "flex-grow flex flex-col justify-center container mx-auto px-6 lg:px-16 py-12 z-10" },
                     e('header', { className: "mb-12 lg:mb-16 text-left" },
-                        e('h1', { className: "font-bitcount-single font-medium text-5xl sm:text-6xl lg:text-7xl" }, "gdarchivio"),
-                        e('p', { className: "font-martian-mono text-dark-gray text-xs sm:text-sm tracking-widest mt-2 uppercase" }, "digital fashion archive • curated maison pieces")
+                        e('div', { className: "flex items-center gap-4 mb-2" },
+                            e('img', { 
+                                src: './images/logo-icona.webp', 
+                                alt: 'gdarchivio icona', 
+                                className: 'w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shadow-sm',
+                                onError: (ev) => { ev.target.src = createPlaceholderSvg("GD"); }
+                            }),
+                            e('h1', { className: "font-bitcount-single font-medium text-5xl sm:text-6xl lg:text-7xl" }, "gdarchivio")
+                        ),
+                        e('p', { className: "font-martian-mono text-dark-gray text-xs sm:text-sm tracking-widest uppercase" }, "digital fashion archive")
                     ),
 
                     e('nav', { className: "flex flex-col space-y-6 lg:space-y-8 max-w-2xl text-left" },
@@ -1052,12 +1059,10 @@
                 setCurrentImageIndex(0);
             }, [item]);
 
-            // CONDIVISIONE OTTIMIZZATA PER SAFARI E WHATSAPP
             const handleShare = async () => {
                 const shareUrl = window.location.href;
                 const shareTitle = `gdarchivio | ${item.name}`;
 
-                // Prova 1: Condivisione nativa pulita con solo URL (compatibilità totale iOS/Safari)
                 if (navigator.share) {
                     try {
                         await navigator.share({
@@ -1066,11 +1071,10 @@
                         });
                         return;
                     } catch (err) {
-                        if (err.name === 'AbortError') return; // Utente ha chiuso il menu
+                        if (err.name === 'AbortError') return;
                     }
                 }
 
-                // Prova 2: Copia diretta negli appunti
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     try {
                         await navigator.clipboard.writeText(shareUrl);
@@ -1080,7 +1084,6 @@
                     } catch (e) {}
                 }
 
-                // Prova 3: Fallback compatibilità universale
                 window.prompt("Copy link:", shareUrl);
             };
             
