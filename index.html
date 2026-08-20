@@ -63,7 +63,6 @@
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     <div id="root"></div>
 
-    <!-- Script di produzione veloci e sicuri -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     
@@ -466,7 +465,7 @@
                 className: "group cursor-pointer flex flex-col",
                 onClick: () => navigateTo(page, item)
             },
-                e('div', { className: "aspect-square bg-gray-100 overflow-hidden relative" },
+                e('div', { className: "aspect-square overflow-hidden relative" },
                     e('img', { 
                         src: item.images[0], 
                         alt: item.name, 
@@ -594,9 +593,19 @@
                 pageNumbers.push(i);
             }
 
+            const scrollToTopReliably = () => {
+                window.scrollTo(0, 0);
+                if (document.documentElement) {
+                    document.documentElement.scrollTop = 0;
+                }
+                if (document.body) {
+                    document.body.scrollTop = 0;
+                }
+            };
+
             const handlePageClick = (pageNumber) => {
                 onPageChange(pageNumber);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                scrollToTopReliably();
             };
 
             return e('nav', { className: 'flex justify-center items-center gap-4 mt-12' },
@@ -660,22 +669,22 @@
                     ),
                     e('nav', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 my-10 sm:my-12 w-full max-w-sm md:max-w-4xl" },
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#collection', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Collection"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "COLLECTION"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "curated pieces")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#archive', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Archive"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "ARCHIVE"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "archive items")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#library', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Library"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "LIBRARY"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "fashion books")
                         ),
                         e('div', { className: "group cursor-pointer text-center", onClick: () => navigateTo('#contact', null, { resetPage: true }) },
-                            e('div', { className: "aspect-square bg-gray-100 overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
+                            e('div', { className: "aspect-square overflow-hidden mb-4" }, e('img', { src: getPlaceholderImageUrl(500, 500, "Contact"), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" })),
                             e('h3', { className: "font-martian-mono font-bold uppercase tracking-wider text-sm sm:text-base" }, "CONTACT"),
                             e('p', { className: "font-martian-mono text-xs text-cold-gray tracking-widest" }, "get in touch")
                         )
@@ -919,7 +928,7 @@
                     }, e(Icon, { name: 'ArrowLeft', size: 16 }), backButtonText),
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
-                             e('div', { className: 'flex-1 aspect-square bg-gray-100 relative' },
+                             e('div', { className: 'flex-1 aspect-square relative' },
                                 e('img', { 
                                     src: item.images[currentImageIndex], 
                                     alt: item.name, 
