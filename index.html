@@ -893,7 +893,6 @@
             const [wishlist, setWishlist] = useState([]);
             const [shareFeedback, setShareFeedback] = useState('');
             
-            // Touch Swipe tracking
             const touchStartX = useRef(null);
             const touchEndX = useRef(null);
 
@@ -1022,7 +1021,7 @@
                     e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12' },
                         e('div', { className: 'flex flex-col gap-4' },
                              e('div', { 
-                                className: 'flex-1 aspect-square relative select-none cursor-zoom-in bg-gray-50',
+                                className: 'flex-1 aspect-square relative select-none cursor-zoom-in',
                                 onTouchStart: handleTouchStart,
                                 onTouchMove: handleTouchMove,
                                 onTouchEnd: handleTouchEnd,
@@ -1050,11 +1049,11 @@
                                 item.images.length > 1 && e(Fragment, null,
                                     e('button', { 
                                         onClick: (e) => { e.stopPropagation(); goToPreviousImage(); }, 
-                                        className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
+                                        className: 'hidden md:block absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
                                     }, e(Icon, { name: 'ArrowLeft', size: 24 })),
                                     e('button', { 
                                         onClick: (e) => { e.stopPropagation(); goToNextImage(); }, 
-                                        className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
+                                        className: 'hidden md:block absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' 
                                     }, e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' }))
                                 )
                             )
