@@ -63,8 +63,9 @@
     <noscript>Per visualizzare questa applicazione, è necessario abilitare JavaScript.</noscript>
     <div id="root"></div>
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Script di produzione veloci e sicuri -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     
     <script>
     window.addEventListener('load', runApp);
@@ -79,9 +80,6 @@
         const { createRoot } = ReactDOM;
         const e = React.createElement;
         
-        // ==========================================================
-        // COSTANTI E FUNZIONI UTILI
-        // ==========================================================
         const getPlaceholderImageUrl = (width, height, text) => `https://placehold.co/${width}x${height}/f0f0f0/333?text=${encodeURIComponent(text)}`;
 
         const generateFilterOptions = (products, libraryItems) => {
@@ -128,12 +126,8 @@
             };
         };
 
-
         const sortOptions = ['name a–z', 'name z–a', 'brand a-z', 'brand z-a', 'year old to new', 'year new to old'];
         
-        // ==========================================================
-        // COMPONENTI ICONA INLINE
-        // ==========================================================
         const Icon = ({ name, size = 16, className = '' }) => {
             const iconProps = { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', className: className };
             const icons = {
@@ -153,9 +147,6 @@
             return icons[name] || null;
         };
 
-        // ==========================================================
-        // COMPONENTI DROPDOWN E PANEL
-        // ==========================================================
         const FilterDropdown = ({ label, values, isOpen, onToggle, selectedValues, onFilterChange }) => {
             return e('div', { className: 'relative' },
                 e('button', {
@@ -281,9 +272,6 @@
             );
         };
 
-        // ==========================================================
-        // COMPONENTI UI RIUTILIZZABILI
-        // ==========================================================
         const Header = ({ navigateTo, currentRoute, searchQuery, onSearchChange }) => {
             const [isMenuOpen, setIsMenuOpen] = useState(false);
             const navItems = [
@@ -472,17 +460,22 @@
 
         const ItemCard = ({ item, navigateTo, page }) => {
             const meta = [item.year, item.category, item.color, item.size].filter(Boolean).join(' • ');
+            const isSold = Boolean(item.sold && item.type === 'product');
+
             return e('div', {
                 className: "group cursor-pointer flex flex-col",
                 onClick: () => navigateTo(page, item)
             },
-                e('div', { className: "aspect-square bg-gray-100 overflow-hidden" },
+                e('div', { className: "aspect-square bg-gray-100 overflow-hidden relative" },
                     e('img', { 
                         src: item.images[0], 
                         alt: item.name, 
                         loading: 'lazy',
-                        className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                    })
+                        className: `w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${isSold ? 'opacity-70' : ''}` 
+                    }),
+                    isSold && e('div', {
+                        className: 'absolute top-2 right-2 bg-black text-white text-xs font-martian-mono font-bold px-2 py-1 tracking-wider uppercase'
+                    }, 'SOLD')
                 ),
                 e('div', { className: 'mt-3 text-left flex-grow' },
                     e('h3', { className: "font-martian-mono uppercase font-bold text-sm text-black" }, item.author || item.brand),
@@ -601,23 +594,28 @@
                 pageNumbers.push(i);
             }
 
+            const handlePageClick = (pageNumber) => {
+                onPageChange(pageNumber);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
             return e('nav', { className: 'flex justify-center items-center gap-4 mt-12' },
                 e('button', {
-                    onClick: () => onPageChange(currentPage - 1),
+                    onClick: () => handlePageClick(currentPage - 1),
                     disabled: currentPage === 1,
-                    className: 'font-martian-mono text-sm uppercase disabled:text-gray-300'
+                    className: 'font-martian-mono text-sm uppercase disabled:text-gray-300 cursor-pointer disabled:cursor-not-allowed'
                 }, 'Prev'),
                 e('div', { className: 'flex items-center gap-2' },
                     pageNumbers.map(number => e('button', {
                         key: number,
-                        onClick: () => onPageChange(number),
+                        onClick: () => handlePageClick(number),
                         className: `h-8 w-8 flex items-center justify-center font-martian-mono text-sm ${currentPage === number ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}`
                     }, number))
                 ),
                 e('button', {
-                    onClick: () => onPageChange(currentPage + 1),
+                    onClick: () => handlePageClick(currentPage + 1),
                     disabled: currentPage === totalPages,
-                    className: 'font-martian-mono text-sm uppercase disabled:text-gray-300'
+                    className: 'font-martian-mono text-sm uppercase disabled:text-gray-300 cursor-pointer disabled:cursor-not-allowed'
                 }, 'Next')
             );
         };
@@ -653,9 +651,6 @@
             );
         };
         
-        // ==========================================================
-        // PAGINE
-        // ==========================================================
         const HomePage = ({ navigateTo }) => {
             return e('div', { className: "flex flex-col min-h-screen bg-white text-black" },
                 e('main', { className: "flex-grow flex flex-col justify-center items-center p-4" },
@@ -696,11 +691,7 @@
             );
         };
         
-        // ==========================================================
-        // COMPONENTE ListPage (CORRETTO E FINALE)
-        // ==========================================================
         const ListPage = ({ items, navigateTo, page, options, searchQuery }) => {
-            // Inizializza la pagina leggendo da sessionStorage. Se non c'è, usa 1.
             const [currentPage, setCurrentPage] = useState(() => {
                 const savedPage = sessionStorage.getItem(page); 
                 return savedPage ? parseInt(savedPage, 10) : 1;
@@ -711,15 +702,12 @@
             const [sortOrder, setSortOrder] = useState(sortOptions[0]);
             const itemsPerPage = 12;
 
-            // Salva la pagina in sessionStorage ogni volta che cambia
             useEffect(() => {
                 sessionStorage.setItem(page, currentPage);
             }, [currentPage, page]);
 
-            // Ref per tracciare se è il primo render (o se i filtri/search sono cambiati)
             const queryStateRef = useRef({ filters: selectedFilters, search: searchQuery });
 
-            // Resetta la pagina a 1 SOLO se i filtri o la ricerca sono cambiati
             useEffect(() => {
                 const hasFiltersChanged = JSON.stringify(queryStateRef.current.filters) !== JSON.stringify(selectedFilters);
                 const hasSearchChanged = queryStateRef.current.search !== searchQuery;
@@ -830,6 +818,8 @@
             const [wishlist, setWishlist] = useState([]);
             const [shareFeedback, setShareFeedback] = useState('');
             
+            const isSold = Boolean(item.sold && item.type === 'product');
+
             const goToPreviousImage = () => {
                 const isFirstImage = currentImageIndex === 0;
                 const newIndex = isFirstImage ? item.images.length - 1 : currentImageIndex - 1;
@@ -877,7 +867,8 @@
             };
             
             const isWishlisted = wishlist.includes(item.id);
-            const pageType = item.type === 'book' ? 'library' : (item.type === 'product' ? 'collection' : 'archive');
+            const isLibraryType = item.type === 'book' || item.type === 'catalogue' || item.type === 'vhs' || item.type === 'album';
+            const pageType = isLibraryType ? 'library' : (item.type === 'product' ? 'collection' : 'archive');
             const goBackUrl = `#${pageType}`;
             const backButtonText = `Back to ${pageType}`;
 
@@ -902,13 +893,19 @@
             };
 
             const renderActionButtons = () => {
+                if (isSold) {
+                    return e('div', { className: 'mt-6 p-4 bg-gray-100 text-center font-martian-mono uppercase tracking-wider text-sm text-cold-gray font-bold' }, 'Item Sold Out');
+                }
+
                 const buttons = [];
-                if(item.type === 'archive' || item.type === 'book'){
+                if (item.type === 'archive' || isLibraryType) {
                     buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
                 }
-                if(item.type === 'product'){
+                if (item.type === 'product') {
                      buttons.push(e('button', { key: 'inquiry', onClick: () => setModal('inquiry'), className: 'w-full bg-black text-white py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-dark-gray transition-colors' }, 'Contact for Inquiry'));
-                     buttons.push(e('button', { key: 'platforms', onClick: () => setModal('platforms'), className: 'w-full border border-black text-black py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-gray-100 transition-colors' }, 'Available On Platforms'));
+                     if (item.purchaseLinks && Object.keys(item.purchaseLinks).length > 0) {
+                         buttons.push(e('button', { key: 'platforms', onClick: () => setModal('platforms'), className: 'w-full border border-black text-black py-3 font-martian-mono uppercase tracking-wider text-sm hover:bg-gray-100 transition-colors' }, 'Available On Platforms'));
+                     }
                 }
                 return e('div', { className: 'mt-6 space-y-2' }, ...buttons);
             };
@@ -930,22 +927,18 @@
                                     className: 'w-full h-full object-contain' 
                                 }),
                                 
+                                isSold && e('div', {
+                                    className: 'absolute top-4 right-4 bg-black text-white text-sm font-martian-mono font-bold px-3 py-1.5 tracking-wider uppercase'
+                                }, 'SOLD'),
+
                                 item.images.length > 1 && e(Fragment, null,
-                                    e('button', { onClick: goToPreviousImage, className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
+                                    e('button', { onClick: goToPreviousImage, className: 'absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' },
                                         e(Icon, { name: 'ArrowLeft', size: 24 })
                                     ),
-                                    e('button', { onClick: goToNextImage, className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all' },
+                                    e('button', { onClick: goToNextImage, className: 'absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 p-2 rounded-full hover:bg-white transition-all shadow' },
                                         e(Icon, { name: 'ArrowLeft', size: 24, className: 'transform rotate-180' })
                                     )
                                 )
-                            ),
-                            e('div', { className: 'flex flex-row gap-2 flex-wrap' },
-                                item.images.map((img, index) => e('img', { 
-                                  key: index, src: img, alt: `Thumbnail ${index+1}`, 
-                                  loading: 'lazy',
-                                  onClick: () => setCurrentImageIndex(index),
-                                  className: `w-24 h-24 object-contain cursor-pointer bg-gray-100 ${currentImageIndex === index ? 'outline outline-2 outline-black' : ''}`
-                                }))
                             )
                         ),
                         e('div', { className: 'sticky top-24 self-start z-10' },
@@ -1080,9 +1073,6 @@
             );
         };
 
-        // ==========================================================
-        // APPLICAZIONE PRINCIPALE E ROUTING (CORRETTO E FINALE)
-        // ==========================================================
         const App = () => {
             const [route, setRoute] = useState(window.location.hash || '#home');
             const [products, setProducts] = useState([]);
@@ -1115,7 +1105,7 @@
                 const newRoute = item ? `${path}/${item.id}` : path;
 
                 if (options.resetPage) {
-                    sessionStorage.removeItem(path + '_page'); // Usa una chiave univoca per la pagina
+                    sessionStorage.removeItem(path);
                 }
                 
                 if (window.location.hash !== newRoute) {
@@ -1170,7 +1160,6 @@
             );
         };
         
-        // --- Avvio dell'applicazione ---
         const rootElement = document.getElementById('root');
         if (rootElement) {
             createRoot(rootElement).render(e(App));
