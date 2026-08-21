@@ -785,7 +785,7 @@
             );
         };
         
-        // HOME PAGE EDITORIALE - IMMAGINI SOLO A SCOMPARSA (DESKTOP E MOBILE)
+        // HOME PAGE EDITORIALE: IMMAGINI ANTEPRIMA SOLO SU DESKTOP (PULITA SU MOBILE)
         const HomePage = ({ navigateTo, products, libraryItems }) => {
             const [activeImage, setActiveImage] = useState(null);
 
@@ -801,9 +801,9 @@
             ];
 
             return e('div', { className: "flex flex-col min-h-screen bg-white text-black relative select-none" },
-                // Immagine d'anteprima fluida sia su mobile che su desktop al passaggio/touch
+                // Immagine d'anteprima solo ed esclusivamente su Desktop al passaggio del mouse
                 activeImage && e('div', {
-                    className: 'fixed right-6 sm:right-12 lg:right-24 top-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 pointer-events-none animate-fade-in z-0'
+                    className: 'fixed right-8 lg:right-24 top-1/2 -translate-y-1/2 w-64 h-64 lg:w-80 lg:h-80 pointer-events-none hidden md:block animate-fade-in z-0'
                 },
                     e('img', {
                         src: activeImage,
@@ -831,17 +831,15 @@
                             key: item.id,
                             onMouseEnter: () => item.img && setActiveImage(item.img),
                             onMouseLeave: () => setActiveImage(null),
-                            onTouchStart: () => item.img && setActiveImage(item.img),
-                            onTouchEnd: () => setActiveImage(null),
                             onClick: () => navigateTo(item.link, null, { resetPage: true }),
                             className: "group cursor-pointer border-b border-gray-100 pb-4 transition-all hover:border-gray-300 flex items-center justify-between"
                         },
                             e('div', { className: "flex flex-col text-left flex-1" },
                                 e('div', { className: "flex items-baseline gap-3 sm:gap-4" },
                                     e('span', { className: "font-martian-mono text-xs text-cold-gray group-hover:text-black transition-colors" }, `[${item.id}]`),
-                                    e('h2', { className: "font-martian-mono text-xl sm:text-3xl lg:text-4xl uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-200" }, item.title)
+                                    e('h2', { className: "font-martian-mono text-2xl sm:text-3xl lg:text-4xl uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-200" }, item.title)
                                 ),
-                                e('p', { className: "font-martian-mono text-[11px] sm:text-xs text-cold-gray mt-1 ml-7 sm:ml-10 uppercase tracking-wider" }, item.subtitle)
+                                e('p', { className: "font-martian-mono text-xs text-cold-gray mt-1 ml-8 sm:ml-10 uppercase tracking-wider" }, item.subtitle)
                             )
                         ))
                     )
@@ -1064,11 +1062,17 @@
                 setCurrentImageIndex(0);
             }, [item]);
 
-            // CONDIVISIONE ULTRA-STABILE PER MOBILE E DESKTOP
+            // CONDIVISIONE OTTIMIZZATA MOBILE (WHATSAPP DIRETTO) E DESKTOP (APPUNTI)
             const handleShare = () => {
                 const shareUrl = window.location.href;
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-                // Approccio 1: Clipboard API (non fallisce su iOS/Android)
+                if (isMobile) {
+                    const text = encodeURIComponent(`gdarchivio | ${item.name}: ${shareUrl}`);
+                    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+                    return;
+                }
+
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(shareUrl)
                         .then(() => {
@@ -1076,29 +1080,11 @@
                             setTimeout(() => setShareFeedback(''), 2500);
                         })
                         .catch(() => {
-                            fallbackCopy(shareUrl);
+                            window.prompt("Copy link:", shareUrl);
                         });
                 } else {
-                    fallbackCopy(shareUrl);
+                    window.prompt("Copy link:", shareUrl);
                 }
-            };
-
-            const fallbackCopy = (text) => {
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                textArea.style.position = "fixed";
-                textArea.style.opacity = "0";
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    setShareFeedback('LINK COPIED!');
-                    setTimeout(() => setShareFeedback(''), 2500);
-                } catch (err) {
-                    window.prompt("Copy link:", text);
-                }
-                document.body.removeChild(textArea);
             };
             
             const isWishlisted = wishlist.includes(item.id);
@@ -1262,7 +1248,6 @@
             );
         };
         
-        // CONTACT PAGE CON SEZIONE RENTAL & ARCHIVAL PULLS
         const ContactPage = ({ navigateTo }) => {
             const [submitted, setSubmitted] = useState(false);
 
@@ -1301,7 +1286,7 @@
 
             return e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-12' },
                  e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'CONTACT'),
-                 e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'inquiries, private viewings, rental for editorials & research consultations.'),
+                 e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'inquiries, private viewings, archival pulls & research consultations.'),
                  e('div', { className: 'border-b border-gray-200 mt-4 mb-10' }),
                 e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
                     e('div', { className: 'mb-12 md:mb-0' },
@@ -1314,11 +1299,11 @@
                                 e(FormSelect, { id: 'subject', label: 'Subject' },
                                     e('option', { value: '' }, 'select message subject'),
                                     e('option', { value: 'inquiry' }, 'product acquisition inquiry'),
-                                    e('option', { value: 'rental' }, 'editorial & styling rental (pulls)'),
+                                    e('option', { value: 'rental' }, 'archival pulls & editorial rental'),
                                     e('option', { value: 'research' }, 'archive research / appointment'),
                                     e('option', { value: 'other' }, 'other')
                                 ),
-                                e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message or specify rental dates/pull details…' }),
+                                e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
                                 e('button', { type: 'submit', className: 'bg-black text-white py-3 px-8 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'SEND MESSAGE')
                             )
                         )
@@ -1340,8 +1325,8 @@
                             e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-4' }, 'Archive Services & FAQ'),
                             e('div', { className: 'space-y-4' },
                                 e('div', null,
-                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'EDITORIAL & STYLING RENTALS (PULLS)'),
-                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'Garments from both the collection and archive are available for rental for photo shoots, music videos, red carpet and editorial styling. Contact us with project details, moodboard and dates.')
+                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'ARCHIVAL PULLS & EDITORIAL RENTAL'),
+                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'Select archive pieces are available for editorial pulls and styling consultations upon request.')
                                 ),
                                 e('div', null,
                                   e('p', { className: 'font-martian-mono text-sm font-bold' }, 'ARCHIVE CONSULTATIONS & VIEWING'),
