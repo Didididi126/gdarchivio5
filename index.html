@@ -785,7 +785,7 @@
             );
         };
         
-        // HOME PAGE EDITORIALE CON TESTI AGGIORNATI, LOGO VISIBILE E ANTEPRIMA MOBILE
+        // HOME PAGE EDITORIALE - IMMAGINI SOLO A SCOMPARSA (DESKTOP E MOBILE)
         const HomePage = ({ navigateTo, products, libraryItems }) => {
             const [activeImage, setActiveImage] = useState(null);
 
@@ -795,14 +795,15 @@
 
             const navItems = [
                 { id: '01', title: 'Collection', subtitle: 'curated pieces', link: '#collection', img: previewCollection },
-                { id: '02', title: 'Archive', subtitle: 'permanent garments/pieces', link: '#archive', img: previewArchive },
-                { id: '03', title: 'Library', subtitle: 'fashion books, catalogue', link: '#library', img: previewLibrary },
+                { id: '02', title: 'Archive', subtitle: 'permanent garments', link: '#archive', img: previewArchive },
+                { id: '03', title: 'Library', subtitle: 'fashion books', link: '#library', img: previewLibrary },
                 { id: '04', title: 'Contact', subtitle: 'inquiries & physical consultations', link: '#contact', img: './images/logo-icona.webp' }
             ];
 
             return e('div', { className: "flex flex-col min-h-screen bg-white text-black relative select-none" },
+                // Immagine d'anteprima fluida sia su mobile che su desktop al passaggio/touch
                 activeImage && e('div', {
-                    className: 'fixed right-8 lg:right-24 top-1/2 -translate-y-1/2 w-64 h-64 lg:w-80 lg:h-80 pointer-events-none hidden md:block animate-fade-in z-0'
+                    className: 'fixed right-6 sm:right-12 lg:right-24 top-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 pointer-events-none animate-fade-in z-0'
                 },
                     e('img', {
                         src: activeImage,
@@ -830,8 +831,10 @@
                             key: item.id,
                             onMouseEnter: () => item.img && setActiveImage(item.img),
                             onMouseLeave: () => setActiveImage(null),
+                            onTouchStart: () => item.img && setActiveImage(item.img),
+                            onTouchEnd: () => setActiveImage(null),
                             onClick: () => navigateTo(item.link, null, { resetPage: true }),
-                            className: "group cursor-pointer border-b border-gray-100 pb-4 transition-all hover:border-gray-300 flex items-center justify-between gap-4"
+                            className: "group cursor-pointer border-b border-gray-100 pb-4 transition-all hover:border-gray-300 flex items-center justify-between"
                         },
                             e('div', { className: "flex flex-col text-left flex-1" },
                                 e('div', { className: "flex items-baseline gap-3 sm:gap-4" },
@@ -839,15 +842,6 @@
                                     e('h2', { className: "font-martian-mono text-xl sm:text-3xl lg:text-4xl uppercase tracking-tight group-hover:translate-x-1 transition-transform duration-200" }, item.title)
                                 ),
                                 e('p', { className: "font-martian-mono text-[11px] sm:text-xs text-cold-gray mt-1 ml-7 sm:ml-10 uppercase tracking-wider" }, item.subtitle)
-                            ),
-                            // Mini thumbnail visibile su mobile
-                            item.img && e('div', { className: "md:hidden w-16 h-16 flex-shrink-0 aspect-square overflow-hidden bg-transparent" },
-                                e('img', {
-                                    src: item.img,
-                                    alt: item.title,
-                                    className: 'w-full h-full object-contain filter grayscale opacity-75',
-                                    onError: (ev) => { ev.target.src = createPlaceholderSvg(item.title); }
-                                })
                             )
                         ))
                     )
@@ -1070,32 +1064,41 @@
                 setCurrentImageIndex(0);
             }, [item]);
 
-            const handleShare = async () => {
+            // CONDIVISIONE ULTRA-STABILE PER MOBILE E DESKTOP
+            const handleShare = () => {
                 const shareUrl = window.location.href;
-                const shareTitle = `gdarchivio | ${item.name}`;
 
-                if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: shareTitle,
-                            url: shareUrl
-                        });
-                        return;
-                    } catch (err) {
-                        if (err.name === 'AbortError') return;
-                    }
-                }
-
+                // Approccio 1: Clipboard API (non fallisce su iOS/Android)
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    try {
-                        await navigator.clipboard.writeText(shareUrl);
-                        setShareFeedback('LINK COPIED!');
-                        setTimeout(() => setShareFeedback(''), 2500);
-                        return;
-                    } catch (e) {}
+                    navigator.clipboard.writeText(shareUrl)
+                        .then(() => {
+                            setShareFeedback('LINK COPIED!');
+                            setTimeout(() => setShareFeedback(''), 2500);
+                        })
+                        .catch(() => {
+                            fallbackCopy(shareUrl);
+                        });
+                } else {
+                    fallbackCopy(shareUrl);
                 }
+            };
 
-                window.prompt("Copy link:", shareUrl);
+            const fallbackCopy = (text) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.opacity = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    setShareFeedback('LINK COPIED!');
+                    setTimeout(() => setShareFeedback(''), 2500);
+                } catch (err) {
+                    window.prompt("Copy link:", text);
+                }
+                document.body.removeChild(textArea);
             };
             
             const isWishlisted = wishlist.includes(item.id);
@@ -1238,7 +1241,7 @@
                             e('ul', { className: 'mt-6 space-y-1 text-xs text-cold-gray font-martian-mono list-disc list-outside pl-4' },
                                 e('li', null, 'all products are carefully authenticated'),
                                 e('li', null, 'detailed condition reports available'),
-                                e('li', null, 'archive consultation by appointment')
+                                e('li', null, 'archive consultation & styling pulls by appointment')
                             )
                         )
                     )
@@ -1259,6 +1262,7 @@
             );
         };
         
+        // CONTACT PAGE CON SEZIONE RENTAL & ARCHIVAL PULLS
         const ContactPage = ({ navigateTo }) => {
             const [submitted, setSubmitted] = useState(false);
 
@@ -1297,7 +1301,7 @@
 
             return e('main', { className: 'container mx-auto px-4 sm:px-6 lg:px-8 py-12' },
                  e('h2', { className: 'font-martian-mono uppercase font-bold text-xl mb-1' }, 'CONTACT'),
-                 e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'questions about a specific piece? want more information? we\'re here to help.'),
+                 e('p', { className: 'font-martian-mono text-sm text-dark-gray' }, 'inquiries, private viewings, rental for editorials & research consultations.'),
                  e('div', { className: 'border-b border-gray-200 mt-4 mb-10' }),
                 e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-x-12' },
                     e('div', { className: 'mb-12 md:mb-0' },
@@ -1309,11 +1313,12 @@
                                 e(FormInput, { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' }),
                                 e(FormSelect, { id: 'subject', label: 'Subject' },
                                     e('option', { value: '' }, 'select message subject'),
-                                    e('option', { value: 'inquiry' }, 'product inquiry'),
-                                    e('option', { value: 'research' }, 'research request'),
+                                    e('option', { value: 'inquiry' }, 'product acquisition inquiry'),
+                                    e('option', { value: 'rental' }, 'editorial & styling rental (pulls)'),
+                                    e('option', { value: 'research' }, 'archive research / appointment'),
                                     e('option', { value: 'other' }, 'other')
                                 ),
-                                e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message here…' }),
+                                e(FormTextarea, { id: 'message', label: 'Message', placeholder: 'write your message or specify rental dates/pull details…' }),
                                 e('button', { type: 'submit', className: 'bg-black text-white py-3 px-8 font-martian-mono uppercase tracking-wider text-sm font-bold hover:bg-dark-gray transition-colors' }, 'SEND MESSAGE')
                             )
                         )
@@ -1332,15 +1337,15 @@
                            e('a', {href: 'https://www.instagram.com/gdarchivio', target: '_blank', rel: 'noopener noreferrer', className: 'flex items-center gap-2 text-sm font-martian-mono'}, e(Icon, {name: 'Instagram'}), 'Instagram')
                         ),
                         e('div', null,
-                            e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-4' }, 'Frequently Asked'),
+                            e('h4', { className: 'font-martian-mono uppercase font-bold text-sm mb-4' }, 'Archive Services & FAQ'),
                             e('div', { className: 'space-y-4' },
                                 e('div', null,
-                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'IS THIS AN ONLINE ARCHIVE ONLY?'),
-                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'yes, gdarchivio operates as a digital fashion archive. Consultations and viewing can be arranged by appointment.')
+                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'EDITORIAL & STYLING RENTALS (PULLS)'),
+                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'Garments from both the collection and archive are available for rental for photo shoots, music videos, red carpet and editorial styling. Contact us with project details, moodboard and dates.')
                                 ),
                                 e('div', null,
-                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'CAN I CONTRIBUTE TO THE ARCHIVE?'),
-                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'we welcome contributions from collectors and fashion enthusiasts. Contact us to discuss adding pieces to our archive.')
+                                  e('p', { className: 'font-martian-mono text-sm font-bold' }, 'ARCHIVE CONSULTATIONS & VIEWING'),
+                                  e('p', { className: 'font-martian-mono text-sm mt-1 text-dark-gray' }, 'Physical viewing and consultations for researchers, designers and collectors can be scheduled by appointment.')
                                 )
                             )
                         )
